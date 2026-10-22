@@ -37,6 +37,11 @@
 
   .bar { height: 52px; flex: none; display: flex; align-items: center; justify-content: space-between; margin-right: -14px; }
   .brand { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
+  .brand-mark { display: inline-flex; width: 34px; height: 34px; margin-left: -4px; }
+  .brand-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .seg { display: inline-flex; gap: 4px; }
+  .seg-b { min-height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid rgba(23,21,15,.18); background: transparent; color: inherit; font: inherit; font-size: 13px; }
+  .seg-b.on { background: #17150F; color: #F6EEDB; border-color: #17150F; }
   .icon { width: 44px; height: 44px; border: 0; background: transparent; display: grid; place-items: center; cursor: pointer; border-radius: 12px; }
 
   /* 홈의 소개 */
@@ -68,7 +73,7 @@
     box-shadow: 0 16px 14px -14px rgba(160,130,80,0.5); display: flex; flex-direction: column; gap: 10px; view-transition-name: paper; }
   .paper::before { content: ""; position: absolute; right: 0; top: 0; width: 23px; height: 23px; background: linear-gradient(to bottom left, var(--bg) 50%, transparent 50%); pointer-events: none; }
   .edge { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
-  .q-row { display: flex; align-items: center; gap: 4px; margin: -6px 0 -4px -8px; }
+  .q-row { display: flex; align-items: center; gap: 4px; margin: 0; }
   .q-row .mini-char { width: 34px; height: 36px; }
   .q { font-size: 16px; line-height: 22px; font-weight: 700; letter-spacing: -0.3px; }
   textarea { width: 100%; border: 0; background: transparent; font-size: 16px; line-height: 28px; padding: 0; resize: none; outline: none; min-height: 112px;
@@ -136,6 +141,8 @@
   .story { flex: none; position: relative; height: 142px; margin-top: 14px; }
   .story-sub { position: absolute; left: 0; top: 94px; margin: 0; font-size: 15px; line-height: 23px; color: var(--ink-2); letter-spacing: -0.2px; word-break: keep-all; opacity: 0; transform: translateY(6px); transition: opacity .5s ease .15s, transform .5s ease .15s; }
   .story-sub.show { opacity: 1; transform: none; }
+  #subText { display: inline-block; transition: opacity .32s ease, transform .32s ease; }
+  #subText.fade { opacity: 0; transform: translateY(4px); }
   .line { position: absolute; left: 0; top: 0; margin: 0; font-size: 30px; line-height: 40px; font-weight: 800; letter-spacing: -1px; transition: opacity .45s ease, transform .45s cubic-bezier(.22,1,.36,1); }
   .line.out { opacity: 0; transform: translateY(-10px); }
   .line.in-start { opacity: 0; transform: translateY(12px); }
@@ -180,8 +187,8 @@
   .app.kb-open[data-state="write"] .dock { margin-top: auto; margin-bottom: 0; padding-top: 10px; animation: kbup .18s ease-out; }
   .app.kb-open[data-state="write"] .fine { display: none; }
   @keyframes kbup { from { transform: translateY(12px); opacity: .6; } }
-  .app:is([data-state="loading"], [data-state="result"], [data-state="done"]) :is(textarea, .count, .fine) { display: none; }
-  .app[data-state="home"] .count { display: none; }
+  .app:is([data-state="loading"], [data-state="result"], [data-state="done"]) :is(textarea, .count-row, .fine) { display: none; }
+  .app[data-state="home"] .count-row { display: none; }
   .app[data-state="done"] .dock { visibility: hidden; }
   .app:is([data-state="result"], [data-state="done"]) .catcher { display: block; }
 
@@ -192,6 +199,20 @@
   .sheet p { font-size: 15px; line-height: 23px; color: var(--ink-2); word-break: keep-all; }
   .sheet ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 22px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; word-break: keep-all; }
   .row { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-top: 1px solid var(--rule); font-size: 15px; }
+  .sheet { max-height: calc(100% - 48px); overflow-y: auto; overscroll-behavior: contain; }
+  .nav-list { display: flex; flex-direction: column; }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; min-height: 52px; border: 0; border-top: 1px solid var(--rule); background: transparent; padding: 0; font: inherit; font-size: 16px; font-weight: 600; color: inherit; text-align: left; cursor: pointer; }
+  .nav-row .chev { font-size: 22px; color: var(--ink-3, #6E675A); font-weight: 400; }
+  .group-k { margin-top: 8px; font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--ink-3, #6E675A); }
+  .sheet h3 { margin: 8px 0 0; font-size: 15px; line-height: 22px; font-weight: 800; }
+  .sheet p { margin: 0; }
+  .steps { margin: 4px 0; padding: 0; list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 26px 1fr; column-gap: 10px; font-size: 14px; line-height: 21px; color: var(--ink-2); word-break: keep-all; }
+  .steps li::before { content: counter(s); grid-row: span 2; width: 24px; height: 24px; border-radius: 50%; background: var(--ink, #17150F); color: var(--bg, #F6EEDB); font-size: 13px; font-weight: 800; display: grid; place-items: center; }
+  .steps b { color: var(--ink, #17150F); font-size: 15px; }
+  .sheet .help { list-style: none; padding: 0; gap: 0; }
+  .help li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--rule); font-size: 15px; color: var(--ink, #17150F); }
+  .help b { white-space: nowrap; font-variant-numeric: tabular-nums; }
   @keyframes fade { from { opacity: 0; } }
   @keyframes up { from { transform: translateY(40px); opacity: 0; } }
   .seg-mini { display: flex; gap: 6px; }
@@ -203,18 +224,140 @@
     .line, .story-sub { transition: none; }
     .skel, .paper.pop .ans, .catcher.bump, .scrim, .sheet, .toast { animation: none; }
   }
+
+
+  /* ---------- 이 앱에 대해: 털실 하나를 따라가는 이야기 ---------- */
+  .ab { position: absolute; inset: 0; z-index: 6; background: var(--bg); display: flex; flex-direction: column; animation: abIn .3s cubic-bezier(.22,1,.36,1); }
+  .ab.out { animation: abOut .22s ease forwards; }
+  @keyframes abIn { from { transform: translateX(22px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes abOut { to { transform: translateX(22px); opacity: 0; } }
+  .ab-bar { flex: none; height: 52px; display: flex; align-items: center; gap: 2px; padding-inline: 8px; }
+  .ab-bar-t { font-size: 15px; font-weight: 700; }
+  .ab-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 22px 24px; -webkit-overflow-scrolling: touch; }
+  .ab-hero { padding: 18px 0 30px; }
+  .ab h1 { margin: 0; font-size: 28px; line-height: 38px; font-weight: 800; letter-spacing: -1px; }
+  .ab-hero p { margin: 12px 0 0; font-size: 15px; line-height: 24px; color: var(--ink-2); word-break: keep-all; }
+  .ab-scene { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .ab-y { display: block; object-fit: contain; }
+  .ab-k { margin-top: 12px; font-size: 12px; font-weight: 800; letter-spacing: .4px; color: var(--pencil); }
+  .ab-t { margin: 6px 0 0; max-width: 300px; font-size: 16px; line-height: 26px; font-weight: 600; word-break: keep-all; }
+  .ab-s { margin: 10px 0 0; max-width: 300px; font-size: 14px; line-height: 23px; color: var(--ink-2); word-break: keep-all; }
+  .ab-tag { margin: 8px 0 0; display: inline-block; padding: 7px 14px; background: var(--paper); border: 1.5px dashed var(--pencil); border-radius: 999px; font-size: 14px; font-weight: 600; }
+  .ab-thread { display: block; margin: 14px auto; color: var(--ink); opacity: .75; }
+  .ab-big { position: relative; width: 300px; max-width: 100%; height: 178px; display: grid; place-items: center; }
+  .ab-b { position: absolute; padding: 6px 11px; background: var(--paper); border: 1.5px solid var(--pencil); border-radius: 14px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .ab-b.b1 { left: 0; top: 10px; transform: rotate(-4deg); }
+  .ab-b.b2 { right: 2px; top: 34px; transform: rotate(3deg); }
+  .ab-b.b3 { left: 18px; bottom: 6px; transform: rotate(2deg); }
+  .ab-note { position: relative; margin-top: 10px; width: 100%; max-width: 320px; text-align: left; background: var(--paper); padding: 16px 16px 14px; box-shadow: 0 16px 14px -14px rgba(160,130,80,0.5); }
+  .ab-note::before { content: ""; position: absolute; right: 0; top: 0; width: 20px; height: 20px; background: linear-gradient(to bottom left, var(--bg) 50%, transparent 50%); }
+  .ab-note .q { display: block; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--rule-paper); font-size: 15px; font-weight: 700; }
+  .ab-note p { margin: 0; font-size: 14.5px; line-height: 24px; word-break: keep-all; }
+  .ab-note mark { background: linear-gradient(transparent 58%, var(--mark) 58%); color: inherit; }
+  .ab-end { display: flex; align-items: flex-end; gap: 6px; height: 56px; }
+  .ab-crum { width: 46px; height: 46px; border-radius: 48% 52% 45% 55%; background: radial-gradient(circle at 34% 30%, #FFFDF6, #EADFC6 72%); box-shadow: inset -4px -5px 0 rgba(140,115,80,.22), 0 3px 0 rgba(23,21,15,.07); transform: rotate(-12deg); }
+  .ab-pay { margin: 14px 0 0; font-size: 22px; line-height: 30px; font-weight: 800; letter-spacing: -0.6px; }
+  .ab-sec { margin-top: 44px; padding-top: 28px; border-top: 1px dashed var(--rule-paper); }
+  .ab h2 { margin: 0 0 14px; font-size: 18px; line-height: 26px; font-weight: 800; letter-spacing: -0.4px; }
+  .ab-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ab-chips span { padding: 8px 12px; border-radius: 999px; background: var(--paper); font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+  .ab-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .ab-list li { font-size: 14px; line-height: 23px; color: var(--ink-2); word-break: keep-all; }
+  .ab-list b { color: var(--ink); }
+  .ab-cta { padding: 34px 0 calc(6px + env(safe-area-inset-bottom, 0px)); }
+  @media (prefers-reduced-motion: reduce) { .ab, .ab.out { animation: none; } }
+
+  .pg { z-index: 7; }
+  #aboutPage { z-index: 7; }
+  .pg-body { padding-top: 4px; }
+  .pg-body .nav-list { margin-top: 4px; border-bottom: 1px solid var(--rule); }
+  .pg-body .group-k { display: block; margin: 28px 0 6px; }
+  .pg-body .row { font-size: 15px; }
+  .pg-p { margin: 4px 0 14px; font-size: 15px; line-height: 24px; color: var(--ink-2); word-break: keep-all; }
+  .pg-list { margin: 4px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 24px; color: var(--ink-2); word-break: keep-all; }
+  .pg-body .help { list-style: none; margin: 0; padding: 0; }
+  .pg-body .help li { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); font-size: 15px; color: var(--ink); }
+  .pg-body .help b { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .pg-h { margin: 22px 0 8px; font-size: 15px; line-height: 22px; font-weight: 800; }
+  .pg-draft { margin: 4px 0 8px; padding: 10px 12px; border-radius: 10px; background: var(--paper); font-size: 13px; line-height: 20px; color: var(--ink-3); word-break: keep-all; }
+  .pg-body .pg-list { font-size: 14px; line-height: 23px; gap: 6px; }
+  .pg-mail { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 14px; border-radius: 12px; background: var(--paper); font-size: 15px; font-weight: 600; margin: 6px 0 10px; }
+
+  /* 설정 메뉴: 아이콘 + 큰 글씨, 구분선 없이 */
+  .pg .ab-bar { position: relative; justify-content: flex-start; }
+  .pg .ab-bar-t { position: absolute; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; max-width: calc(100% - 120px); overflow: hidden; text-overflow: ellipsis; }
+  .me-card { display: flex; align-items: center; gap: 16px; width: 100%; padding: 14px 0 22px; }
+  .me-re { margin-right: -10px; color: var(--ink-2); }
+  .me-av { width: 64px; height: 64px; flex: none; border-radius: 18px; background: var(--paper); display: grid; place-items: center; }
+  .me-av img { width: 46px; height: 46px; object-fit: contain; }
+  .me-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .me-tx b { font-size: 20px; line-height: 27px; font-weight: 800; letter-spacing: -0.5px; }
+  .me-tx span { font-size: 14px; color: var(--ink-3); }
+  .pg-body .nav-list { margin-top: 0; border-bottom: 0; }
+  .pg-body .nav-row { min-height: 60px; border-top: 0; gap: 14px; justify-content: flex-start; font-size: 17px; font-weight: 450; letter-spacing: -0.3px; }
+  .pg-body .nav-row .nav-l { flex: 1; min-width: 0; }
+  .pg-body .nav-row .chev, .me-card .chev { font-size: 24px; color: var(--ink-4); }
+  .nav-ico { width: 26px; height: 26px; flex: none; display: grid; place-items: center; color: var(--ink); }
+  .nav-row.is-info { cursor: default; }
+  .nav-v { font-size: 15px; font-weight: 600; color: var(--ink-3); }
+  .pg .nav-h { margin: 30px 0 4px; font-size: 19px; line-height: 26px; font-weight: 800; letter-spacing: -0.4px; }
+  .pg .nav-h.is-dev { font-size: 14px; color: var(--ink-3); margin-top: 34px; }
+  .nav-list.is-dev .nav-row { min-height: 48px; font-size: 14px; font-weight: 600; color: var(--ink-3); }
+  .nav-list.is-dev .nav-ico { color: var(--ink-4); }
+
+  .nav-row.is-toggle { cursor: default; }
+  .nav-row.is-toggle .switch { cursor: pointer; }
+  .nav-2 { display: flex; flex-direction: column; gap: 2px; }
+  .nav-2 small { font-size: 12.5px; line-height: 18px; color: var(--ink-3); font-weight: 400; letter-spacing: 0; }
+
+  .count-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; }
+  .count-row .count { align-self: auto; margin-left: auto; }
+  .clear-btn { border: 0; background: transparent; padding: 4px 8px 4px 0; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-3); cursor: pointer; }
+  .app:not(.has-text) .clear-btn { visibility: hidden; }
+
+  /* 입력칸 → 쪽지로 커지는 동안: 진짜 쪽지와 아래 영역은 잠깐 숨겼다가 나타난다 */
+  .morph { position: fixed; z-index: 20; background: var(--paper); border: 1.5px solid var(--pencil); box-shadow: 0 16px 14px -14px rgba(160,130,80,0.5); pointer-events: none; }
+  .app.morphing .paper, .app.morphing .chips, .app.morphing .dock { opacity: 0; transition: none; }
+  .app .paper, .app .chips, .app .dock { transition: opacity .22s ease; }
+
+  .morph-t { position: fixed; z-index: 21; margin: 0; white-space: nowrap; pointer-events: none; font-family: var(--font); }
+
+  .ai-note { margin: 10px 0 0; font-size: 11.5px; line-height: 16px; color: var(--ink-4); }
+
+  .bar-r { display: flex; align-items: center; }
+  .icon { position: relative; }
+  .icon .dot { position: absolute; top: 8px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: #D9603B; }
+  .pop-scrim { align-items: center; justify-content: center; padding: 20px; }
+  .sv-box { width: 100%; max-width: 360px; max-height: calc(100% - 24px); overflow-y: auto; background: var(--paper); border-radius: 20px; padding: 22px 18px 14px; display: flex; flex-direction: column; gap: 16px; animation: popIn .22s cubic-bezier(.22,1,.36,1); box-shadow: 0 18px 40px rgba(23,21,15,.18); }
+  @keyframes popIn { from { transform: translateY(8px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+  .sv-box h2 { margin: 0; font-size: 19px; line-height: 27px; font-weight: 800; letter-spacing: -0.4px; }
+  .pop-sub { margin: -10px 0 0; font-size: 13.5px; line-height: 20px; color: var(--ink-3); }
+  .pop-q { display: flex; flex-direction: column; gap: 8px; }
+  .pop-q b { font-size: 15px; line-height: 22px; font-weight: 700; word-break: keep-all; }
+  .pop-a { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pop-a .chip { min-height: 34px; font-size: 13.5px; background: var(--bg); }
+  .pop-a .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .pop-foot { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 2px; }
+  @media (prefers-reduced-motion: reduce) { .sv-box { animation: none; } }
+
+  .nav-tip { position: relative; display: flex; align-items: center; gap: 2px; }
+  .nav-tip .tip-btn { width: 32px; height: 32px; margin: -6px 0; border: 0; background: transparent; color: var(--ink-4); display: grid; place-items: center; border-radius: 50%; cursor: pointer; }
+  .nav-tip .tip { position: absolute; left: 0; bottom: calc(100% + 10px); z-index: 3; width: max-content; max-width: min(280px, calc(100vw - 100px)); padding: 9px 12px; word-break: keep-all; border-radius: 10px; background: var(--ink); color: var(--bg); font-size: 13px; line-height: 19px; font-weight: 500; letter-spacing: -0.2px; box-shadow: 0 8px 20px rgba(23,21,15,.16); }
+  .nav-tip .tip::before { content: ""; position: absolute; left: var(--ax, 20px); bottom: -5px; width: 10px; height: 10px; background: var(--ink); transform: rotate(45deg); border-radius: 2px; }
 </style>
 
 <div class="app" id="app" data-state="home">
   <header class="bar">
-    <span class="brand">사실은 별거 아냐</span>
-    <button class="icon" id="settingsBtn" type="button" aria-label="설정"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
+    <span class="sr">사실은 별거 아냐</span><span aria-hidden="true"></span>
+    <span class="bar-r"><button class="icon" id="surveyBtn" type="button" aria-label="의견 남기기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7M17 12H7"/></svg><i class="dot" id="surveyDot" aria-hidden="true"></i></button>
+    <button class="icon" id="settingsBtn" type="button" aria-label="설정"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
   </header>
 
   <section class="story">
-    <h1 class="sr">자꾸 신경 쓰이는 거, 여기 버리고 가요.</h1>
+    <h1 class="sr">한 발짝 떨어져 보면, 사실은 별거 아냐.</h1>
     <div id="lines" aria-hidden="true"></div>
-    <p class="story-sub" id="storySub">별거 아닌 이유를 한 번 듣고,<br>적은 종이째 구겨서 버리는 곳이에요.</p>
+    <p class="story-sub" id="storySub"><span id="subText">계속 신경 쓰이는 생각들,<br>여기 꺼내 놓아 보세요.</span></p>
   </section>
   <div class="pit" id="pit" aria-hidden="true"><canvas id="pileCv"></canvas></div>
   <div class="home-dock">
@@ -235,29 +378,96 @@
 
   <div class="mini">
     <div class="mini-l"><span class="mini-t sr" id="miniT" aria-live="polite">생각나는 그대로 적어요</span></div>
-    <button class="icon" id="backBtn" type="button" aria-label="닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="icon" id="backBtn" type="button" aria-label="닫기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
 
   <div class="stage" id="stage">
     <article class="paper" id="paper">
       <svg class="edge" id="edge" aria-hidden="true"></svg>
-      <div class="q-row"><span class="mini-char" id="miniChar"><img class="c-base" src="./char.png" alt=""><img class="c-col" id="miniCol" alt=""></span><label class="q" for="entry" id="qLabel">뭐가 자꾸 머릿속에 맴돌아요?</label></div>
-      <textarea id="entry" rows="4" maxlength="100" placeholder="한 줄이면 충분해요" enterkeyhint="enter"></textarea>
-      <span class="count" id="count">0 / 100</span>
+      <div class="q-row"><label class="q" for="entry" id="qLabel">뭐가 자꾸 머릿속에 맴돌아요?</label></div>
+      <textarea id="entry" rows="4" maxlength="100" placeholder="있었던 일이나 떠오르는 생각을 적어 보세요" enterkeyhint="enter"></textarea>
+      <div class="count-row"><button class="clear-btn" id="clearBtn" type="button">전체 지우기</button><span class="count" id="count">0 / 100</span></div>
       <p class="written" id="written" hidden></p>
       <div class="ans" id="ans" hidden></div>
-      <p class="fine" id="fine">이름도 계정도 묻지 않아요. 적은 글은 답을 만들려고 AI에 보내져요. <button class="link" id="moreBtn" type="button">자세히</button></p>
+      <p class="fine" id="fine">개인정보는 가린 채 익명으로 보일 수 있어요. <button class="link" id="moreBtn" type="button">자세히</button></p>
       <div class="grip" id="grip" hidden><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>아래로 끌어서 버리기</div>
     </article>
     <canvas id="cv"></canvas>
   </div>
 
   <div class="chips">
-    <span class="k">이런 것도 버려요</span>
+    <span class="k">생각이 안 나면, 이런 건 어때요?</span>
     <div class="chips-row" id="chips"></div>
   </div>
 
   <div class="dock" id="dock"></div>
+
+
+  <section class="ab" id="aboutPage" hidden aria-label="이 앱에 대해">
+    <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="ab-bar-t">이 앱에 대해</span></div>
+    <div class="ab-scroll" id="abScroll">
+      <header class="ab-hero">
+        <h1>걱정은 보통<br>아주 작게 시작해요.</h1>
+        <p>털실 하나를 따라가면서, 이 앱이 하는 일을 보여 드릴게요.</p>
+      </header>
+
+      <section class="ab-scene">
+        <img class="ab-y" src="./yarn-muan.png" alt="" style="width:46px;height:46px">
+        <span class="ab-k">있었던 일</span>
+        <p class="ab-tag">친구한테 하루 동안 연락이 없다</p>
+        <p class="ab-t">처음엔 있었던 일 하나뿐이에요.</p>
+      </section>
+      <svg class="ab-thread" width="40" height="64" viewBox="0 0 40 64" fill="none" aria-hidden="true"><path d="M20 2 C 34 10, 6 18, 20 28 S 6 46, 20 54 S 30 60, 22 62" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <section class="ab-scene">
+        <div class="ab-big">
+          <img class="ab-y" src="./yarn-buran.png" alt="" style="width:118px;height:118px">
+          <span class="ab-b b1">내가 뭘 잘못했나</span>
+          <span class="ab-b b2">나한테 화났나</span>
+          <span class="ab-b b3">이대로 멀어지면 어떡하지</span>
+        </div>
+        <span class="ab-k">엉겨 붙은 생각</span>
+        <p class="ab-t">여기에 생각이 하나둘 엉겨 붙어요. 엉킨 생각은 실제보다 크고 무거워 보여요.</p>
+        <p class="ab-s">그래서 이 앱의 걱정들은 엉킨 털실 모양이에요. 무섭거나 슬픈 그림 대신 동글동글하게 그린 건, 걱정을 너무 무겁게 들고 있지 않았으면 해서예요.</p>
+      </section>
+      <svg class="ab-thread" width="40" height="64" viewBox="0 0 40 64" fill="none" aria-hidden="true"><path d="M20 2 C 34 10, 6 18, 20 28 S 6 46, 20 54 S 30 60, 22 62" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <section class="ab-scene">
+        <span class="ab-k">한 발짝 떨어져 보면</span>
+        <div class="ab-note">
+          <span class="q">연락이 없는데 내가 뭐 잘못했나</span>
+          <p><mark>연락이 없는 거지, 잘못했다는 말을 들은 건 아니에요.</mark> 답이 늦는 건 보통 상대 쪽 사정일 때가 많거든요. 하루쯤 뒤에 가볍게 한 줄 보내 보면 돼요.</p>
+        </div>
+        <p class="ab-t">꺼내 놓으면, 남의 일을 보듯 한 발짝 떨어져서 있었던 일과 엉겨 붙은 생각을 나눠 드려요. 할 만한 게 있으면 딱 하나만 같이요.</p>
+      </section>
+      <svg class="ab-thread" width="40" height="64" viewBox="0 0 40 64" fill="none" aria-hidden="true"><path d="M20 2 C 34 10, 6 18, 20 28 S 6 46, 20 54 S 30 60, 22 62" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <section class="ab-scene">
+        <div class="ab-end" aria-hidden="true"><span class="ab-crum"></span><img class="ab-y" src="./yarn-gomin.png" alt="" style="width:40px;height:40px"></div>
+        <span class="ab-k">버리기</span>
+        <p class="ab-t">다 봤으면 종이째 구겨서 버려요. 남는 건 있었던 일 하나, 그리고 할 일 하나예요.</p>
+        <p class="ab-pay">사실은 별거 아니었네.</p>
+      </section>
+
+      <section class="ab-sec">
+        <h2>이럴 때 꺼내 보세요</h2>
+        <div class="ab-chips">
+          <span>회의 끝나고도 한마디가 맴돌 때</span>
+          <span>답장을 기다리고 있을 때</span>
+          <span>자기 전에 생각이 꼬리를 물 때</span>
+          <span>내일 일이 벌써 걱정될 때</span>
+        </div>
+      </section>
+
+      <section class="ab-sec">
+        <h2>알아 두면 좋아요</h2>
+        <ul class="ab-list">
+          <li><b>진단하거나 상담하지 않아요.</b> 일상의 작은 걱정을 가볍게 덜어 내는 곳이에요.</li>
+          <li><b>이름도 계정도 묻지 않아요.</b> 적은 글이 어떻게 다뤄지는지는 설정에서 볼 수 있어요.</li>
+          <li><b>답은 AI(Claude)가 만들어요.</b> 상황을 잘못 읽을 때도 있으니, 안 맞는 답은 흘려보내도 괜찮아요.</li>
+          <li><b>혼자 들기 무거운 일이라면</b> <button class="link" id="abHelp" type="button">도움받을 곳</button>을 먼저 봐 주세요.</li>
+        </ul>
+      </section>
+
+    </div>
+  </section>
   <p class="foot" id="foot">테스트 버전이에요. 적은 글은 저장하지 않아요.</p>
 </div>
 
@@ -322,7 +532,7 @@
   if (window.ResizeObserver) new ResizeObserver(drawEdge).observe(paper); else window.addEventListener("resize", drawEdge);
 
   /* ---------- 상태 ---------- */
-  var state = "home", current = null, rerolls = 0, sharePick = false, afterDiscard = false;
+  var state = "home", current = null, rerolls = 0, sharePick = true, afterDiscard = false;
   function go(next, fn, instant) {
     state = next;
     if (window.__pile && next !== "home") window.__pile.pause();
@@ -332,7 +542,7 @@
   }
   function setMini(t) { miniT.textContent = t; }
 
-  var EXAMPLES = ["회의 때 말 꼬인 게 자꾸 생각난다", "운동 또 빠진 게 마음에 걸린다", "답장 늦게 한 게 계속 신경 쓰인다", "SNS 보고 괜히 작아진 기분이 안 가신다", "하루 종일 누워 있던 게 찝찝하다", "부탁 거절 못 한 게 계속 떠오른다"];
+  var EXAMPLES = ["연락이 없는데 내가 뭐 잘못했나", "회의 때 말 꼬인 게 자꾸 생각나", "부탁 거절했는데 서운해하려나", "내일 발표인데 망칠까 봐 자꾸 불안해", "친구 말투가 딱딱한데 내가 서운하게 했나", "이번에도 운동 작심삼일로 끝나려나"];
   function renderChips() {
     var box = $("#chips"); box.replaceChildren();
     var day = Math.floor(Date.now() / 864e5), picks = EXAMPLES.map(function (_, i) { return EXAMPLES[(day + i) % EXAMPLES.length]; });
@@ -352,6 +562,11 @@
     if ((state === "write" || state === "home") && pb) pb.disabled = !entry.value.trim(); else renderDock();
   }
   entry.addEventListener("input", onInput);
+  // 전체 지우기: 누르는 순간 글칸이 초점을 잃지 않게(키보드가 내려가지 않게) 터치 기본 동작을 막고 직접 누른다
+  var clearBtn = $("#clearBtn");
+  clearBtn.addEventListener("touchstart", function (e) { e.preventDefault(); clearBtn.click(); }, { passive: false });
+  clearBtn.addEventListener("mousedown", function (e) { e.preventDefault(); });
+  clearBtn.addEventListener("click", function () { entry.value = ""; onInput(); entry.focus({ preventScroll: true }); });
   entry.addEventListener("focus", function () { if (state === "home") toWrite(); syncTyping(); });
   // 키보드가 내려가며 버튼 자리가 바로 바뀌면 같은 터치의 눌림이 빈 곳에 떨어진다: 자리 이동은 조금 늦게
   entry.addEventListener("blur", function () { setTimeout(syncTyping, 320); });
@@ -392,10 +607,49 @@
   paper.addEventListener("click", function (e) { if (state === "home" && e.target.closest("button") == null) { toWrite(); } });
 
   // 홈의 입력칸: 아이폰에서 키보드가 바로 뜨도록, 누른 순간 화면을 바꾸고 같은 순간에 글칸에 초점을 준다
-  $("#homeField").addEventListener("click", function () {
+  // 처음 한 번은 쓰기 전에 "시작하기 전에"를 보여 준다. 확인 버튼을 누른 그 순간에 글칸으로 넘어가야 키보드가 뜬다
+  // 입력칸이 그대로 커지며 쪽지가 된다. 글칸 초점은 누른 순간에 바로 줘야 아이폰 키보드가 뜨니, 화면은 먼저 바꾸고 모양만 따라 움직인다
+  function openWrite() {
+    var field = $("#homeField"), r0 = field.getBoundingClientRect();
+    // 입력칸의 흐린 문구가 그대로 올라가 쪽지 제목이 된다: 바뀌기 전 글자 위치와 모양을 적어 둔다
+    var fs = field.querySelector("span"), t0 = null;
+    if (fs) { var c0 = getComputedStyle(fs), b0 = fs.getBoundingClientRect(); t0 = { text: fs.textContent, left: b0.left, top: b0.top, h: b0.height, size: c0.fontSize, weight: c0.fontWeight, color: c0.color, ls: c0.letterSpacing, lh: c0.lineHeight }; }
     if (window.__pile) window.__pile.pause();
+    var anim = !reduce && r0.width;
+    if (anim) app.classList.add("morphing");
     state = "write"; app.dataset.state = "write"; setMini("생각나는 그대로 적어요"); clearNote(); renderDock();
     entry.focus({ preventScroll: true });
+    if (anim) morphFrom(r0, t0);
+  }
+  function morphFrom(r0, t0) {
+    var r1 = paper.getBoundingClientRect(); if (!r1.width) { app.classList.remove("morphing"); return; }
+    var g = el("div", "morph"); g.style.cssText = "left:" + r0.left + "px;top:" + r0.top + "px;width:" + r0.width + "px;height:" + r0.height + "px;";
+    document.body.append(g);
+    app.classList.add("morphing");
+    var D = 340, E = "cubic-bezier(.22,1,.36,1)";
+    var a = g.animate([
+      { left: r0.left + "px", top: r0.top + "px", width: r0.width + "px", height: r0.height + "px", borderRadius: "16px" },
+      { left: r1.left + "px", top: r1.top + "px", width: r1.width + "px", height: r1.height + "px", borderRadius: "3px" }
+    ], { duration: D, easing: E, fill: "forwards" });
+    var gt = null;
+    if (t0) {
+      var q = $("#qLabel"), rq = q.getBoundingClientRect(), cq = getComputedStyle(q);
+      gt = el("span", "morph-t", t0.text);
+      var lhq = parseFloat(cq.lineHeight) || rq.height; t0.top = t0.top + (t0.h - lhq) / 2;
+      gt.style.cssText = "left:" + t0.left + "px;top:" + t0.top + "px;font-size:" + t0.size + ";font-weight:" + t0.weight + ";color:" + t0.color + ";letter-spacing:" + t0.ls + ";line-height:" + cq.lineHeight + ";";
+      document.body.append(gt);
+      gt.animate([
+        { left: t0.left + "px", top: t0.top + "px", fontSize: t0.size, fontWeight: t0.weight, color: t0.color, letterSpacing: t0.ls },
+        { left: rq.left + "px", top: rq.top + "px", fontSize: cq.fontSize, fontWeight: cq.fontWeight, color: cq.color, letterSpacing: cq.letterSpacing }
+      ], { duration: D, easing: E, fill: "forwards" });
+    }
+    a.onfinish = function () {
+      app.classList.remove("morphing");
+      [g, gt].forEach(function (x) { if (!x) return; x.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, fill: "forwards" }).onfinish = function () { x.remove(); }; });
+    };
+  }
+  $("#homeField").addEventListener("click", function () {
+    if (store(CONSENT_KEY) === "1") openWrite(); else startSheet(openWrite);
   });
   function toWrite() {
     go("write", function () { setMini("생각나는 그대로 적어요"); clearNote(); });
@@ -417,7 +671,7 @@
     dock.replaceChildren();
     if (noteText) dock.append(el("p", "note", noteText));
     if (state === "home" || state === "write") {
-      var b = el("button", "btn", "별거 아닌 이유 듣기"); b.type = "button";
+      var b = el("button", "btn", "한 발짝 떨어져 보기"); b.type = "button";
       b.disabled = !entry.value.trim();
       b.addEventListener("click", askConsentThenRun);
       dock.append(b);
@@ -431,23 +685,62 @@
         var c = el("button", "btn", "닫기"); c.type = "button"; c.addEventListener("click", resetAll); dock.append(c);
         return;
       }
-      var lab = el("label", "share");
-      var t = el("span", "share-t"); t.append(el("b", "", "익명으로 같이 버리기"), el("span", "", "비슷한 생각을 한 누군가가 \u2018나만 그런 게 아니구나\u2019 할 수 있어요. 이름·회사 같은 건 빼고 보여요. (지금은 저장 안 돼요)"));
-      var sw = el("span", "switch"), inp = el("input"); inp.type = "checkbox"; inp.checked = sharePick; inp.setAttribute("aria-label", "익명으로 같이 버리기");
-      inp.addEventListener("change", function () { sharePick = inp.checked; });
-      sw.append(inp, el("i"));
-      lab.append(t, sw); dock.append(lab);
       // 큰 버튼은 어느 화면에서든 맨 아래 같은 자리: 보조 버튼은 그 위에
       if (rerolls < 1) {
-        var rb = el("button", "text-btn", "다른 답 한 번 더 듣기"); rb.type = "button";
+        var rb = el("button", "text-btn", "다른 답 듣기"); rb.type = "button";
         rb.addEventListener("click", function () { rerolls++; run(true); });
         dock.append(rb);
       }
-      var cb = el("button", "btn", "구겨 버리기"); cb.type = "button";
+      var cb = el("button", "btn", "부풀려진 생각 버리기"); cb.type = "button";
       cb.addEventListener("click", function () { if (beginCrumple()) { app.classList.add("discarding"); commitCrumple(); } });
       dock.append(cb);
     }
   }
+
+  /* ---------- 의견 묻기: 서비스와 바로 이어진 질문 네 개만, 가운데 뜨는 작은 창으로 ---------- */
+  var SURVEY = [
+    { id: "lighter", q: "적고 나니 마음이 좀 가벼워졌나요?", a: ["꽤 가벼워졌어요", "조금요", "그대로예요"] },
+    { id: "tone", q: "답의 말투는 어땠어요?", a: ["딱 좋아요", "더 공감해 줬으면", "더 현실적으로 짚어 줬으면"] },
+    { id: "others", q: "비슷한 고민을 한 사람들, 있으면 보고 싶어요?", a: ["보고 싶어요", "있으면 볼래요", "별로요"] },
+    { id: "again", q: "또 쓸 것 같나요?", a: ["또 쓸 것 같아요", "가끔요", "안 쓸 것 같아요"] }
+  ];
+  function surveyDone() { return store("sab:survey") ? true : false; }
+  function syncSurveyDot() { var d = $("#surveyDot"); if (d) d.hidden = surveyDone(); }
+  syncSurveyDot();
+  $("#surveyBtn").addEventListener("click", function () {
+    var pick = {};
+    var scrim = el("div", "scrim pop-scrim"), box = el("div", "sv-box");
+    box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "의견 남기기");
+    var close = function () { scrim.remove(); if (window.__pile && app.dataset.state === "home") window.__pile.resume(); };
+    if (window.__pile) window.__pile.pause();
+    box.append(el("h2", "", "잠깐, 의견 하나만요"), el("p", "pop-sub", "눌러 주기만 하면 돼요. 답한 것만 보내져요."));
+    var send = el("button", "btn", "보내기"); send.type = "button"; send.disabled = true;
+    SURVEY.forEach(function (s) {
+      var g = el("div", "pop-q"); g.append(el("b", "", s.q));
+      var row = el("div", "pop-a");
+      s.a.forEach(function (ans) {
+        var c = el("button", "chip", ans); c.type = "button"; c.setAttribute("aria-pressed", "false");
+        c.addEventListener("click", function () {
+          var on = pick[s.id] !== ans; pick[s.id] = on ? ans : undefined; if (!on) delete pick[s.id];
+          row.querySelectorAll(".chip").forEach(function (x) { var sel = x === c && on; x.classList.toggle("on", sel); x.setAttribute("aria-pressed", sel ? "true" : "false"); });
+          send.disabled = !Object.keys(pick).length;
+        });
+        row.append(c);
+      });
+      g.append(row); box.append(g);
+    });
+    send.addEventListener("click", function () {
+      // 지금은 이 기기에만 남는다. 저장소(Supabase)를 붙이면 그쪽으로 보낸다
+      store("sab:survey", JSON.stringify({ at: Date.now(), answers: pick }));
+      close(); syncSurveyDot(); toast("고마워요. 더 낫게 만들게요");
+    });
+    var later = el("button", "text-btn", "다음에 할게요"); later.type = "button"; later.addEventListener("click", close);
+    var foot = el("div", "pop-foot"); foot.append(send, later); box.append(foot);
+    scrim.append(box);
+    scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
+    app.append(scrim);
+    box.querySelector("button").focus();
+  });
 
   /* ---------- AI 전송 동의 (처음 한 번) ---------- */
   function sheet(build) {
@@ -462,7 +755,7 @@
     sheet(function (sh, close) {
       var h = el("h2", "", onOk ? "보내기 전에 한 가지만요" : "적은 글은 이렇게 다뤄요");
       var ul = el("ul");
-      ["적은 글은 답을 만들려고 AI(Claude)에 보내져요.", "이름, 전화번호, 계정은 묻지 않아요.", "이 프로토타입은 적은 글을 저장하지 않아요. 구겨 버리면 화면에서도 사라져요."].forEach(function (s) { ul.append(el("li", "", s)); });
+      START_POINTS.concat(["이름, 전화번호, 계정은 묻지 않아요."]).forEach(function (s) { ul.append(el("li", "", s)); });
       sh.append(h, ul);
       if (onOk) {
         var ok = el("button", "btn", "괜찮아요, 보낼게요"); ok.type = "button";
@@ -475,24 +768,224 @@
     });
   }
   $("#moreBtn").addEventListener("click", function (e) { e.stopPropagation(); privacySheet(null); });
+  var CONSENT_KEY = "sab:consent:v2";
+  var START_POINTS = ["적은 글은 답을 만들려고 AI(Claude)에 보내져요.", "적은 고민과 받은 답은 저장되고, 서비스를 더 낫게 만드는 데 쓰여요.", "나중에 고민이 익명으로 다른 사람들에게 보일 수 있어요. 이름이나 상호 같은 개인정보는 ○○○로 가려서 보여요.", "원하지 않으면 언제든 공유하지 않을 수 있어요."];
+  function startSheet(onOk) {
+    sheet(function (sh, close) {
+      sh.append(el("h2", "", "시작하기 전에"));
+      var ul = el("ul"); START_POINTS.forEach(function (s) { ul.append(el("li", "", s)); }); sh.append(ul);
+      var ok = el("button", "btn", "좋아요, 시작할게요"); ok.type = "button";
+      ok.addEventListener("click", function () { store(CONSENT_KEY, "1"); close(); onOk(); });
+      var no = el("button", "text-btn", "다음에 할게요"); no.type = "button"; no.addEventListener("click", close);
+      sh.append(ok, no);
+    });
+  }
   function askConsentThenRun() {
     if (!entry.value.trim()) return;
-    if (store("sab:consent:v1") === "1") run(false); else { entry.blur(); privacySheet(function () { run(false); }); }
+    if (store(CONSENT_KEY) === "1") run(false); else { entry.blur(); startSheet(function () { run(false); }); }
   }
 
   /* ---------- 설정 (말투 버전 등) ---------- */
   var soundOn = store("sab:sound") !== "0";
   var crumpleMode = "drawn"; // 만화처럼 그림 몇 장을 컷으로 넘기는 방식 (입체·그림 방식은 비교용 코드로 남김)
+  var ICON = {
+    lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.6"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/><path d="M12 14.6v2"/>',
+    help: '<path d="M12 20.5s-7.5-4.3-7.5-10A4.3 4.3 0 0 1 12 7.8a4.3 4.3 0 0 1 7.5 2.7c0 5.7-7.5 10-7.5 10z"/>',
+    mail: '<rect x="3.5" y="6" width="17" height="12.5" rx="2.6"/><path d="M4.5 7.5l7.5 6 7.5-6"/>',
+    doc: '<path d="M7 3.8h7l4 4V19a1.6 1.6 0 0 1-1.6 1.6H7A1.6 1.6 0 0 1 5.4 19V5.4A1.6 1.6 0 0 1 7 3.8z"/><path d="M13.6 4v4.2h4.2M8.6 12.4h6.6M8.6 16h4.6"/>',
+    shield: '<path d="M12 3.6l7 2.8v5.2c0 4.4-3 7.6-7 8.8-4-1.2-7-4.4-7-8.8V6.4z"/><path d="M9.2 12.2l2 2 3.8-4"/>',
+    code: '<path d="M8.6 7.5L4 12l4.6 4.5M15.4 7.5L20 12l-4.6 4.5M13.4 5.5l-2.8 13"/>',
+    tag: '<path d="M4 12.6V5.4A1.4 1.4 0 0 1 5.4 4h7.2L20 11.4l-8.6 8.6z"/><circle cx="8.6" cy="8.6" r="1.4"/>',
+    share: '<circle cx="7" cy="12" r="2.6"/><circle cx="17" cy="6.5" r="2.6"/><circle cx="17" cy="17.5" r="2.6"/><path d="M9.3 10.8l5.4-3M9.3 13.2l5.4 3"/>',
+    info: '<circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.4"/><circle cx="12" cy="7.9" r=".6" fill="currentColor"/>',
+    tool: '<path d="M14.6 5.2a4 4 0 0 0-5 5L4.4 15.4a2 2 0 0 0 2.8 2.8l5.2-5.2a4 4 0 0 0 5-5l-2.4 2.4-2.2-.6-.6-2.2z"/>'
+  };
+  // 계정 대신 기기에 하나씩 주는 무작위 이름. 나중에 익명으로 글이 보일 때도 이 이름을 쓸 수 있다
+  var NAME_A = ["느긋한", "말랑한", "포근한", "동글동글한", "꼬불꼬불한", "보송보송한", "차분한", "느슨한", "졸린", "새침한", "수줍은", "덤덤한"];
+  var NAME_B = ["털실", "실타래", "실뭉치", "뜨개공", "보풀"];
+  var FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul"];
+  function myName(fresh) {
+    var saved = null;
+    if (!fresh) { try { saved = JSON.parse(localStorage.getItem("sab:me") || "null"); } catch (e) {} }
+    if (saved && saved.name && saved.face) return saved;
+    var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
+    var me = { name: pick(NAME_A) + " " + pick(NAME_B), face: pick(FACES) };
+    try { localStorage.setItem("sab:me", JSON.stringify(me)); } catch (e) {}
+    return me;
+  }
+  function ico(name) { var s = el("span", "nav-ico"); s.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON[name] || "") + "</svg>"; return s; }
+  function navRow(label, onClick, icon) {
+    var b = el("button", "nav-row"); b.type = "button";
+    if (icon) b.append(ico(icon));
+    b.append(el("span", "nav-l", label), el("span", "chev", "›"));
+    b.addEventListener("click", onClick); return b;
+  }
+  function infoRow(label, value, icon) {
+    var r = el("div", "nav-row is-info");
+    if (icon) r.append(ico(icon));
+    r.append(el("span", "nav-l", label), el("span", "nav-v", value)); return r;
+  }
+  // 설정은 오른쪽에서 밀려 들어오는 전체 화면. 그 안의 항목도 한 장씩 위에 쌓이고, 뒤로 가면 한 장씩 걷힌다
+  function openPage(title, build, onClose) {
+    var pg = el("section", "ab pg"); pg.setAttribute("aria-label", title);
+    var bar = el("div", "ab-bar"), back = el("button", "icon"); back.type = "button"; back.setAttribute("aria-label", "뒤로");
+    back.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+    bar.append(back, el("span", "ab-bar-t", title));
+    var body = el("div", "ab-scroll pg-body");
+    pg.append(bar, body); app.append(pg);
+    var closed = false;
+    function close(instant) {
+      if (closed) return; closed = true;
+      var done = function () { pg.remove(); if (onClose) onClose(); };
+      if (instant || reduce) return done();
+      pg.classList.add("out"); setTimeout(done, 220);
+    }
+    back.addEventListener("click", function () { close(); });
+    build(body, close);
+    back.focus();
+    return close;
+  }
+  var settingsOpen = false;
   $("#settingsBtn").addEventListener("click", function () {
-    sheet(function (sh, close) {
-      sh.append(el("h2", "", "설정"));
-      var r2 = el("div", "row"); r2.append(el("span", "", "적은 글 다루는 방식"));
-      var m = el("button", "link", "보기"); m.type = "button"; m.addEventListener("click", function () { close(); privacySheet(null); }); r2.append(m); sh.append(r2);
-      var rk = el("div", "row"); rk.append(el("span", "", "키보드 위 버튼"), el("span", "", kbSeen ? "이 환경에서 작동해요" : "아직 감지 안 됨 · 종이 아래에 표시")); sh.append(rk);
-      var r3 = el("div", "row"); r3.append(el("span", "", "말투 버전"), el("span", "", TONE.version)); sh.append(r3);
-      var c = el("button", "btn ghost", "닫기"); c.type = "button"; c.addEventListener("click", close); sh.append(c);
-    });
+    if (settingsOpen) return; settingsOpen = true;
+    if (window.__pile) window.__pile.pause();
+    openPage("설정", function (body, close) {
+      // 맨 위: 계정 대신 앱 카드. 누르면 소개 페이지
+      var me = myName();
+      var card = el("div", "me-card");
+      var av = el("span", "me-av"), avImg = document.createElement("img"); avImg.alt = ""; avImg.src = "./yarn-" + me.face + ".png"; av.append(avImg);
+      var nm = el("b", "", me.name);
+      var tx = el("span", "me-tx"); tx.append(nm, el("span", "", "계정 없이 쓰는 중"));
+      var re = el("button", "icon me-re"); re.type = "button"; re.setAttribute("aria-label", "다른 이름 받기");
+      re.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/></svg>';
+      re.addEventListener("click", function () { me = myName(true); nm.textContent = me.name; avImg.src = "./yarn-" + me.face + ".png"; });
+      card.append(av, tx, re);
+      body.append(card);
+      var list = el("div", "nav-list");
+      list.append(
+        navRow("이 앱에 대해", function () { aboutSheet(); }, "info"),
+        navRow("적은 글은 이렇게 다뤄요", function () { privacyPage(); }, "lock"),
+        navRow("힘들 때 도움받을 곳", function () { helpSheet(); }, "help"),
+        navRow("의견 보내기", function () { feedbackPage(); }, "mail")
+      );
+      // 공유는 처음 안내에서 알리고, 끄고 싶으면 여기서 끈다
+      // 줄 전체가 아니라 스위치만 누르는 영역으로 둔다 (아이콘·글자·i는 토글을 바꾸지 않는다)
+      var shr = el("div", "nav-row is-toggle"); shr.append(ico("share"));
+      // 설명은 늘 보이지 않게, i 버튼을 누르면 말풍선으로 띄운다
+      var st = el("span", "nav-l nav-tip"); st.append(el("span", "", "내 고민 공유하기"));
+      var ib = el("button", "tip-btn"); ib.type = "button"; ib.setAttribute("aria-label", "공유 설명 보기"); ib.setAttribute("aria-expanded", "false");
+      ib.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>';
+      var tip = el("span", "tip", "개인정보는 ○○○로 가려서 익명으로 보여요"); tip.hidden = true; tip.setAttribute("role", "tooltip");
+      var hideTip = function () { tip.hidden = true; ib.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", outTip, true); };
+      var outTip = function (e) { if (!ib.contains(e.target)) hideTip(); };
+      ib.addEventListener("click", function (e) {
+        e.preventDefault(); e.stopPropagation();
+        if (!tip.hidden) return hideTip();
+        tip.hidden = false; ib.setAttribute("aria-expanded", "true"); tip.style.setProperty("--ax", (ib.offsetLeft + ib.offsetWidth / 2 - 5) + "px");
+        setTimeout(function () { document.addEventListener("pointerdown", outTip, true); }, 0);
+      });
+      st.append(ib, tip);
+      var sw = el("label", "switch"), si = el("input"); si.type = "checkbox"; si.checked = store("sab:share") !== "0"; si.setAttribute("aria-label", "내 고민 공유하기");
+      si.addEventListener("change", function () { store("sab:share", si.checked ? "1" : "0"); });
+      sw.append(si, el("i")); shr.append(st, sw);
+      list.insertBefore(shr, list.children[0]);
+      body.append(list);
+      body.append(el("h2", "nav-h", "약관 및 정보"));
+      var legal = el("div", "nav-list");
+      legal.append(
+        navRow("이용약관", function () { docPage("이용약관", TERMS); }, "doc"),
+        navRow("개인정보처리방침", function () { docPage("개인정보처리방침", PRIVACY); }, "shield"),
+        navRow("오픈소스 라이선스", function () { docPage("오픈소스 라이선스", LICENSES); }, "code"),
+        infoRow("버전", APP_VERSION, "tag")
+      );
+      body.append(legal);
+      body.append(el("h2", "nav-h is-dev", "테스트용"));
+      var dev = el("div", "nav-list is-dev");
+      dev.append(infoRow("키보드 위 버튼", kbSeen ? "작동해요" : "감지 안 됨", "tool"), infoRow("말투 버전", TONE.version, "tool"));
+      if (window.__pile && window.__pile.replay) dev.append(navRow("처음 화면 다시 보기", function () { close(true); window.__pile.replay(); }, "tool"));
+      dev.append(navRow("시작 안내 다시 띄우기", function () { store(CONSENT_KEY, "0"); close(true); toast("다음에 입력칸을 누르면 다시 떠요"); }, "tool"));
+      body.append(dev);
+    }, function () { settingsOpen = false; if (window.__pile && app.dataset.state === "home") window.__pile.resume(); });
   });
+  var APP_VERSION = "0.1 (프로토타입)";
+  var DRAFT = "초안이에요. [ ] 안의 내용은 정해지면 채우고, 출시 전에 검토를 받아 주세요.";
+  var PRIVACY = [
+    ["", "‘사실은 별거 아냐’(이하 ‘서비스’)는 이용자의 개인정보를 소중히 다루며, 개인정보 보호법에 따라 아래와 같이 처리합니다."],
+    ["1. 처리하는 정보", ["이용자가 직접 적은 글(최대 100자)과, 그 글로 만들어진 답", "하루 이용 횟수를 세기 위한 접속 정보(IP 주소)", "서비스 오류를 확인하기 위해 서버에 자동으로 남는 접속 기록", "이름, 전화번호, 이메일, 계정 정보는 받지 않습니다."]],
+    ["2. 처리 목적", ["적은 글에 대한 답을 만들어 보여 주기 위해", "한 사람이 하루에 쓸 수 있는 횟수를 지키고, 서비스를 안정적으로 운영하기 위해", "[글을 저장하는 경우] 서비스 개선과 익명 통계를 위해"]],
+    ["3. 보관 기간", ["적은 글과 답: [보관하지 않음 / 저장 시 ○○일]", "이용 횟수 정보: 그날이 지나면 지웁니다.", "서버 접속 기록: [호스팅 업체 기준 ○○일]"]],
+    ["4. 처리를 맡기는 곳", ["Anthropic, PBC — 적은 글을 받아 답을 만듭니다(AI 모델 Claude). 국외(미국)로 전송됩니다.", "Vercel Inc. — 서비스가 돌아가는 서버를 제공합니다. 국외(미국)로 전송됩니다.", "[글을 저장하는 경우 저장소 업체]"]],
+    ["5. 이용자의 권리", ["저장된 글이 있다면 언제든 지워 달라고 요청할 수 있습니다. [앱 안 ‘내 기록 지우기’ 또는 문의 이메일]", "적은 글을 AI에 보내는 데 동의하지 않으면 서비스를 쓰지 않으면 됩니다."]],
+    ["6. 만 14세 미만", ["만 14세 미만은 이용할 수 없습니다."]],
+    ["7. 개인정보 보호 책임자", ["이름: [운영자 이름]", "연락처: [문의 이메일]"]],
+    ["8. 바뀔 때", ["이 방침이 바뀌면 서비스 안에서 알립니다.", "시행일: [20○○년 ○월 ○일]"]]
+  ];
+  var TERMS = [
+    ["1. 목적", ["이 약관은 ‘사실은 별거 아냐’(이하 ‘서비스’)를 이용하는 데 필요한 조건과 절차를 정합니다."]],
+    ["2. 서비스 내용", ["이용자가 일상의 걱정을 적으면, AI(Claude)가 있었던 일과 커진 생각을 나눈 답을 보여 줍니다.", "하루에 이용할 수 있는 횟수는 정해져 있습니다. [현재 10회]"]],
+    ["3. AI 답의 성격", ["답은 AI가 자동으로 만든 것이며, 사실과 다르거나 상황에 맞지 않을 수 있습니다.", "서비스는 의료, 심리 상담, 치료를 대신하지 않으며 진단을 하지 않습니다.", "혼자 감당하기 어려운 일이라면 전문 기관(자살예방상담전화 109 등)의 도움을 받아 주세요."]],
+    ["4. 이용 조건", ["만 14세 이상만 이용할 수 있습니다.", "다른 사람의 개인정보를 적거나, 남을 해치거나 법을 어기는 내용을 적어서는 안 됩니다.", "서비스를 자동으로 반복 호출하는 등 정상적인 운영을 방해해서는 안 됩니다."]],
+    ["5. 서비스의 변경과 중단", ["서비스는 내용이 바뀌거나, 점검이나 운영 사정으로 잠시 또는 완전히 중단될 수 있습니다."]],
+    ["6. 책임의 한계", ["서비스는 AI 답을 바탕으로 한 이용자의 판단과 행동에 대해 책임지지 않습니다. 다만 서비스의 고의나 중대한 과실로 생긴 손해는 예외입니다."]],
+    ["7. 문의", ["[문의 이메일]", "시행일: [20○○년 ○월 ○일]"]]
+  ];
+  var LICENSES = [
+    ["Lucide", ["설정·의견 아이콘 모양에 사용", "ISC License · Copyright (c) Lucide Contributors (일부 Feather, MIT · Cole Bemis)"]],
+    ["Matter.js", ["물리 효과(털실이 떨어지고 쌓이는 움직임)에 사용", "MIT License · Copyright (c) Liam Brummitt and contributors"]],
+    ["Pretendard", ["글꼴", "SIL Open Font License 1.1 · Copyright (c) 2021, Kil Hyung-jin"]]
+  ];
+  function docPage(title, sections) {
+    openPage(title, function (body) {
+      if (sections !== LICENSES) body.append(el("p", "pg-draft", DRAFT));
+      sections.forEach(function (s) {
+        if (s[0]) body.append(el("h3", "pg-h", s[0]));
+        if (typeof s[1] === "string") body.append(el("p", "pg-p", s[1]));
+        else { var ul = el("ul", "pg-list"); s[1].forEach(function (x) { ul.append(el("li", "", x)); }); body.append(ul); }
+      });
+    });
+  }
+  function feedbackPage() {
+    openPage("의견 보내기", function (body) {
+      body.append(el("p", "pg-p", "답이 이상했거나, 불편했거나, 이런 게 있으면 좋겠다 싶은 게 있으면 편하게 알려 주세요."));
+      var box = el("div", "pg-mail"); box.append(el("span", "", "[문의 이메일]"));
+      var cp = el("button", "link", "복사"); cp.type = "button";
+      cp.addEventListener("click", function () { var v = box.firstChild.textContent; try { navigator.clipboard.writeText(v).then(function () { cp.textContent = "복사했어요"; }, function () {}); } catch (e) {} });
+      box.append(cp); body.append(box);
+      body.append(el("p", "pg-draft", "받을 이메일 주소가 정해지면 넣을게요."));
+    });
+  }
+  function privacyPage() {
+    openPage("적은 글은 이렇게 다뤄요", function (body) {
+      var ul = el("ul", "pg-list");
+      START_POINTS.concat(["이름, 전화번호, 계정은 묻지 않아요."]).forEach(function (s) { ul.append(el("li", "", s)); });
+      body.append(ul);
+    });
+  }
+  function aboutSheet() {
+    var pg = $("#aboutPage"); if (!pg.hidden) return;
+    app.append(pg);
+    pg.hidden = false; pg.classList.remove("out"); $("#abScroll").scrollTop = 0;
+    $("#abBack").focus();
+  }
+  function closeAbout(then) {
+    var pg = $("#aboutPage"); if (pg.hidden) return;
+    var done = function () { pg.hidden = true; pg.classList.remove("out"); if (then) then(); };
+    if (reduce) return done();
+    pg.classList.add("out"); setTimeout(done, 220);
+  }
+  $("#abBack").addEventListener("click", function () { closeAbout(); });
+  $("#abHelp").addEventListener("click", function () { helpSheet(); });
+  function helpSheet() {
+    openPage("힘들 때 도움받을 곳", function (body) {
+      body.append(el("p", "pg-p", "여기서는 가벼운 걱정만 다뤄요. 혼자 들고 있기 어렵다면 지금 바로 이야기 나눌 수 있는 곳이에요."));
+      var ul = el("ul", "help");
+      [["자살예방상담전화", "109", "24시간"], ["정신건강위기상담전화", "1577-0199", "24시간"], ["청소년상담전화", "1388", "24시간"], ["긴급한 위험이 있을 때", "112 · 119", ""]].forEach(function (h) {
+        var li = el("li"); li.append(el("span", "", h[0]), el("b", "", h[1] + (h[2] ? " · " + h[2] : ""))); ul.append(li);
+      });
+      body.append(ul);
+    });
+  }
+
 
   /* ---------- 말투 ---------- */
   var DEFAULT_MAIN = [];
@@ -544,18 +1037,19 @@
     ans.replaceChildren();
     var calm = r.type === "risk" || r.type === "skip";
     paper.classList.toggle("is-calm", calm);
-    ans.append(el("span", "k", calm ? "먼저 할 말" : "다르게 보면"));
+    ans.append(el("span", "k", calm ? "먼저 할 말" : "한 발짝 떨어져 보면"));
     var p = el("p", "reply");
     var m = !calm && r.reply.match(/^([\s\S]*[.!?요])\s+([^.!?]+[.!?]?)$/);
     if (m) { p.append(m[1] + " "); p.append(el("mark", "", m[2])); } else p.textContent = r.reply;
     ans.append(p);
+    ans.append(el("p", "ai-note", "AI가 만든 답이라 상황과 다를 수 있어요."));
     ans.hidden = false;
     paper.classList.toggle("can-crumple", !calm);
     grip.hidden = true;
     paper.classList.remove("pop"); if (pop) { void paper.offsetWidth; paper.classList.add("pop"); }
   }
   function renderLoadingAnswer() {
-    ans.replaceChildren(el("span", "k", "다르게 보면"), el("div", "skel"), el("div", "skel"), el("div", "skel short"));
+    ans.replaceChildren(el("span", "k", "한 발짝 떨어져 보면"), el("div", "skel"), el("div", "skel"), el("div", "skel short"));
     ans.hidden = false; grip.hidden = true; paper.classList.remove("is-calm", "can-crumple", "pop");
   }
   function cancelRun() { if (ctl) ctl.abort(); }
@@ -570,7 +1064,7 @@
     var prev = again && current ? current.reply : null;
     entry.blur();
     go("loading", function () {
-      written.textContent = text; written.hidden = false; qLabel.textContent = "내가 적은 것";
+      written.textContent = text; written.hidden = false; qLabel.textContent = "맴도는 생각";
       renderLoadingAnswer(); setMini("적은 걸 읽고 있어요");
     });
     clearTimeout(slowTimer);
@@ -596,9 +1090,8 @@
 
   function resetAll(instant) {
     app.classList.remove("discarding");
-    miniChar.classList.remove("resolved", "bump");
     crState = "idle"; p = 0; pull = 0; ball = null; renderCanvas();
-    current = null; rerolls = 0; sharePick = false;
+    current = null; rerolls = 0; sharePick = true;
     go("home", function () {
       entry.value = ""; onInput(); written.hidden = true; ans.hidden = true; grip.hidden = true;
       paper.classList.remove("hide", "is-calm", "can-crumple", "pop"); qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?";
@@ -1246,10 +1739,7 @@ function drawPose(ctx, P, opt) {
   // 답이 나오면 제목 밑 작은 털실이 검정 → 색으로 (근심 → 풀림). 다 구긴 종이는 가운데로 뚝 떨어져 사라진다
   var TAG_COLOR = { "관찰": "blue", "판단력": "green", "실행": "orange", "회복": "yellow" };
 
-  var miniChar = document.getElementById("miniChar");
-  function resolveMini(tag) {
-    miniChar.classList.remove("bump"); void miniChar.offsetWidth; miniChar.classList.add("bump");
-  }
+  function resolveMini() {}
   function throwBall() {
     var sx = PX + PW / 2, sy = PY + pull + PH / 2, t0 = performance.now(), last = t0, vy = 0, g = 4400, y = sy;
     ball = { x: sx, y: sy, rot: 0, sc: 1, a: 1 }; crState = "anim";
@@ -1265,10 +1755,9 @@ function drawPose(ctx, P, opt) {
       if (y < SH + 60 && now - t0 < 900) { requestAnimationFrame(step); return; }
       // 공이 화면 밖으로 나가는 순간 바로 홈으로. 기다리는 빈 화면 없이
       crState = "gone"; ball = null; renderCanvas();
-      var shared = sharePick;
+      var shared = store("sab:share") !== "0";
       setMini("버렸어요");
       resetAll(true);
-      if (shared) toast("같이 버리기는 준비 중이에요");
     }
     requestAnimationFrame(step);
   }
@@ -1314,32 +1803,34 @@ function drawPose(ctx, P, opt) {
   // r: 크기, e: 표정
   // e: 표정 (고민·걱정·심란·지침·무표정·불안·불안2·불만·우울)
   var CAST = [
-    { t: "회의 때 말 꼬인 게 자꾸 생각나", r: 37, e: "gomin" },
-    { t: "보낸 카톡에 아직 답이 없어", r: 25, e: "buran2" },
-    { t: "부탁을 또 거절 못 했어", r: 31, e: "jichim" },
-    { t: "메일에 팀장님 이름을 틀리게 썼어", r: 42, e: "buran" },
-    { t: "SNS 보다가 괜히 작아진 기분이야", r: 23, e: "uul" },
-    { t: "그 말은 괜히 했나 싶어", r: 33, e: "geokjeong" },
-    { t: "내일 발표 망칠 것 같아", r: 28, e: "simran" },
-    { t: "단톡방에서 나만 답을 안 했나", r: 39, e: "muan" },
-    { t: "운동 또 빠진 게 계속 걸려", r: 26, e: "bulman" },
-    { t: "아까 표정이 별로였나 신경 쓰여", r: 33, e: "gomin" }
+    { t: "연락이 없는데 내가 뭐 잘못했나", r: 31, e: "gomin" },
+    { t: "부탁 거절했는데 서운해하려나", r: 29, e: "buran2" },
+    { t: "회의 때 말 꼬인 게 자꾸 생각나", r: 30, e: "jichim" },
+    { t: "아까 한 말 괜히 했나 싶어", r: 32, e: "buran" },
+    { t: "다들 잘 사는데 나만 제자리 같아", r: 28, e: "uul" },
+    { t: "친구 말투가 딱딱한데 내가 서운하게 했나", r: 30, e: "geokjeong" },
+    { t: "내일 발표인데 망칠까 봐 자꾸 불안해", r: 29, e: "simran" },
+    { t: "서류 또 떨어졌어, 나만 안 되나", r: 31, e: "muan" },
+    { t: "이번에도 운동 작심삼일로 끝나려나", r: 28, e: "bulman" },
+    { t: "엄마한테 괜히 짜증 냈어", r: 30, e: "gomin" }
   ];
   var NEW_TODAY = [
-    { t: "친구 말투가 좀 차가웠던 것 같아", r: 29, e: "bulman" },
-    { t: "약속 미룬 거 서운해했으려나", r: 35, e: "buran" }
+    { t: "친구 말투가 좀 차가웠던 것 같아", r: 30, e: "bulman" },
+    { t: "약속 미룬 거 서운해했으려나", r: 29, e: "buran" }
   ];
   var COLORS = ["blue", "green", "orange", "yellow"];
   var RELIEF = "별거 아니었네";
 
   // 이야기: 쌓이는 동안 문장이 바뀌고, 다 쌓이면 원래 제목으로
   var BEATS = [
-    ["별거 아닌 생각이", "하나 툭."],
+    ["자꾸 맴도는 생각이", "하나 툭."],
     ["또 하나,", "또 하나."],
     ["어느새 이만큼", "쌓여 있어요."]
   ];
-  var FINAL = ["자꾸 신경 쓰이는 거,", "여기 __버리고__ 가요."];
-  var AFTER = ["하나 버렸어요.", "딱 그만큼 __가벼워요__."];
+  var FINAL = ["한 발짝 떨어져 보면,", "사실은 별거 아냐."];
+  // 처음 열 때만: 무엇을 하는 앱인지 두 마디로 풀고 제목으로 끝낸다
+  var INTRO = [["별일 아닌데", "자꾸 신경 쓰일 때 있죠."], ["그럴 땐", "여기 한 줄 적어 보세요."]];
+  var AFTER = ["하나 버렸어요.", "딱 그만큼 가벼워요."];
 
   var app = document.getElementById("app"), pit = document.getElementById("pit"), cv = document.getElementById("pileCv"), ctx = cv.getContext("2d");
   var linesBox = document.getElementById("lines");
@@ -1488,6 +1979,7 @@ function drawPose(ctx, P, opt) {
     var x = rand(W * .2, W * .8), y = -spec.r * 1.4 - 20;
     var b = addChar(x, y, spec.r, spec.color, spec.e);
     if (spec.text) { b.plugin.draw.text = spec.text; if (!spec.quiet) b.plugin.draw.pending = true; }
+    if (spec.fresh) b.plugin.draw.fresh = true;
   }
 
   function buildQueue(list) {
@@ -1501,6 +1993,8 @@ function drawPose(ctx, P, opt) {
       for (var k = 0; k < 40; k++) M.Engine.update(engine, 1000 / 60);
     });
     for (var k = 0; k < 240; k++) M.Engine.update(engine, 1000 / 60);
+    // 미리 쌓는 동안 부딪혀 생긴 찌그러짐은 지운다(처음 보일 때 찌부된 채로 나오지 않게)
+    items.forEach(function (o) { if (o.plugin.draw) o.plugin.draw.sq = 0; });
   }
 
   /* ---------- 그리기 ---------- */
@@ -1522,7 +2016,9 @@ function drawPose(ctx, P, opt) {
           ctx.save(); ctx.rotate(d.tilt + Math.max(-.2, Math.min(.2, b.velocity.x * .05))); ctx.drawImage(fs, x0, y0, w, h); ctx.restore();
         }
       } else if (d.kind === "ball") {
-        var z = d.img.size; ctx.drawImage(d.img.canvas, -z / 2, -z / 2, z, z);
+        var z = d.img.size, fa = d.fadeAt ? Math.max(0, 1 - (performance.now() - d.fadeAt) / 600) : 1;
+        if (fa < 1) { ctx.globalAlpha = fa; ctx.scale(.6 + .4 * fa, .6 + .4 * fa); }
+        ctx.drawImage(d.img.canvas, -z / 2, -z / 2, z, z);
       }
       ctx.restore();
     }
@@ -1647,6 +2143,14 @@ function drawPose(ctx, P, opt) {
       var a = p.bodyA, c = p.bodyB;
       var imp = Math.hypot(a.velocity.x - c.velocity.x, a.velocity.y - c.velocity.y);
       [a, c].forEach(function (o) { var d = o.plugin && o.plugin.draw; if (d && d.kind === "char") d.sq = Math.max(d.sq || 0, Math.min(.2, imp * .04)); });
+      [a, c].forEach(function (o) {
+        var d = o.plugin && o.plugin.draw, other = o === a ? c : a;
+        if (!d || !d.fresh || imp < 1) return;
+        var od = other.plugin && other.plugin.draw;
+        if (!(od && od.kind === "char") && walls.indexOf(other) < 0) return;
+        d.fresh = false;
+        if (mode === "stack") { landings++; if (landings in SUB_SWAP_AT) swapSub(SUB_SWAP_AT[landings]); if (!stackLeft.length) rotateLater(SUB_HOLD[subIdx]); }
+      });
     });
     if (!ball || ball.plugin.hit) return;
     for (var i = 0; i < ev.pairs.length; i++) {
@@ -1659,32 +2163,102 @@ function drawPose(ctx, P, opt) {
     }
   }
   function landed() {
-    var bp = ball.position;
-    // 공 근처 털실 2~3개가 색이 바뀌고, 더미가 살짝 들썩인다
-    var chars = items.filter(function (b) { return b.plugin.draw.kind === "char" && !b.plugin.draw.color; })
-      .sort(function (a, b) { return dist(a.position, bp) - dist(b.position, bp); }).slice(0, 3);
-    chars.forEach(function (b, i) {
-      setTimeout(function () {
-        b.plugin.draw.color = COLORS[(i + 1) % COLORS.length]; b.plugin.draw.mix = 0; fadeList.push(b.plugin.draw);
-        M.Sleeping.set(b, false);
-        M.Body.setVelocity(b, { x: rand(-1.2, 1.2), y: -4.2 });
-        M.Body.setAngularVelocity(b, rand(-.12, .12));
-        b.plugin.draw.bubble = null;
-        if (i === 0) setTimeout(function () { say(b, RELIEF); }, reduce ? 0 : 500);
-        run();
-      }, reduce ? 0 : 160 + i * 220);
-    });
-    setTimeout(function () { showLine(AFTER); }, reduce ? 0 : 500);
+    var b0 = ball, bp = b0.position;
+    var near = items.filter(function (b) { return b.plugin.draw.kind === "char"; })
+      .sort(function (a, b) { return dist(a.position, bp) - dist(b.position, bp); })[0];
+    if (near) setTimeout(function () { say(near, RELIEF); run(); }, reduce ? 0 : 450);
+    showAfterSub();
+    // 버린 공은 잠깐 머물다 사라진다: 버린 생각은 쌓이지 않는다
+    setTimeout(function () {
+      b0.plugin.draw.fadeAt = performance.now(); animUntil = Math.max(animUntil, performance.now() + 700); run();
+      setTimeout(function () { M.World.remove(world, b0); var i = items.indexOf(b0); if (i >= 0) items.splice(i, 1); if (ball === b0) ball = null; draw(); }, 650);
+    }, reduce ? 800 : 2200);
   }
   function dist(a, b) { var x = a.x - b.x, y = a.y - b.y; return x * x + y * y; }
 
   /* ---------- 세 가지 장면 ---------- */
   var mode = "first";
+  // 홈 장면: a = 빈 바닥에서 하나씩 쌓임, b = 이미 다섯 개쯤 쌓여 있고 몇 초에 하나씩 더 떨어짐
+  var SCENE = "b";
+  var STACK_FIRST = 4, STACK_GAP = 4200, stackLeft = [], dropT = 0, landings = 0;
+  // 설명: A는 두 개 떨어질 동안, B는 네 개 떨어질 동안. 다 떨어진 뒤에도 같은 비율(A 10초, B 20초)로 바뀐다
+  var SUB_SWAP_AT = { 2: 1, 6: 0 }, SUB_HOLD = [10000, 20000];
+  // 설명 두 줄이 번갈아 바뀐다. 떨어진 털실이 바닥에 닿을 때 같이 바뀌고, 다 떨어진 뒤엔 천천히 바뀐다
+  var SUBS = ["계속 신경 쓰이는 생각들,<br>여기 꺼내 놓아 보세요.", "실제로 있었던 일만 남기고,<br>부풀려진 생각들은 버릴게요."];
+  var subIdx = 0, subT = 0;
+  function swapSub(to) {
+    var s = document.getElementById("subText"); if (!s) return;
+    var next = typeof to === "number" ? to : (subIdx + 1) % SUBS.length;
+    if (next === subIdx) return;
+    subIdx = next;
+    if (reduce) { s.innerHTML = SUBS[subIdx]; return; }
+    s.classList.add("fade");
+    setTimeout(function () { s.innerHTML = SUBS[subIdx]; s.classList.remove("fade"); }, 330);
+  }
+  var AFTER_SUB = "하나 버렸어요.<br>딱 그만큼 가벼워요.";
+  function showAfterSub() {
+    var s = document.getElementById("subText"); if (!s) return;
+    clearTimeout(subT);
+    var put = function (html) { if (reduce) { s.innerHTML = html; return; } s.classList.add("fade"); setTimeout(function () { s.innerHTML = html; s.classList.remove("fade"); }, 330); };
+    put(AFTER_SUB);
+    subT = setTimeout(function () { put(SUBS[subIdx]); if (mode === "stack" && !stackLeft.length) rotateLater(SUB_HOLD[subIdx]); }, 4500);
+  }
+  function rotateLater(delay) {
+    clearTimeout(subT);
+    subT = setTimeout(function () { if (paused || mode !== "stack") return; if (!document.hidden) swapSub(); rotateLater(SUB_HOLD[subIdx]); }, delay);
+  }
+  function ripple(src) {
+    items.forEach(function (b) {
+      var d = b.plugin.draw; if (b === src || d.kind !== "char") return;
+      var dx = b.position.x - src.position.x, dy = b.position.y - src.position.y, dist = Math.hypot(dx, dy), reach = 150;
+      if (dist > reach) return;
+      var f = 1 - dist / reach;
+      M.Sleeping.set(b, false);
+      M.Body.setVelocity(b, { x: b.velocity.x + (dist > 1 ? dx / dist : 0) * f * .6, y: b.velocity.y - f * 1.8 });
+      d.sq = Math.max(d.sq || 0, .05 + f * .08);
+    });
+    run();
+  }
+  function homeMode() { return SCENE === "b" ? "stack" : (queue.length ? "first" : "settled"); }
+  var introTimers = [];
+  function whenVisible(fn) {
+    if (!document.hidden) return fn();
+    var h = function () { if (!document.hidden) { document.removeEventListener("visibilitychange", h); fn(); } };
+    document.addEventListener("visibilitychange", h);
+  }
+  function dropLater(delay) {
+    clearTimeout(dropT);
+    if (!stackLeft.length) return;
+    dropT = setTimeout(function () {
+      if (paused || mode !== "stack") return;
+      if (document.hidden) return dropLater(2000);
+      var spec = buildQueue([stackLeft.shift()])[0]; spec.fresh = true; spawn(spec); run();
+      dropLater(STACK_GAP + Math.random() * 1600);
+    }, delay);
+  }
   function start(m) {
-    mode = m; stop(); fadeList = []; fades = 0; animUntil = 0; clearTimeout(mumbleT);
+    mode = m; stop(); fadeList = []; fades = 0; animUntil = 0; clearTimeout(mumbleT); clearTimeout(dropT);
     linesBox.innerHTML = ""; curLine = null;
     setupWorld();
 
+    if (m === "stack") {
+      if (!stackLeft.length && !start.stackStarted) { stackLeft = CAST.slice(STACK_FIRST); landings = 0; }
+      start.stackStarted = true;
+      var onFloor = CAST.filter(function (c) { return stackLeft.indexOf(c) < 0; });
+      settleInstantly(onFloor); draw();
+      if (!start.introDone && !reduce) {
+        // 먼저 쌓인 채로 잠깐 멈춰 있다가, 화면이 실제로 보일 때 문장과 떨어지기가 같이 시작된다
+        start.introDone = true;
+        // 제목은 고정. 쌓인 채로 잠깐 멈춰 있다가, 화면이 보일 때 떨어지기 시작한다
+        showLine(FINAL, true);
+        whenVisible(function () {
+          if (mode !== "stack") return;
+          dropLater(1200); mumbleLater(3400);
+        });
+      } else { showLine(FINAL, true); mumbleLater(3200); if (!reduce) dropLater(1400); }
+      if (reduce) { settleInstantly(stackLeft); stackLeft = []; draw(); }
+      return;
+    }
     if (m === "first" && !reduce) {
       queue = buildQueue(CAST);
       var beatAt = [0, 4, 7];
@@ -1749,15 +2323,16 @@ function drawPose(ctx, P, opt) {
   }
 
   // 키보드가 열려 화면 크기가 바뀌어도, 홈이 안 보일 땐 다시 만들지 않는다
-  var rT; window.addEventListener("resize", function () { if (paused) { dirty = true; return; } clearTimeout(rT); rT = setTimeout(function () { var r = pit.getBoundingClientRect(); if (Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1) start(queue.length ? "first" : "settled"); }, 250); });
+  var rT; window.addEventListener("resize", function () { if (paused) { dirty = true; return; } clearTimeout(rT); rT = setTimeout(function () { var r = pit.getBoundingClientRect(); if (Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1) start(homeMode()); }, 250); });
   // 홈을 떠나면 멈추고, 돌아오면 쌓인 그대로 이어서
-  function pause() { paused = true; stop(); clearTimeout(mumbleT); }
+  function pause() { paused = true; stop(); clearTimeout(mumbleT); clearTimeout(dropT); clearTimeout(subT); }
   function resume() {
     paused = false;
     var r = pit.getBoundingClientRect();
-    if (!engine) { start("first"); return; }
-    if (dirty || Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1) { dirty = false; start(queue.length ? "first" : "settled"); return; }
+    if (!engine) { start(SCENE === "b" ? "stack" : "first"); return; }
+    if (dirty || Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1) { dirty = false; start(homeMode()); return; }
     draw(); run(); if (!queue.length && !onEmpty) mumbleLater(2500);
+    if (mode === "stack") { if (stackLeft.length) dropLater(1800); else rotateLater(SUB_HOLD[subIdx]); }
   }
 
   var fontReady = (document.fonts && document.fonts.load) ? Promise.all([document.fonts.load('600 15px "Pretendard Variable"', "가"), document.fonts.load('800 30px "Pretendard Variable"', "가")]).catch(function () {}) : Promise.resolve();
@@ -1767,9 +2342,17 @@ function drawPose(ctx, P, opt) {
     Promise.all(Object.keys(YARN).map(function (v) { return loadImg("y-" + v, "./yarn-" + v + ".png"); }))
   ]).then(function () {
     if (!M) { showLine(FINAL, true); return; }
-    if (!paused) start("first"); else { dirty = true; queue = []; }
+    if (!paused) start(SCENE === "b" ? "stack" : "first"); else { dirty = true; queue = []; }
   });
-  window.__pile = { pause: pause, resume: resume, after: function () { showLine(AFTER); }, running: function () { return !!raf; } };
+  window.__pile = { replay: function () { introTimers.forEach(clearTimeout); introTimers.length = 0; stackLeft = []; start.stackStarted = false; start.introDone = false; queue = []; onEmpty = null; start("stack"); }, scene: function () { return SCENE; }, setScene: function (s) { SCENE = s; try { localStorage.setItem("sab:scene", s); } catch (e) {} stackLeft = []; start.stackStarted = false; queue = []; onEmpty = null; start(s === "b" ? "stack" : "first"); }, pause: pause, resume: resume, after: function () {
+    if (!engine || !M) return;
+    setTimeout(function () {
+      var r = 24, img = makeBall(r);
+      ball = M.Bodies.circle(W / 2 + rand(-30, 30), -30, r, { friction: .95, frictionStatic: 2, restitution: .05, density: .0008 });
+      ball.plugin.draw = { kind: "ball", img: img };
+      M.World.add(world, ball); items.push(ball); run();
+    }, reduce ? 0 : 350);
+  }, running: function () { return !!raf; } };
 })();
 </script>
 
