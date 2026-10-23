@@ -1,6 +1,11 @@
 {
   "outputDirectory": "public",
-  "functions": { "api/answer.js": { "maxDuration": 30 } },
+  "regions": ["icn1"],
+  "functions": {
+    "api/answer.js": { "maxDuration": 30 },
+    "api/act.js": { "maxDuration": 10 },
+    "api/map.js": { "maxDuration": 10 }
+  },
   "headers": [
     { "source": "/(.*)", "headers": [
       { "key": "X-Content-Type-Options", "value": "nosniff" },
