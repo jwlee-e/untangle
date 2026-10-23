@@ -1,7 +1,7 @@
 // Supabase 저장소에 서버에서만 접근한다. 비밀 키는 Vercel 환경 변수에만 있고 화면에는 절대 내려가지 않는다.
 // 표의 보안 설정(RLS)이 켜져 있어서, 이 비밀 키 말고는 아무도 읽거나 쓸 수 없다.
-const URL_ = (process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-const KEY = process.env.SUPABASE_SECRET_KEY || "";
+const URL_ = (process.env.SUPABASE_URL || "").trim().replace(/\/+$/, "");
+const KEY = (process.env.SUPABASE_SECRET_KEY || "").trim();
 
 function ready() { return !!(URL_ && KEY); }
 
