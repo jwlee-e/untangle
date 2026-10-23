@@ -5,6 +5,7 @@ module.exports = async function handler(req, res) {
   const out = {
     url_set: !!url,
     url_looks_right: /^https:\/\/[a-z0-9]+\.supabase\.co\/?$/.test(url.trim()),
+    url_has_rest_path: /\/rest\/v1\/?$/i.test(url.trim()),
     key_set: !!key,
     key_kind: key.startsWith("sb_secret_") ? "secret(new)" : key.startsWith("sb_publishable_") ? "publishable(wrong)" : key.split(".").length === 3 ? "jwt(legacy)" : key ? "unknown" : "none",
     key_has_spaces: /\s/.test(key),
@@ -15,7 +16,8 @@ module.exports = async function handler(req, res) {
     try {
       const h = { apikey: key.trim() };
       if (!key.startsWith("sb_")) h.Authorization = "Bearer " + key.trim();
-      const r = await fetch(url.trim().replace(/\/+$/, "") + "/rest/v1/entries?select=id&limit=1", { headers: h });
+      const base = url.trim().replace(/\/+$/, "").replace(/\/rest\/v1$/i, "");
+      const r = await fetch(base + "/rest/v1/entries?select=id&limit=1", { headers: h });
       out.db_status = r.status;
       if (!r.ok) out.db_error = (await r.text()).slice(0, 200);
     } catch (e) { out.db_status = "fetch_failed"; out.db_error = String(e && e.message || e).slice(0, 200); }
