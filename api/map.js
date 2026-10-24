@@ -1,5 +1,5 @@
 // 지도에 띄울 다른 사람들의 고민. 공유를 켠 글 중 가린 글(masked_text)만 내보낸다.
-// 위험 신호가 있던 글(risk)이나 고민이 아닌 글(skip), 신고로 숨긴 글은 내보내지 않는다. 익명 번호도 내보내지 않는다.
+// 부풀려진 생각(small, pressure)만 내보낸다. 무거운 글(heavy), 위험 신호(risk), 해를 끼친 글(skip), 좋은 일·장난·애매한 글, 신고로 숨긴 글은 내보내지 않는다. (daily, regret은 예전 말투 때 저장된 글) 익명 번호도 내보내지 않는다.
 const db = require("./_db");
 
 function faceOf(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h % 9; }
@@ -12,7 +12,7 @@ module.exports = async function handler(req, res) {
   const anon = String((req.query && req.query.anon) || "");
   try {
     const r = await db.q("GET", "entries?select=id,anon_id,nickname,masked_text,created_at,likes(count)" +
-      "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=not.in.(risk,skip)&order=created_at.desc&limit=22");
+      "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)&order=created_at.desc&limit=22");
     const rows = Array.isArray(r.data) ? r.data : [];
     let liked = new Set();
     if (db.isAnon(anon) && rows.length) {
