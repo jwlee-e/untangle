@@ -1598,7 +1598,8 @@
       var r = await fetch("/api/answer", { method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify(window.__ask || {}), signal: opts && opts.signal });
       var j = null; try { j = await r.json(); } catch (e) {}
-      if (!r.ok) throw { code: (j && j.code) || (r.status === 429 ? "rate_limited" : "server") };
+      if (!r.ok) throw { code: (j && j.code) || (r.status === 429 ? "rate_limited" : "server"), detail: (j && j.why) || ("http " + r.status) };
+      if (!j || !j.data) throw { code: "invalid_json", detail: "empty body http " + r.status };
       var d = j && j.data; if (d && j.id) d.__id = j.id;
       return d;
     }
@@ -1661,6 +1662,8 @@
       var msg = (e && e.code === "cancelled") ? "" : (ERR[e && e.code] || "연결이 잠깐 불안정했어요. 다시 눌러주세요.");
       if (again && current) { go("result", function () { renderAnswer(current, false); setMini("다 읽었어요"); }); rerolls = 0; }
       else { go("write", function () { written.hidden = true; ans.hidden = true; qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?"; setMini("생각나는 그대로 적어요"); }); }
+      // 테스트 기간: 원인을 알 수 있게 짧은 설명을 덧붙인다
+      if (msg && e && e.detail && LIVE) msg += " [" + String(e.detail).slice(0, 140) + "]";
       if (msg) showNote(msg);
     } finally { ctl = null; clearTimeout(slowTimer); }
   }

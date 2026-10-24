@@ -109,7 +109,7 @@ module.exports = async function handler(req, res) {
       })
     });
     if (r.status === 429 || r.status === 529) return res.status(503).json({ code: "busy" });
-    if (!r.ok) return res.status(502).json({ code: "server", status: r.status });
+    if (!r.ok) { const et = await r.text().catch(function () { return ""; }); console.log("answer: claude error", r.status, et.slice(0, 300)); return res.status(502).json({ code: "server", why: "claude " + r.status + " " + et.slice(0, 120) }); }
     const j = await r.json();
     const out = (j.content || []).map(function (c) { return c.type === "text" ? c.text : ""; }).join("");
     let data = pickJson(out);
@@ -118,11 +118,14 @@ module.exports = async function handler(req, res) {
       const r2 = await callClaude(key, text, avoid, true);
       if (r2) data = pickJson(r2);
     }
-    if (!data) return res.status(502).json({ code: "invalid_json" });
+    // 테스트 기간: 왜 못 읽었는지 화면에 짧게 보여 준다 (원인 찾기용)
+    if (!data) return res.status(502).json({ code: "invalid_json", why: "stop=" + j.stop_reason + " len=" + out.length + " types=" + (j.content || []).map(function (c) { return c.type; }).join(",") + " head=" + out.slice(0, 60) });
+    if (!data.reply) return res.status(502).json({ code: "invalid_json", why: "no reply keys=" + Object.keys(data).join(",") });
     const id = await save(body, text, data).catch(function () { return null; });
     delete data.masked;
     return res.status(200).json({ data: data, id: id, version: TONE.version });
   } catch (e) {
-    return res.status(502).json({ code: "server" });
+    console.log("answer: exception", String(e && e.stack || e).slice(0, 400));
+    return res.status(502).json({ code: "server", why: "exception " + String(e && e.message || e).slice(0, 120) });
   }
 };
