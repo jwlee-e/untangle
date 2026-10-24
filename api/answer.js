@@ -41,17 +41,29 @@ function pickJson(s) {
   return null;
 }
 
+// Claude 요청. 이 앱의 답은 짧아서 '생각 단계'가 필요 없다. 켜져 있으면 한도를 생각에 다 써서 답이 비어 버린다
+function claudeBody(text, avoid, strict, noThinkingParam) {
+  const b = {
+    model: MODEL, max_tokens: 1500, system: TONE.guide.join("\n"),
+    messages: [{ role: "user", content: buildPrompt(text, avoid) + (strict ? "\n\n다른 말 없이 JSON 객체 하나만 출력한다. 줄바꿈 없이 한 줄로 쓴다." : "") }]
+  };
+  if (!noThinkingParam) b.thinking = { type: "disabled" };
+  return JSON.stringify(b);
+}
+async function postClaude(key, text, avoid, strict) {
+  const h = { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" };
+  let r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: h, body: claudeBody(text, avoid, strict, false) });
+  // 'thinking' 설정을 받지 않는 모델이면 빼고 다시
+  if (r.status === 400) {
+    const et = await r.clone().text().catch(function () { return ""; });
+    if (/thinking/i.test(et)) r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: h, body: claudeBody(text, avoid, strict, true) });
+  }
+  return r;
+}
 // 다시 한 번 부르기 (첫 답을 읽지 못했을 때). JSON만 쓰라고 한 번 더 못 박는다
 async function callClaude(key, text, avoid, strict) {
   try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-      body: JSON.stringify({
-        model: MODEL, max_tokens: 800, system: TONE.guide.join("\n"),
-        messages: [{ role: "user", content: buildPrompt(text, avoid) + (strict ? "\n\n다른 말 없이 JSON 객체 하나만 출력한다. 줄바꿈 없이 한 줄로 쓴다." : "") }]
-      })
-    });
+    const r = await postClaude(key, text, avoid, strict);
     if (!r.ok) return null;
     const j = await r.json();
     return (j.content || []).map(function (c) { return c.type === "text" ? c.text : ""; }).join("");
@@ -98,16 +110,7 @@ module.exports = async function handler(req, res) {
   if (overLimit(ip)) return res.status(429).json({ code: "rate_limited" });
 
   try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 800,
-        system: TONE.guide.join("\n"),
-        messages: [{ role: "user", content: buildPrompt(text, avoid) }]
-      })
-    });
+    const r = await postClaude(key, text, avoid, false);
     if (r.status === 429 || r.status === 529) return res.status(503).json({ code: "busy" });
     if (!r.ok) { const et = await r.text().catch(function () { return ""; }); console.log("answer: claude error", r.status, et.slice(0, 300)); return res.status(502).json({ code: "server", why: "claude " + r.status + " " + et.slice(0, 120) }); }
     const j = await r.json();
