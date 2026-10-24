@@ -25,10 +25,37 @@ function buildPrompt(text, avoid) {
     "\nmasked: 입력 글을 그대로 옮기되, 사람 이름·별명, 가게·회사·학교 이름, 연락처, 주소, 아이디처럼 누군지 알아볼 수 있는 부분만 ○○○로 바꾼다. 그런 부분이 없으면 입력 글 그대로 쓴다. 다른 말은 바꾸지 않는다.";
 }
 
+// AI 출력에서 JSON 하나를 꺼낸다. 코드 블록(```), 끝 쉼표, 줄바꿈 섞인 문자열도 너그럽게 받는다
 function pickJson(s) {
+  s = String(s || "").replace(/```(?:json)?/gi, "");
   const a = s.indexOf("{"), b = s.lastIndexOf("}");
   if (a < 0 || b <= a) return null;
-  try { return JSON.parse(s.slice(a, b + 1)); } catch (e) { return null; }
+  let body = s.slice(a, b + 1);
+  try { return JSON.parse(body); } catch (e) {}
+  body = body.replace(/,\s*([}\]])/g, "$1").replace(/[\u201C\u201D]/g, '"');
+  body = body.replace(/"(?:[^"\\]|\\.)*"/g, function (m) { return m.replace(/\n/g, "\\n").replace(/\r/g, ""); });
+  try { return JSON.parse(body); } catch (e) {}
+  // 마지막 수단: reply만이라도 꺼낸다
+  const m = s.match(/"reply"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+  if (m) { try { return { type: (s.match(/"type"\s*:\s*"(\w+)"/) || [])[1] || "daily", reply: JSON.parse('"' + m[1] + '"') }; } catch (e) {} }
+  return null;
+}
+
+// 다시 한 번 부르기 (첫 답을 읽지 못했을 때). JSON만 쓰라고 한 번 더 못 박는다
+async function callClaude(key, text, avoid, strict) {
+  try {
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+      body: JSON.stringify({
+        model: MODEL, max_tokens: 800, system: TONE.guide.join("\n"),
+        messages: [{ role: "user", content: buildPrompt(text, avoid) + (strict ? "\n\n다른 말 없이 JSON 객체 하나만 출력한다. 줄바꿈 없이 한 줄로 쓴다." : "") }]
+      })
+    });
+    if (!r.ok) return null;
+    const j = await r.json();
+    return (j.content || []).map(function (c) { return c.type === "text" ? c.text : ""; }).join("");
+  } catch (e) { return null; }
 }
 
 // 적은 글과 답 저장. 저장이 안 돼도 답은 그대로 보여 준다
@@ -76,7 +103,7 @@ module.exports = async function handler(req, res) {
       headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 500,
+        max_tokens: 800,
         system: TONE.guide.join("\n"),
         messages: [{ role: "user", content: buildPrompt(text, avoid) }]
       })
@@ -85,7 +112,12 @@ module.exports = async function handler(req, res) {
     if (!r.ok) return res.status(502).json({ code: "server", status: r.status });
     const j = await r.json();
     const out = (j.content || []).map(function (c) { return c.type === "text" ? c.text : ""; }).join("");
-    const data = pickJson(out);
+    let data = pickJson(out);
+    if (!data) {
+      console.log("answer: unreadable output", JSON.stringify({ stop: j.stop_reason, len: out.length }));
+      const r2 = await callClaude(key, text, avoid, true);
+      if (r2) data = pickJson(r2);
+    }
     if (!data) return res.status(502).json({ code: "invalid_json" });
     const id = await save(body, text, data).catch(function () { return null; });
     delete data.masked;

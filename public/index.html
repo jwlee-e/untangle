@@ -1573,9 +1573,11 @@
   }
   function normalize(d) {
     if (!d || typeof d !== "object") return null;
-    var type = ["daily", "regret", "risk", "skip"].indexOf(d.type) >= 0 ? d.type : null;
+    // 모르는 종류가 와도 답 글이 멀쩡하면 보여 준다 (일상 고민으로 취급)
     var reply = typeof d.reply === "string" ? d.reply.trim() : "";
-    if (!type || !reply || reply.length > 500) return null;
+    if (!reply) return null;
+    if (reply.length > 600) reply = reply.slice(0, 600);
+    var type = ["daily", "regret", "risk", "skip"].indexOf(d.type) >= 0 ? d.type : "daily";
     var tag = ["관찰", "판단력", "실행", "회복"].indexOf(d.tag) >= 0 ? d.tag : "";
     return { type: type, reply: reply, tag: tag };
   }
