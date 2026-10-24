@@ -840,6 +840,12 @@
       dock.append(s);
     } else if (state === "result") {
       var kind = current ? kindOf(current.type) : "normal";
+      if (current && current.type === "vague") {
+        // 무슨 일인지가 빠진 글: 적은 글을 그대로 두고 한 줄 더 적으러 돌아간다
+        var vc = el("button", "text-btn", "닫기"); vc.type = "button"; vc.addEventListener("click", function () { track("close", { from: "vague", type: "vague" }); resetAll(); }); dock.append(vc);
+        var vb = el("button", "btn", "한 줄 더 적기"); vb.type = "button"; vb.addEventListener("click", addLine); dock.append(vb);
+        return;
+      }
       if (kind !== "normal") {
         var c = el("button", "btn", "닫기"); c.type = "button"; c.addEventListener("click", function () { track("close", { from: kind, type: current && current.type }); resetAll(); }); dock.append(c);
         return;
@@ -1680,6 +1686,18 @@
     } finally { ctl = null; clearTimeout(slowTimer); }
   }
 
+  function addLine() {
+    var t = current ? current.orig : entry.value;
+    track("add_line", { len: t.length });
+    current = null; rerolls = 0;
+    go("write", function () {
+      written.hidden = true; ans.hidden = true; grip.hidden = true;
+      paper.classList.remove("is-calm", "can-crumple", "pop"); qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?";
+      setMini("생각나는 그대로 적어요"); clearNote();
+      entry.value = t.length < 99 ? t + "\n" : t; onInput();
+    });
+    setTimeout(function () { entry.focus({ preventScroll: true }); try { entry.setSelectionRange(entry.value.length, entry.value.length); } catch (e) {} }, 60);
+  }
   function resetAll(instant) {
     app.classList.remove("discarding");
     crState = "idle"; p = 0; pull = 0; ball = null; renderCanvas();
