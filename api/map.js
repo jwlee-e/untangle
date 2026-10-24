@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
   if (db.tooMany("map:" + db.ipOf(req), 60)) return res.status(429).json({ code: "rate_limited" });
   const anon = String((req.query && req.query.anon) || "");
   try {
-    const r = await db.q("GET", "entries?select=id,anon_id,nickname,masked_text,likes(count)" +
+    const r = await db.q("GET", "entries?select=id,anon_id,nickname,masked_text,created_at,likes(count)" +
       "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=not.in.(risk,skip)&order=created_at.desc&limit=22");
     const rows = Array.isArray(r.data) ? r.data : [];
     let liked = new Set();
@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
       liked = new Set((l.data || []).map(function (x) { return x.entry_id; }));
     }
     const items = rows.map(function (x) {
-      return { id: x.id, text: x.masked_text, nick: x.nickname || "익명 털실", likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.anon_id || x.id) };
+      return { id: x.id, text: x.masked_text, nick: x.nickname || "익명 털실", likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.anon_id || x.id), at: x.created_at };
     });
     return res.status(200).json({ items: items });
   } catch (e) {
