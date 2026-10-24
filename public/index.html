@@ -1474,6 +1474,7 @@
         infoRow("버전", APP_VERSION, "tag")
       );
       body.append(legal);
+      if (LIVE) return; // 테스트용 칸은 프로토타입에서만
       body.append(el("h2", "nav-h is-dev", "테스트용"));
       var dev = el("div", "nav-list is-dev");
       dev.append(infoRow("키보드 위 버튼", kbSeen ? "작동해요" : "감지 안 됨", "tool"), infoRow("말투 버전", TONE.version, "tool"));
@@ -1488,7 +1489,7 @@
     ["", "‘사실은 별거 아냐’(이하 ‘서비스’)는 이용자의 개인정보를 소중히 다루며, 개인정보 보호법에 따라 아래와 같이 처리합니다."],
     ["1. 처리하는 정보", ["이용자가 직접 적은 글(최대 100자)과, 그 글로 만들어진 답", "기기마다 무작위로 만든 익명 번호와 무작위 이름", "화면 이용 기록: 어떤 화면에 들어가고 어떤 버튼을 눌렀는지 (적은 글 내용은 포함하지 않습니다)", "공감, 신고, 의견(설문) 응답", "하루 이용 횟수를 세기 위한 접속 정보(IP 주소)", "서비스 오류를 확인하기 위해 서버에 자동으로 남는 접속 기록", "이름, 전화번호, 이메일, 계정 정보는 받지 않습니다."]],
     ["2. 처리 목적", ["적은 글에 대한 답을 만들어 보여 주기 위해", "한 사람이 하루에 쓸 수 있는 횟수를 지키고, 서비스를 안정적으로 운영하기 위해", "공유를 켠 경우, 적은 고민을 다른 이용자에게 익명으로 보여 주기 위해", "어디가 불편한지 살펴 서비스를 고치고, 익명 통계를 내기 위해"]],
-    ["3. 보관 기간", ["적은 글과 답: [보관 기간]", "익명 번호와 화면 이용 기록: [보관 기간]", "이용 횟수 정보: 그날이 지나면 지웁니다.", "서버 접속 기록: [호스팅 업체 기준 ○○일]"]],
+    ["3. 보관 기간", ["적은 글과 답: 지워 달라고 요청할 때까지 보관합니다. 공유를 끄면 다른 이용자에게는 더 이상 보이지 않습니다.", "익명 번호와 화면 이용 기록: 2년이 지나면 지웁니다.", "이용 횟수 정보: 그날이 지나면 지웁니다.", "서버 접속 기록: 호스팅 업체(Vercel)의 기준에 따라 짧게 보관된 뒤 지워집니다."]],
     ["4. 처리를 맡기는 곳", ["Anthropic, PBC — 적은 글을 받아 답을 만듭니다(AI 모델 Claude). 국외(미국)로 전송됩니다.", "Vercel Inc. — 서비스가 돌아가는 서버를 제공합니다. 국외(미국)로 전송됩니다.", "Supabase Inc. — 적은 글과 이용 기록을 저장합니다. 저장 위치는 대한민국 서울입니다."]],
     ["5. 이용자의 권리", ["저장된 글과 이용 기록을 언제든 지워 달라고 요청할 수 있습니다. [앱 안 ‘내 기록 지우기’ 또는 문의 이메일]", "적은 글을 AI에 보내는 데 동의하지 않으면 서비스를 쓰지 않으면 됩니다."]],
     ["6. 만 14세 미만", ["만 14세 미만은 이용할 수 없습니다."]],
@@ -1614,8 +1615,8 @@
       var r = await fetch("/api/answer", { method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify(window.__ask || {}), signal: opts && opts.signal });
       var j = null; try { j = await r.json(); } catch (e) {}
-      if (!r.ok) throw { code: (j && j.code) || (r.status === 429 ? "rate_limited" : "server"), detail: (j && j.why) || ("http " + r.status) };
-      if (!j || !j.data) throw { code: "invalid_json", detail: "empty body http " + r.status };
+      if (!r.ok) throw { code: (j && j.code) || (r.status === 429 ? "rate_limited" : "server") };
+      if (!j || !j.data) throw { code: "invalid_json" };
       var d = j && j.data; if (d && j.id) d.__id = j.id;
       return d;
     }
@@ -1680,8 +1681,6 @@
       var msg = (e && e.code === "cancelled") ? "" : (ERR[e && e.code] || "연결이 잠깐 불안정했어요. 다시 눌러주세요.");
       if (again && current) { go("result", function () { renderAnswer(current, false); setMini("다 읽었어요"); }); rerolls = 0; }
       else { go("write", function () { written.hidden = true; ans.hidden = true; qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?"; setMini("생각나는 그대로 적어요"); }); }
-      // 테스트 기간: 원인을 알 수 있게 짧은 설명을 덧붙인다
-      if (msg && e && e.detail && LIVE) msg += " [" + String(e.detail).slice(0, 140) + "]";
       if (msg) showNote(msg);
     } finally { ctl = null; clearTimeout(slowTimer); }
   }
