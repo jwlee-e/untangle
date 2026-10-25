@@ -17,8 +17,13 @@ module.exports = async function handler(req, res) {
   if (db.tooMany("map:" + db.ipOf(req), 60)) return res.status(429).json({ code: "rate_limited" });
   const anon = String((req.query && req.query.anon) || "");
   try {
+    // 첫 쪽: 지도에 올릴 22개 + 전체 개수. 모아보기에서 끝까지 내리면 before(가장 오래된 글의 시각)로 다음 20개
+    const before = String((req.query && req.query.before) || "");
+    const okBefore = /^\d{4}-\d{2}-\d{2}T[\d:.]+(Z|[+-]\d{2}:?\d{2})?$/.test(before);
+    const limit = okBefore ? 20 : 22;
     const r = await db.q("GET", "entries?select=id,masked_text,created_at,likes(count)" +
-      "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)&order=created_at.desc&limit=22");
+      "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)" +
+      (okBefore ? "&created_at=lt." + encodeURIComponent(before) : "") + "&order=created_at.desc&limit=" + limit, null, okBefore ? null : { Prefer: "count=exact" });
     const rows = Array.isArray(r.data) ? r.data : [];
     let liked = new Set();
     if (db.isAnon(anon) && rows.length) {
@@ -28,7 +33,9 @@ module.exports = async function handler(req, res) {
     const items = rows.map(function (x) {
       return { id: x.id, text: x.masked_text, nick: nickOf(x.id), likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.id), at: x.created_at };
     });
-    return res.status(200).json({ items: items });
+    const m = String(r.range || "").match(/\/(\d+)$/), total = m ? Number(m[1]) : null;
+    const more = okBefore ? rows.length === limit : (total != null ? total > rows.length : rows.length === limit);
+    return res.status(200).json({ items: items, total: okBefore ? undefined : total, more: more });
   } catch (e) {
     return res.status(200).json({ items: [] });
   }

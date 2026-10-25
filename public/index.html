@@ -424,6 +424,8 @@
   .mp-sheet.open .mp-card { animation: cardIn .4s cubic-bezier(.22,1,.36,1) backwards; animation-delay: calc(var(--i, 0) * 40ms + 60ms); }
   @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } }
   .mp-empty { padding: 28px 0; text-align: center; font-size: 14px; color: var(--ink-4); }
+  .mp-total { margin: 0 2px -2px; font-size: 12.5px; font-weight: 600; color: var(--ink-4); letter-spacing: -0.2px; }
+  .mp-card.off-map { cursor: default; }
   @media (prefers-reduced-motion: reduce) { .mp-sheet, .mp-dim { transition: none; } .mp-sheet.open .mp-card { animation: none; } }
   .mp:has(.mp-sheet.open) .mp-zoom { opacity: 0; pointer-events: none; }
   .mp-zoom { transition: opacity .2s; }
@@ -465,7 +467,7 @@
       <button class="field" id="homeField" type="button">
         <span>뭐가 자꾸 머릿속에 맴돌아요?</span>
       </button>
-      <button class="map-btn" id="mapBtn" type="button" aria-label="다른 고민 둘러보기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></svg></button>
+      <button class="map-btn" id="mapBtn" type="button" aria-label="고민 나눔터"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></svg></button>
     </div>
   </div>
 
@@ -505,13 +507,13 @@
   <div class="dock" id="dock"></div>
 
 
-  <section class="mp" id="mapPage" hidden aria-label="다른 고민 둘러보기">
+  <section class="mp" id="mapPage" hidden aria-label="고민 나눔터">
     <div class="mp-view" id="mpView"><div class="mp-world" id="mpWorld"></div></div>
     <div class="mp-zoom"><button type="button" id="mpIn" aria-label="확대"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button><i></i><button type="button" id="mpOut" aria-label="축소"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
     <div class="mp-dim" id="mpDim"></div>
     <button type="button" class="mp-write" id="mpWrite"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>내 고민 꺼내기</button>
-    <div class="mp-sheet" id="mpSheet"><div class="mp-sh-h" id="mpSheetH" role="button" tabindex="0" aria-expanded="false"><span class="grab"></span><span class="mp-sh-t"><b id="mpCount">이 근처 고민</b></span></div><div class="mp-list" id="mpList"></div></div>
-    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="mp-bar-t">다른 고민 둘러보기</span><span style="width:44px"></span></div>
+    <div class="mp-sheet" id="mpSheet"><div class="mp-sh-h" id="mpSheetH" role="button" tabindex="0" aria-expanded="false"><span class="grab"></span><span class="mp-sh-t"><b id="mpCount">모든 고민 모아보기</b></span></div><div class="mp-list" id="mpList"></div></div>
+    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="mp-bar-t">고민 나눔터</span><span style="width:44px"></span></div>
   </section>
   <section class="ab" id="aboutPage" hidden aria-label="사실은 별거 아닌 이야기">
     <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="ab-bar-t">사실은 별거 아닌 이야기</span></div>
@@ -909,7 +911,7 @@
   function readSet(k) { try { return JSON.parse(localStorage.getItem(k) || "{}") || {}; } catch (e) { return {}; } }
   function writeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   // x, y: 지도를 옮긴 양(화면 px), s: 배율. 털실·말풍선은 배율과 상관없이 같은 크기로 보이게 --k(=1/s)로 되돌린다
-  var mp = { x: 0, y: 0, s: 1, vx: 0, vy: 0, started: false, cur: null, bubble: null, raf: 0, items: [], moved: false };
+  var mp = { x: 0, y: 0, s: 1, vx: 0, vy: 0, started: false, cur: null, bubble: null, raf: 0, items: [], all: [], total: null, more: false, loading: false, moved: false };
   var MP_MAX = 1.6;
   function mpView() { return $("#mpView"); }
   function mpMin() { var v = mpView(); return Math.max(v.clientWidth / MAP_W, v.clientHeight / MAP_H); }
@@ -967,27 +969,36 @@
   }
   function mpBuild(list) {
     var w = $("#mpWorld"), hidden = readSet("sab:hidden"), liked = readSet("sab:likes");
-    w.textContent = ""; mp.items = []; mp.cur = null; mp.bubble = null;
-    list.filter(function (d) { return !hidden[d.id]; }).slice(0, MAP_ORDER.length).forEach(function (d, i) {
+    w.textContent = ""; mp.items = []; mp.all = []; mp.cur = null; mp.bubble = null;
+    var keep = list.filter(function (d) { return !hidden[d.id]; });
+    // 지도에 못 올라간 나머지 글도 모아보기 목록에는 보인다
+    keep.slice(MAP_ORDER.length).forEach(function (d, i) { mp.all.push(mpItem(d, MAP_ORDER.length + i, null)); });
+    keep.slice(0, MAP_ORDER.length).forEach(function (d, i) {
       var s = LIVE ? MAP_ORDER[i] : MAP_SPOTS[i], face = MAP_FACES[(d.face != null ? d.face : i) % MAP_FACES.length];
       if (d.liked) liked[d.id] = 1;
       var b = el("button", "my"); b.type = "button"; b.style.left = s[0] + "px"; b.style.top = s[1] + "px"; b.setAttribute("aria-label", d.t);
       var im = el("img"); im.src = CH.src(face, d.id != null ? d.id : i); im.alt = ""; im.draggable = false; b.append(im);
       b.append(el("span", "my-n", d.nick));
-      var it = { id: d.id, at: d.at || null, x: s[0], y: s[1], t: d.t, face: face, nick: d.nick, sample: !!d.sample, n: (d.n || 0) + (!LIVE && liked[d.id] ? 1 : 0), el: b };
+      var it = mpItem(d, i, b); it.x = s[0]; it.y = s[1];
       b.addEventListener("click", function (e) { e.stopPropagation(); if (mp.moved) return; mp.started = true; mpOpen(it); });
-      w.append(b); mp.items.push(it);
+      w.append(b); mp.items.push(it); mp.all.push(it);
     });
     writeSet("sab:likes", liked);
+  }
+  function mpItem(d, i, b) {
+    var liked = readSet("sab:likes"); if (d.liked) liked[d.id] = 1;
+    var face = MAP_FACES[(d.face != null ? d.face : i) % MAP_FACES.length];
+    return { id: d.id, at: d.at || null, t: d.t, face: face, nick: d.nick, sample: !!d.sample, n: (d.n || 0) + (!LIVE && liked[d.id] ? 1 : 0), el: b };
   }
   function mpLoad() {
     if (!LIVE) { mpBuild(mpSamples(0, MAP_SPOTS.length)); return; }
     mpBuild([]);
     fetch("/api/map?anon=" + encodeURIComponent(anonId())).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
       if ($("#mapPage").hidden) return;
-      var real = (j && j.items || []).map(function (d) { return { id: d.id, t: d.text, nick: d.nick || "익명 털뭉치", n: d.likes || 0, liked: !!d.liked, face: d.face, at: d.at }; });
+      var real = (j && j.items || []).map(mpFromServer);
       var list = real.length < 8 ? real.concat(mpSamples(0, 8 - real.length)) : real;
       mpBuild(list); mpApply(); mpCount(); mpPick();
+      mp.total = j && typeof j.total === "number" ? j.total : null; mp.more = !!(j && j.more);
     });
   }
   function mpToggleLike(it) {
@@ -998,13 +1009,28 @@
     if (!it.sample && LIVE) act(on ? "like" : "unlike", { entry: it.id });
     return on;
   }
+  function mpFromServer(d) { return { id: d.id, t: d.text, nick: d.nick || "익명 털뭉치", n: d.likes || 0, liked: !!d.liked, face: d.face, at: d.at }; }
+  // 모아보기 끝까지 내리면 예전 고민을 더 불러온다 (실제 링크에서만)
+  function mpMore() {
+    if (!LIVE || !mp.more || mp.loading) return;
+    var last = mp.all.filter(function (x) { return !x.sample && x.at; }).sort(function (a, b) { return a.at < b.at ? -1 : 1; })[0];
+    if (!last) return;
+    mp.loading = true;
+    fetch("/api/map?list=1&before=" + encodeURIComponent(last.at) + "&anon=" + encodeURIComponent(anonId())).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+      mp.loading = false; if (!j) return;
+      var hidden = readSet("sab:hidden"), have = {}; mp.all.forEach(function (x) { have[x.id] = 1; });
+      (j.items || []).map(mpFromServer).filter(function (d) { return !hidden[d.id] && !have[d.id]; }).forEach(function (d, i) { var it = mpItem(d, mp.all.length + i, null); mp.all.push(it); $("#mpList").append(mpCard(it, 0)); });
+      mp.more = !!j.more; track("list_more");
+    });
+  }
   function mpReport(it, card) {
     var s = readSet("sab:hidden"); s[it.id] = 1; writeSet("sab:hidden", s);
     track("report", { sample: it.sample });
     if (!it.sample && LIVE) act("report", { entry: it.id });
     if (mp.cur === it) mpOpen(null);
-    it.el.remove(); mp.items = mp.items.filter(function (x) { return x !== it; });
-    var after = function () { if (card) card.remove(); if ($("#mpSheet").classList.contains("open")) { var left = $("#mpList").querySelectorAll(".mp-card").length; $("#mpCount").textContent = "이 근처 고민 " + left + "개"; if (!left) mpList(); } else mpCount(); };
+    if (it.el) it.el.remove(); mp.items = mp.items.filter(function (x) { return x !== it; }); mp.all = mp.all.filter(function (x) { return x !== it; });
+    if (typeof mp.total === "number") mp.total = Math.max(0, mp.total - 1);
+    var after = function () { if (card) card.remove(); if ($("#mpSheet").classList.contains("open")) { mpTotal(); if (!mp.all.length) mpList(); } };
     if (card && !reduce) { card.style.height = card.offsetHeight + "px"; card.classList.add("gone"); setTimeout(after, 260); } else after();
     toast("신고했어요. 이 고민은 더 안 보여요");
   }
@@ -1036,7 +1062,10 @@
     var bw = bb.offsetWidth, bh = bb.offsetHeight, NSs = "http://www.w3.org/2000/svg";
     // 화면 가장자리의 털실이면 말풍선을 안쪽으로 밀고, 꼬리는 털실을 가리키게 둔다
     var vw = mpView().clientWidth, sx = mp.x + it.x * mp.s, left = sx - bw / 2, right = sx + bw / 2, dx = 0;
-    if (left < 10) dx = 10 - left; else if (right > vw - 10) dx = vw - 10 - right;
+    // 확대·축소 버튼과 겹치는 높이면 그 버튼 왼쪽까지만
+    var zr = $(".mp-zoom").getBoundingClientRect(), vr = mpView().getBoundingClientRect(), sy = mp.y + it.y * mp.s, top = sy - 56 - bh, bot = sy - 50;
+    var rightLimit = (zr.height && top < zr.bottom - vr.top && bot > zr.top - vr.top) ? zr.left - vr.left - 8 : vw - 10;
+    if (left < 10) dx = 10 - left; else if (right > rightLimit) dx = Math.max(10 - left, rightLimit - right);
     bb.style.setProperty("--dx", dx.toFixed(1) + "px");
     var sv = document.createElementNS(NSs, "svg"); sv.setAttribute("class", "edge-b"); sv.setAttribute("width", bw); sv.setAttribute("height", bh + 10);
     var d = window.roughBubble(1, 1, bw - 2, bh - 2, 16, bw / 2 - dx, 1 + (it.x * 7 + it.y) % 9).map(function (q, k) { return (k ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1); }).join("") + "Z";
@@ -1050,7 +1079,7 @@
     var x0 = -mp.x / mp.s, y0 = (-mp.y + 64) / mp.s, x1 = (-mp.x + v.clientWidth) / mp.s, y1 = (-mp.y + Math.min(v.clientHeight, sh)) / mp.s;
     return mp.items.filter(function (it) { return it.x > x0 + 10 && it.x < x1 - 10 && it.y > y0 + 20 && it.y < y1; });
   }
-  function mpCount() { $("#mpCount").textContent = "이 근처 고민 " + mpVisible().length + "개"; }
+  function mpCount() { $("#mpCount").textContent = "모든 고민 모아보기"; }
   // 화면 가운데(말풍선이 위로 뜨니 조금 아래 기준)에서 가장 가까운 털실. 거의 같은 거리면 지금 것을 유지해 깜빡이지 않게
   function mpPick() {
     if (!mp.started) return;
@@ -1135,12 +1164,16 @@
     if (s < 60) return "방금"; if (s < 3600) return Math.floor(s / 60) + "분 전"; if (s < 86400) return Math.floor(s / 3600) + "시간 전";
     if (s < 86400 * 30) return Math.floor(s / 86400) + "일 전"; return Math.floor(s / 86400 / 30) + "달 전";
   }
+  function mpTotal() { var t = $("#mpTotal"); if (t) t.textContent = "최신순 · 총 " + (typeof mp.total === "number" ? Math.max(mp.total, mp.all.filter(function (x) { return !x.sample; }).length) + mp.all.filter(function (x) { return x.sample; }).length : mp.all.length) + "개"; }
   function mpList() {
-    var L = $("#mpList"), v = mpView(), cx = (-mp.x + v.clientWidth / 2) / mp.s, cy = (-mp.y + v.clientHeight / 2) / mp.s;
-    var vis = mpVisible().sort(function (a, b) { return Math.hypot(a.x - cx, a.y - cy) - Math.hypot(b.x - cx, b.y - cy); });
+    var L = $("#mpList");
+    var all = mp.all.slice().sort(function (a, b) { if (!a.at && !b.at) return 0; if (!a.at) return 1; if (!b.at) return -1; return a.at < b.at ? 1 : -1; });
     L.textContent = "";
-    if (!vis.length) { L.append(el("p", "mp-empty", "지도를 옮겨서 다른 곳을 둘러보세요")); return; }
-    vis.forEach(function (it, i) {
+    if (!all.length) { L.append(el("p", "mp-empty", "아직 올라온 고민이 없어요")); return; }
+    L.append(el("p", "mp-total", "")); L.lastChild.id = "mpTotal"; mpTotal();
+    all.forEach(function (it, i) { L.append(mpCard(it, i)); });
+  }
+  function mpCard(it, i) {
       var c = el("div", "mp-card"); c.style.setProperty("--i", Math.min(i, 8));
       // 윗줄: 털실 얼굴 · 이름 · 언제   (오른쪽 끝에 신고)
       var meta = el("div", "mp-c-meta");
@@ -1157,9 +1190,9 @@
       like.addEventListener("click", function (e) { e.stopPropagation(); mpToggleLike(it); draw(); });
       f.append(like);
       c.append(meta, el("p", "mp-c-q", it.t), f);
-      c.addEventListener("click", function () { mpSheet(false); mpGoTo(it); });
-      L.append(c);
-    });
+      // 지도에 있는 고민이면 그 털실로 데려간다
+      if (it.el) c.addEventListener("click", function () { mpSheet(false); mpGoTo(it); }); else c.classList.add("off-map");
+      return c;
   }
   // 시트: 손가락을 따라오고, 놓으면 빠르기·위치를 보고 열거나 닫는다
   // 반만 열었을 때 시트가 내려가 있는 거리 (지도 높이의 62%만큼 보이게)
@@ -1205,6 +1238,7 @@
     h.addEventListener("pointerup", end); h.addEventListener("pointercancel", end);
     h.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); mpSheet(!sh.classList.contains("open")); } });
     dim.addEventListener("click", function () { mpSheet(false); });
+    $("#mpList").addEventListener("scroll", function () { var L = this; if (L.scrollTop + L.clientHeight > L.scrollHeight - 300) mpMore(); }, { passive: true });
   })();
   function mpGoTo(it) {
     var v = mpView(), s = Math.max(mp.s, 1);
