@@ -150,7 +150,8 @@
   .pit { position: relative; flex: 1; min-height: 0; margin: 0 -20px; touch-action: manipulation; -webkit-user-select: none; user-select: none; cursor: pointer; }
   .pit canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: auto; }
   .home-dock { flex: none; position: relative; padding-top: 18px; }
-  .home-dock::before { content: ""; position: absolute; left: -20px; right: -20px; top: 0; border-top: 2px solid var(--pencil); opacity: .55; }
+  /* 바닥선: 붓펜으로 한 번에 그은 듯한 선 (굵기와 높이가 아주 살짝 흔들림). 모양은 스크립트가 그린다 */
+  .floor { position: absolute; left: -20px; top: -3px; width: calc(100% + 40px); height: 6px; overflow: visible; pointer-events: none; color: var(--pencil); opacity: .6; }
   .field { width: 100%; min-height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 8px 0 18px; border-radius: 16px; border: 1.5px solid var(--pencil); background: var(--paper); cursor: text; text-align: left; transition: transform .12s ease; }
   .field:active { transform: scale(.99); }
   .field > span { flex: 1; font-size: 16px; color: var(--ink-4); letter-spacing: -0.2px; }
@@ -359,7 +360,7 @@
   /* ---------- 다른 사람들 고민 지도 ---------- */
   /* 지도는 '남의 고민을 보는 마을': 홈(페리윙클)과 달리 따뜻한 크림. 지도 안의 시트·말풍선·카드도 같은 색을 쓴다 */
   html.in-map, html.in-map body { background: #D9DFC8 !important; }
-  .mp { --bg: #EEEBE3; --paper: #FAF8F3; --pencil: #857560; --rule-paper: rgba(120,110,92,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FBFAF6; --map-ground: #D9DFC8; color: var(--ink);
+  .mp { --bg: #F7F5F0; --paper: #FBFAF6; --pencil: #857560; --rule-paper: rgba(120,110,92,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FBFAF6; --map-ground: #D9DFC8; color: var(--ink);
     position: absolute; inset: 0; z-index: 7; background: var(--map-ground); overflow: hidden; animation: abIn .3s cubic-bezier(.22,1,.36,1); }
   .mp.out { animation: abOut .22s ease forwards; }
   .mp-view { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
@@ -401,7 +402,7 @@
   .mp:has(.mp-sheet.open) .mp-write { opacity: 0; pointer-events: none; }
   .mp:has(.mp-sheet.open) .mb-w { opacity: 0; }
   /* 모아보기 카드: 하나씩 상자로 */
-  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 1.5px solid rgba(120,110,92,0.28); border-radius: 18px; background: #F7F5EF; cursor: pointer; transition: transform .12s; }
+  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 1.5px solid rgba(120,110,92,0.24); border-radius: 18px; background: var(--bg); cursor: pointer; transition: transform .12s; }
   .mp-card:active { transform: scale(.99); }
   .mp-c-meta { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 13.5px; color: var(--ink-4); letter-spacing: -0.2px; }
   .mp-c-meta b { color: var(--ink); font-weight: 700; white-space: nowrap; }
@@ -422,9 +423,9 @@
   @media (prefers-reduced-motion: reduce) { .mp-sheet, .mp-dim { transition: none; } .mp-sheet.open .mp-card { animation: none; } }
   .mp:has(.mp-sheet.open) .mp-zoom { opacity: 0; pointer-events: none; }
   .mp-zoom { transition: opacity .2s; }
-  .mb { position: absolute; left: 0; top: 0; transform: translate(-50%, calc(-100% - 56px)); width: max-content; max-width: 236px; padding: 12px 15px 8px; animation: mbIn .2s cubic-bezier(.22,1,.36,1); cursor: default; }
+  .mb { position: absolute; left: 0; top: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-100% - 56px)); width: max-content; max-width: 236px; padding: 12px 15px 8px; animation: mbIn .2s cubic-bezier(.22,1,.36,1); cursor: default; }
   .mb > svg.edge-b { position: absolute; left: 0; top: 0; z-index: -1; overflow: visible; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(110,90,55,.16)); }
-  @keyframes mbIn { from { opacity: 0; transform: translate(-50%, calc(-100% - 50px)) scale(.96); } }
+  @keyframes mbIn { from { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-100% - 50px)) scale(.96); } }
   .mb-t { margin: 0; font-size: 15px; line-height: 22px; font-weight: 600; letter-spacing: -0.3px; word-break: keep-all; color: var(--ink); }
   .mb-a { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; padding-top: 6px; border-top: 1px dashed var(--rule-paper); }
   .mb-a button { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 0 6px; margin: 0 -6px; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-3); cursor: pointer; border-radius: 8px; }
@@ -455,6 +456,7 @@
   </section>
   <div class="pit" id="pit" aria-hidden="true"><canvas id="pileCv"></canvas></div>
   <div class="home-dock">
+    <svg class="floor" id="floorLine" aria-hidden="true"></svg>
     <div class="dock-row">
       <button class="field" id="homeField" type="button">
         <span>뭐가 자꾸 머릿속에 맴돌아요?</span>
@@ -576,6 +578,25 @@
 </div>
 
 <script>
+  // 홈 바닥선: 한 번에 그은 붓펜 선처럼, 높이와 굵기가 아주 천천히 흔들리는 띠로 그린다
+  window.drawFloor = function () {
+    var svg = document.getElementById("floorLine"); if (!svg) return;
+    var w = svg.getBoundingClientRect().width; if (!w) return;
+    var N = Math.max(8, Math.round(w / 26)), top = [], bot = [];
+    for (var i = 0; i <= N; i++) {
+      var x = w * i / N, t = i / N;
+      var y = 3 + 0.7 * Math.sin(t * 7.3 + 1.1) + 0.45 * Math.sin(t * 17.9 + 0.4);
+      var th = 2.1 + 0.45 * Math.sin(t * 5.1 + 2.0) + 0.25 * Math.sin(t * 13.7);
+      if (i === 0 || i === N) th *= 0.75;
+      top.push([x, y - th / 2]); bot.push([x, y + th / 2]);
+    }
+    function curve(P) { var d = ""; for (var i = 1; i < P.length; i++) { var m = [(P[i - 1][0] + P[i][0]) / 2, (P[i - 1][1] + P[i][1]) / 2]; d += " Q" + P[i - 1][0].toFixed(1) + " " + P[i - 1][1].toFixed(2) + " " + m[0].toFixed(1) + " " + m[1].toFixed(2); } var L = P[P.length - 1]; return d + " L" + L[0].toFixed(1) + " " + L[1].toFixed(2); }
+    var b = bot.slice().reverse();
+    svg.setAttribute("viewBox", "0 0 " + w.toFixed(1) + " 6");
+    svg.innerHTML = '<path fill="currentColor" d="M' + top[0][0] + " " + top[0][1].toFixed(2) + curve(top) + " L" + b[0][0].toFixed(1) + " " + b[0][1].toFixed(2) + curve(b) + 'Z"/>';
+  };
+  window.addEventListener("resize", function () { window.drawFloor(); });
+  window.addEventListener("load", function () { window.drawFloor(); });
   window.roughBubble = function (x, y, w, h, r, tail, seed) {
     var P = [], step = 3, PI = Math.PI;
     var line = function (x0, y0, x1, y1) { var L = Math.hypot(x1 - x0, y1 - y0), n = Math.max(1, Math.round(L / step)); for (var i = 0; i < n; i++) { var k = i / n; P.push([x0 + (x1 - x0) * k, y0 + (y1 - y0) * k]); } };
@@ -880,7 +901,7 @@
   var MAP_SPOTS = [[470,510], [610,470], [740,640], [560,650], [430,760], [620,860], [760,820], [500,960], [210,240], [285,280], [580,225], [655,255], [970,215], [1045,250], [880,1050], [950,1085], [165,1240], [240,1275], [600,1360], [230,690], [1050,600], [770,1180]]; // 앞 8개는 지도를 열었을 때 보이는 가운데 풀밭, 나머지는 공터
   var MAP_FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   var HEART = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
-  var FLAG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>';
+  var FLAG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
   function readSet(k) { try { return JSON.parse(localStorage.getItem(k) || "{}") || {}; } catch (e) { return {}; } }
   function writeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   // x, y: 지도를 옮긴 양(화면 px), s: 배율. 털실·말풍선은 배율과 상관없이 같은 크기로 보이게 --k(=1/s)로 되돌린다
@@ -996,7 +1017,7 @@
     bb.append(el("p", "mb-t", it.t));
     var row = el("div", "mb-a");
     var like = el("button", "mb-like"); like.type = "button"; like.setAttribute("aria-pressed", liked[it.id] ? "true" : "false");
-    var drawLike = function () { like.innerHTML = HEART + "<span>나도 그래요</span><b>" + it.n + "</b>"; };
+    var drawLike = function () { like.innerHTML = HEART + "<span>공감해요</span><b>" + it.n + "</b>"; };
     drawLike();
     like.addEventListener("click", function () {
       var on = mpToggleLike(it); like.setAttribute("aria-pressed", on ? "true" : "false"); drawLike();
@@ -1007,8 +1028,12 @@
     row.append(like, rep); bb.append(row);
     $("#mpWorld").append(wrap); mp.bubble = wrap;
     var bw = bb.offsetWidth, bh = bb.offsetHeight, NSs = "http://www.w3.org/2000/svg";
+    // 화면 가장자리의 털실이면 말풍선을 안쪽으로 밀고, 꼬리는 털실을 가리키게 둔다
+    var vw = mpView().clientWidth, sx = mp.x + it.x * mp.s, left = sx - bw / 2, right = sx + bw / 2, dx = 0;
+    if (left < 10) dx = 10 - left; else if (right > vw - 10) dx = vw - 10 - right;
+    bb.style.setProperty("--dx", dx.toFixed(1) + "px");
     var sv = document.createElementNS(NSs, "svg"); sv.setAttribute("class", "edge-b"); sv.setAttribute("width", bw); sv.setAttribute("height", bh + 10);
-    var d = window.roughBubble(1, 1, bw - 2, bh - 2, 16, bw / 2, 1 + (it.x * 7 + it.y) % 9).map(function (q, k) { return (k ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1); }).join("") + "Z";
+    var d = window.roughBubble(1, 1, bw - 2, bh - 2, 16, bw / 2 - dx, 1 + (it.x * 7 + it.y) % 9).map(function (q, k) { return (k ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1); }).join("") + "Z";
     sv.innerHTML = '<path d="' + d + '" style="fill:var(--paper);stroke:var(--pencil)" stroke-width="1.7" stroke-linejoin="round"/><path d="' + d + '" fill="none" style="stroke:var(--pencil)" stroke-width="1" stroke-opacity=".35" transform="translate(.7 .6)"/>';
     bb.prepend(sv);
   }
@@ -1119,8 +1144,8 @@
       rp.addEventListener("click", function (e) { e.stopPropagation(); mpReport(it, c); });
       meta.append(rp);
       var f = el("div", "mp-c-f");
-      var like = el("button", "like"); like.type = "button"; like.setAttribute("aria-label", "나도 그래요");
-      var draw = function () { var on = !!readSet("sab:likes")[it.id]; like.setAttribute("aria-pressed", on ? "true" : "false"); like.innerHTML = HEART + "<span>나도 그래요</span><b>" + it.n + "</b>"; };
+      var like = el("button", "like"); like.type = "button"; like.setAttribute("aria-label", "공감해요");
+      var draw = function () { var on = !!readSet("sab:likes")[it.id]; like.setAttribute("aria-pressed", on ? "true" : "false"); like.innerHTML = HEART + "<span>공감해요</span><b>" + it.n + "</b>"; };
       draw();
       like.addEventListener("click", function (e) { e.stopPropagation(); mpToggleLike(it); draw(); });
       var go = el("button", "ask"); go.type = "button"; go.innerHTML = '<span>나도 답 들어 보기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
