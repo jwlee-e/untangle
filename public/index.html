@@ -382,9 +382,11 @@
   .mp-zoom button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
   .mp-zoom button:disabled { color: var(--ink-4); cursor: default; }
   .mp-zoom i { height: 1px; margin: 0 8px; background: var(--rule-paper); }
-  .mp-sheet { --peek: 64px; position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; height: 66%; display: flex; flex-direction: column; background: var(--bg); border-top: 1.5px solid var(--pencil); border-radius: 22px 22px 0 0; box-shadow: 0 -10px 24px -18px rgba(110,90,55,.7); padding-bottom: env(safe-area-inset-bottom, 0px);
+  .mp-sheet { --peek: 64px; position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; height: calc(100% - 60px); display: flex; flex-direction: column; background: var(--bg); border-top: 1.5px solid var(--pencil); border-radius: 22px 22px 0 0; box-shadow: 0 -10px 24px -18px rgba(110,90,55,.7); padding-bottom: env(safe-area-inset-bottom, 0px);
     transform: translateY(calc(100% - var(--peek) - env(safe-area-inset-bottom, 0px))); transition: transform .42s cubic-bezier(.2,.9,.28,1.02); will-change: transform; }
-  .mp-sheet.open { transform: translateY(0); }
+  .mp-sheet.open { transform: translateY(var(--half-y, 34%)); }
+  .mp-sheet.open.full { transform: translateY(0); }
+  .mp-sheet.open:not(.full) .mp-list { padding-bottom: calc(var(--half-y, 0px) + 20px); }
   .mp-sheet.dragging, .mp-sheet.dragging ~ .mp-dim { transition: none; }
   .mp-sh-h { flex: none; height: var(--peek); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: grab; touch-action: none; -webkit-user-select: none; user-select: none; }
   .mp-sh-h .grab { width: 36px; height: 4px; border-radius: 4px; background: var(--rule-paper); transition: width .2s; }
@@ -919,8 +921,10 @@
   }
   function mpClamp() {
     var v = mpView(); mp.s = Math.max(mpMin(), Math.min(MP_MAX, mp.s));
-    var minX = Math.min(0, v.clientWidth - MAP_W * mp.s), minY = Math.min(0, v.clientHeight - MAP_H * mp.s);
-    mp.x = Math.max(minX, Math.min(0, mp.x)); mp.y = Math.max(minY, Math.min(0, mp.y));
+    // 위는 제목 줄, 아래는 모아보기 손잡이와 '내 고민 꺼내기'에 가려지는 만큼 더 끌 수 있게 여유를 둔다
+    var EXT = 56, EXB = 140;
+    var minX = Math.min(0, v.clientWidth - MAP_W * mp.s), minY = Math.min(0, v.clientHeight - MAP_H * mp.s) - EXB;
+    mp.x = Math.max(minX, Math.min(0, mp.x)); mp.y = Math.max(minY, Math.min(EXT, mp.y));
   }
   // 화면의 한 점(fx, fy)을 붙잡은 채로 배율만 바꾼다
   function mpZoomAt(s2, fx, fy) {
@@ -1041,7 +1045,8 @@
   }
   // 화면에 보이는 영역(지도 좌표). 아래 시트가 덮는 부분은 뺀다
   function mpVisible() {
-    var v = mpView(), sh = $("#mpSheet").getBoundingClientRect().top - v.getBoundingClientRect().top;
+    // 모아보기를 닫았을 때 보이던 지도 영역 기준 (시트를 올리는 중에도 목록이 바뀌지 않게)
+    var v = mpView(), sh = v.clientHeight - $("#mpSheetH").offsetHeight;
     var x0 = -mp.x / mp.s, y0 = (-mp.y + 64) / mp.s, x1 = (-mp.x + v.clientWidth) / mp.s, y1 = (-mp.y + Math.min(v.clientHeight, sh)) / mp.s;
     return mp.items.filter(function (it) { return it.x > x0 + 10 && it.x < x1 - 10 && it.y > y0 + 20 && it.y < y1; });
   }
@@ -1157,19 +1162,23 @@
     });
   }
   // 시트: 손가락을 따라오고, 놓으면 빠르기·위치를 보고 열거나 닫는다
-  function mpSheet(open) {
-    var sh = $("#mpSheet"), dim = $("#mpDim");
-    if (open) { mpList(); $("#mpList").scrollTop = 0; track("sheet_open"); } else mpCount();
+  // 반만 열었을 때 시트가 내려가 있는 거리 (지도 높이의 62%만큼 보이게)
+  function mpHalfY() { var sh = $("#mpSheet"), v = mpView(); return Math.max(0, sh.offsetHeight - v.clientHeight * 0.62); }
+  function mpSheet(open, full) {
+    var sh = $("#mpSheet"), dim = $("#mpDim"), was = sh.classList.contains("open");
+    if (open && !was) { mpList(); $("#mpList").scrollTop = 0; track("sheet_open"); } else if (!open) mpCount();
+    if (open && full && !sh.classList.contains("full")) track("sheet_full");
+    sh.style.setProperty("--half-y", mpHalfY().toFixed(0) + "px");
     sh.style.transform = "";
-    sh.classList.toggle("open", open); dim.classList.toggle("on", open); dim.style.opacity = open ? "1" : "0";
+    sh.classList.toggle("open", open); sh.classList.toggle("full", !!(open && full)); dim.classList.toggle("on", open); dim.style.opacity = open ? "1" : "0";
     $("#mpSheetH").setAttribute("aria-expanded", open ? "true" : "false");
   }
   (function () {
     var h = $("#mpSheetH"), sh = $("#mpSheet"), dim = $("#mpDim"), drag = null;
     var closedY = function () { return sh.offsetHeight - h.offsetHeight - (parseFloat(getComputedStyle(sh).paddingBottom) || 0); };
     h.addEventListener("pointerdown", function (e) {
-      var open = sh.classList.contains("open"), y = open ? 0 : closedY();
-      drag = { y0: e.clientY, base: y, cur: y, t: performance.now(), v: 0, moved: false, open: open };
+      var open = sh.classList.contains("open"), full = sh.classList.contains("full"), y = !open ? closedY() : full ? 0 : mpHalfY();
+      drag = { y0: e.clientY, base: y, cur: y, t: performance.now(), v: 0, moved: false, open: open, full: full };
       try { h.setPointerCapture(e.pointerId); } catch (er) {}
     });
     h.addEventListener("pointermove", function (e) {
@@ -1186,8 +1195,12 @@
     var end = function () {
       if (!drag) return; var d = drag; drag = null; sh.classList.remove("dragging");
       if (!d.moved) return mpSheet(!d.open);
-      var cy = closedY(), open = d.v < -0.35 ? true : d.v > 0.35 ? false : d.cur < cy / 2;
-      mpSheet(open);
+      // 세 자리(끝까지·반·닫힘) 중 가까운 곳으로. 빠르게 밀면 한 칸 위/아래로
+      var stops = [0, mpHalfY(), closedY()], cur = d.full ? 0 : d.open ? 1 : 2, k;
+      if (d.v < -0.35) k = Math.max(0, (d.cur < stops[1] - 8 ? 0 : 1));
+      else if (d.v > 0.35) k = Math.min(2, d.cur > stops[1] + 8 ? 2 : 1);
+      else { k = 0; for (var i = 1; i < 3; i++) if (Math.abs(d.cur - stops[i]) < Math.abs(d.cur - stops[k])) k = i; }
+      mpSheet(k < 2, k === 0);
     };
     h.addEventListener("pointerup", end); h.addEventListener("pointercancel", end);
     h.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); mpSheet(!sh.classList.contains("open")); } });
