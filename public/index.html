@@ -358,14 +358,14 @@
 
   /* ---------- 다른 사람들 고민 지도 ---------- */
   /* 지도는 '남의 고민을 보는 마을': 홈(페리윙클)과 달리 따뜻한 크림. 지도 안의 시트·말풍선·카드도 같은 색을 쓴다 */
-  html.in-map, html.in-map body { background: #F6EBCD !important; }
-  .mp { --bg: #F1E8D2; --paper: #FCF7EC; --pencil: #8C7350; --rule-paper: rgba(140,115,80,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FFFCF6; --map-ground: #F6EBCD; color: var(--ink);
+  html.in-map, html.in-map body { background: #D9DFC8 !important; }
+  .mp { --bg: #EEEBE3; --paper: #FAF8F3; --pencil: #857560; --rule-paper: rgba(120,110,92,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FBFAF6; --map-ground: #D9DFC8; color: var(--ink);
     position: absolute; inset: 0; z-index: 7; background: var(--map-ground); overflow: hidden; animation: abIn .3s cubic-bezier(.22,1,.36,1); }
   .mp.out { animation: abOut .22s ease forwards; }
   .mp-view { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
   .mp-view.drag { cursor: grabbing; }
   .mp-world { position: absolute; left: 0; top: 0; width: 1200px; height: 1500px; background: url(./map-bg.webp) 0 0 / 100% 100% no-repeat; transform-origin: 0 0; will-change: transform; }
-  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: center; padding-inline: 8px; background: linear-gradient(var(--map-ground) 55%, rgba(246,235,205,0)); pointer-events: none; }
+  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: center; padding-inline: 8px; background: linear-gradient(var(--map-ground) 55%, rgba(217,223,200,0)); pointer-events: none; }
   .mp-bar > * { pointer-events: auto; }
   .mp-bar-t { flex: 1; text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
   .my { position: absolute; width: 56px; height: 56px; margin: -46px 0 0 -28px; padding: 5px; border: 0; background: transparent; cursor: pointer; transform-origin: 28px 46px; transform: scale(var(--k, 1)); transition: transform .2s cubic-bezier(.22,1,.36,1); }
@@ -374,7 +374,7 @@
   .my.on { transform: scale(calc(var(--k, 1) * 1.16)); z-index: 2; }
   .mp-world.zooming .my { transition: none; }
   .my-n { position: absolute; left: 50%; top: 54px; transform: translateX(-50%); white-space: nowrap; font-size: 11.5px; font-weight: 700; letter-spacing: -0.2px; color: var(--ink-2); pointer-events: none;
-    text-shadow: 0 0 2px #F1E8D2, 0 0 2px #F1E8D2, 0 0 3px #F1E8D2, 0 0 4px #F1E8D2; transition: opacity .2s; }
+    text-shadow: 0 0 2px #D9DFC8, 0 0 2px #D9DFC8, 0 0 3px #D9DFC8, 0 0 4px #D9DFC8; transition: opacity .2s; }
   .mp-world.far .my-n { opacity: 0; }
   .mb-w { position: absolute; z-index: 3; width: 0; height: 0; transform-origin: 0 0; transform: scale(var(--k, 1)); }
   .mp-zoom { position: absolute; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; background: var(--paper); border: 1.5px solid var(--pencil); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
@@ -401,7 +401,7 @@
   .mp:has(.mp-sheet.open) .mp-write { opacity: 0; pointer-events: none; }
   .mp:has(.mp-sheet.open) .mb-w { opacity: 0; }
   /* 모아보기 카드: 하나씩 상자로 */
-  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 1.5px solid rgba(140,115,80,0.34); border-radius: 18px; background: #F8F2E6; cursor: pointer; transition: transform .12s; }
+  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 1.5px solid rgba(120,110,92,0.28); border-radius: 18px; background: #F7F5EF; cursor: pointer; transition: transform .12s; }
   .mp-card:active { transform: scale(.99); }
   .mp-c-meta { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 13.5px; color: var(--ink-4); letter-spacing: -0.2px; }
   .mp-c-meta b { color: var(--ink); font-weight: 700; white-space: nowrap; }
@@ -877,7 +877,7 @@
      처음엔 말풍선 없이 시작하고, 한 번 움직이면 그때부터는 화면 가운데에서 가장 가까운 털실의 고민이 열린다.
      지금은 테스트용으로 홈 털실의 고민을 띄운다 (같은 고민이 두 번씩 = 나만 그런 게 아니라는 느낌) */
   var MAP_W = 1200, MAP_H = 1500;
-  var MAP_SPOTS = [[853, 280], [970, 273], [918, 365], [246, 312], [362, 293], [323, 384], [1041, 586], [1125, 625], [906, 651], [446, 775], [517, 781], [1033, 830], [976, 1003], [1067, 1016], [246, 1276], [362, 1263], [304, 1354], [918, 1341], [1009, 1361], [679, 1390], [362, 990], [634, 931]];
+  var MAP_SPOTS = [[470,510], [610,470], [740,640], [560,650], [430,760], [620,860], [760,820], [500,960], [210,240], [285,280], [580,225], [655,255], [970,215], [1045,250], [880,1050], [950,1085], [165,1240], [240,1275], [600,1360], [230,690], [1050,600], [770,1180]]; // 앞 8개는 지도를 열었을 때 보이는 가운데 풀밭, 나머지는 공터
   var MAP_FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   var HEART = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
   var FLAG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>';
@@ -926,13 +926,14 @@
   $("#mpIn").addEventListener("click", function () { mpZoomBtn(1.45); });
   $("#mpOut").addEventListener("click", function () { mpZoomBtn(1 / 1.45); });
   // 가운데(처음 보는 자리)에서 가까운 자리부터 채운다: 최신 고민이 먼저 눈에 띄게
-  var MAP_ORDER = MAP_SPOTS.slice().sort(function (a, b) { return Math.hypot(a[0] - 760, a[1] - 660) - Math.hypot(b[0] - 760, b[1] - 660); });
+  var MAP_C = [600, 720]; // 지도를 열 때 화면 가운데에 오는 곳 (가운데 풀밭)
+  var MAP_ORDER = MAP_SPOTS.slice().sort(function (a, b) { return Math.hypot(a[0] - MAP_C[0], a[1] - MAP_C[1]) - Math.hypot(b[0] - MAP_C[0], b[1] - MAP_C[1]); });
   function mpSamples(start, n) {
     var cast = window.__cast || [], out = [];
     for (var i = start; i < start + n; i++) {
       var c = cast[i % (cast.length || 1)]; if (!c) break;
       out.push(LIVE ? { id: "s" + i, t: c.t, nick: "예시 털실", n: 0, sample: true }
-                    : { id: "w" + i, t: c.t, nick: NAME_A[(i * 5 + 2) % NAME_A.length] + " " + NAME_B[(i * 3 + 1) % NAME_B.length], n: 2 + (i * 7) % 23,
+                    : { id: "w" + i, t: c.t, nick: NAME_A[(i * 5 + 2) % NAME_A.length] + " " + NAME_B[(i * 2 + 1) % NAME_B.length], n: 2 + (i * 7) % 23,
                         at: new Date(Date.now() - [2, 9, 21, 38, 55, 80, 130, 190, 260, 410, 600, 900, 1300, 1500, 2100, 2900, 3600, 4300, 5800, 7200, 9000, 12000][i % 22] * 60000).toISOString() });
     }
     return out;
@@ -1178,7 +1179,7 @@
     app.append(pg); pg.hidden = false; pg.classList.remove("out"); mapBg(true);
     track("map_open"); mpMovedOnce = false;
     mpLoad(); mp.started = false; mp.s = 1; mpSheet(false);
-    var v = mpView(); mp.x = v.clientWidth / 2 - 760; mp.y = v.clientHeight / 2 - 660; mpClamp(); mpApply(); mpCount();
+    var v = mpView(); mp.x = v.clientWidth / 2 - MAP_C[0]; mp.y = v.clientHeight / 2 - MAP_C[1]; mpClamp(); mpApply(); mpCount();
     if (window.__pile) window.__pile.pause();
     $("#mpBack").focus();
   }
@@ -1186,7 +1187,7 @@
   var mpReturn = false;
   function mapBg(on) {
     document.documentElement.classList.toggle("in-map", on);
-    var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = on ? "#F1E8D2" : "#C5CEEF";
+    var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = on ? "#D9DFC8" : "#C5CEEF";
   }
   // 지도는 그대로 둔 채(위치·확대·열린 말풍선) 잠깐 가린다. 쓰기가 끝나 홈으로 오면 다시 보여 준다
   function hideMapForWrite(then) {
