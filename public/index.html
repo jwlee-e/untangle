@@ -359,7 +359,7 @@
 
   /* ---------- 다른 사람들 고민 지도 ---------- */
   /* 지도는 '남의 고민을 보는 마을': 홈(페리윙클)과 달리 따뜻한 크림. 지도 안의 시트·말풍선·카드도 같은 색을 쓴다 */
-  html.in-map, html.in-map body { background: #D9DFC8 !important; }
+  html.in-map, html.in-map body { background: linear-gradient(#D9DFC8 50%, #F1EFE9 50%) !important; }
   .mp { --bg: #F1EFE9; --paper: #FBFAF6; --pencil: #857560; --rule-paper: rgba(120,110,92,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FCFBF8; --map-ground: #D9DFC8; color: var(--ink);
     position: absolute; inset: 0; z-index: 7; background: var(--map-ground); overflow: hidden; animation: abIn .3s cubic-bezier(.22,1,.36,1); }
   .mp.out { animation: abOut .22s ease forwards; }
@@ -378,7 +378,7 @@
     text-shadow: 0 0 2px #D9DFC8, 0 0 2px #D9DFC8, 0 0 3px #D9DFC8, 0 0 4px #D9DFC8; transition: opacity .2s; }
   .mp-world.far .my-n { opacity: 0; }
   .mb-w { position: absolute; z-index: 3; width: 0; height: 0; transform-origin: 0 0; transform: scale(var(--k, 1)); }
-  .mp-zoom { position: absolute; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 1.5px solid var(--pencil); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
+  .mp-zoom { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 1.5px solid var(--pencil); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
   .mp-zoom button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
   .mp-zoom button:disabled { color: var(--ink-4); cursor: default; }
   .mp-zoom i { height: 1px; margin: 0 8px; background: var(--rule-paper); }
@@ -397,8 +397,8 @@
   .mp-sheet.open .mp-list, .mp-sheet.dragging .mp-list { opacity: 1; }
   .mp-dim { position: absolute; inset: 0; z-index: 4; background: rgba(23,24,42,.28); opacity: 0; pointer-events: none; transition: opacity .42s ease; }
   .mp-dim.on { pointer-events: auto; }
-  .mp-write { position: absolute; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 3; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; height: 46px; padding: 0 18px 0 16px; border: 0; border-radius: 999px; background: var(--ink); color: var(--bg); font: inherit; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; box-shadow: 0 10px 20px -12px rgba(23,24,42,.7); cursor: pointer; transition: opacity .2s, transform .15s; }
-  .mp-write:active { transform: translateX(-50%) scale(.97); }
+  .mp-write { position: absolute; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 3; display: inline-flex; align-items: center; gap: 6px; height: 46px; padding: 0 18px 0 16px; border: 0; border-radius: 999px; background: var(--ink); color: var(--bg); font: inherit; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; box-shadow: 0 10px 20px -12px rgba(23,24,42,.7); cursor: pointer; transition: opacity .2s, transform .15s; }
+  .mp-write:active { transform: scale(.97); }
   .mp:has(.mp-sheet.open) .mp-write { opacity: 0; pointer-events: none; }
   .mp:has(.mp-sheet.open) .mb-w { opacity: 0; }
   /* 모아보기 카드: 하나씩 상자로 */
@@ -411,7 +411,7 @@
   .mp-c-rep { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; min-height: 30px; padding: 0 4px; margin-right: -4px; border: 0; background: transparent; font: inherit; font-size: 12.5px; color: var(--ink-2); cursor: pointer; }
   .mp-c-rep svg { width: 18px; height: 18px; flex: none; }
   .mp-c-q { margin: 0; font-size: 17px; line-height: 25px; font-weight: 500; letter-spacing: -0.4px; word-break: keep-all; color: var(--ink); }
-  .mp-c-f { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+  .mp-c-f { display: flex; align-items: center; justify-content: flex-start; margin-top: 2px; }
   .mp-c-f button { display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 0 6px; margin: 0 -6px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-2); cursor: pointer; border-radius: 8px; }
   
   .mp-c-f .like b { font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -1150,9 +1150,7 @@
       var draw = function () { var on = !!readSet("sab:likes")[it.id]; like.setAttribute("aria-pressed", on ? "true" : "false"); like.innerHTML = HEART + "<span>공감해요</span><b>" + it.n + "</b>"; };
       draw();
       like.addEventListener("click", function (e) { e.stopPropagation(); mpToggleLike(it); draw(); });
-      var go = el("button", "ask"); go.type = "button"; go.innerHTML = '<span>나도 답 들어 보기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
-      go.addEventListener("click", function (e) { e.stopPropagation(); mpAsk(it.t); });
-      f.append(like, go);
+      f.append(like);
       c.append(meta, el("p", "mp-c-q", it.t), f);
       c.addEventListener("click", function () { mpSheet(false); mpGoTo(it); });
       L.append(c);
