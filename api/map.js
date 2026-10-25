@@ -2,7 +2,8 @@
 // 부풀려진 생각(small, pressure)만 내보낸다. 무거운 글(heavy), 위험 신호(risk), 해를 끼친 글(skip), 좋은 일·장난·애매한 글, 신고로 숨긴 글은 내보내지 않는다. (daily, regret은 예전 말투 때 저장된 글) 익명 번호도 내보내지 않는다.
 const db = require("./_db");
 
-function faceOf(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h % 9; }
+// 털실 얼굴은 고민마다 정한다 (사람 기준이 아니라서 같은 사람이 쓴 글끼리 묶여 보이지 않는다)
+function faceOf(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h % 12; }
 
 module.exports = async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
@@ -20,7 +21,7 @@ module.exports = async function handler(req, res) {
       liked = new Set((l.data || []).map(function (x) { return x.entry_id; }));
     }
     const items = rows.map(function (x) {
-      return { id: x.id, text: x.masked_text, nick: x.nickname || "익명 털실", likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.anon_id || x.id), at: x.created_at };
+      return { id: x.id, text: x.masked_text, nick: x.nickname || "익명 털실", likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.id), at: x.created_at };
     });
     return res.status(200).json({ items: items });
   } catch (e) {
