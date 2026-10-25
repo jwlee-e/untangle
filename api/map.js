@@ -3,10 +3,11 @@
 const db = require("./_db");
 
 // 털실 얼굴은 고민마다 정한다 (사람 기준이 아니라서 같은 사람이 쓴 글끼리 묶여 보이지 않는다)
-// 이름도 고민마다 새로 뽑는다: 앞말만 무작위, 뒤는 '감정뭉치'로 고정. 쓴 사람이 정한 이름은 지도에 내보내지 않는다
-const NAME_A = ["느긋한", "말랑한", "포근한", "동글동글한", "꼬불꼬불한", "보송보송한", "차분한", "느슨한", "졸린", "새침한", "수줍은", "덤덤한"];
+// 이름도 고민마다 새로 뽑는다: 앞은 감정, 뒤는 털실 (화면의 무작위 이름과 같은 낱말). 쓴 사람이 정한 이름은 지도에 내보내지 않는다
+const NAME_A = ["시무룩한", "머쓱한", "찜찜한", "뒤척이는", "뾰로통한", "울적한", "속상한", "아리송한", "심란한", "들뜬", "설레는", "멍한"];
+const NAME_B = ["털뭉치", "실타래", "실뭉치"];
 
-function nickOf(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return NAME_A[h % NAME_A.length] + " 감정뭉치"; }
+function nickOf(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return NAME_A[h % NAME_A.length] + " " + NAME_B[Math.floor(h / NAME_A.length) % NAME_B.length]; }
 function faceOf(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h % 12; }
 
 module.exports = async function handler(req, res) {

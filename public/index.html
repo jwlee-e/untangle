@@ -957,7 +957,7 @@
     mpBuild([]);
     fetch("/api/map?anon=" + encodeURIComponent(anonId())).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
       if ($("#mapPage").hidden) return;
-      var real = (j && j.items || []).map(function (d) { return { id: d.id, t: d.text, nick: d.nick || "익명 감정뭉치", n: d.likes || 0, liked: !!d.liked, face: d.face, at: d.at }; });
+      var real = (j && j.items || []).map(function (d) { return { id: d.id, t: d.text, nick: d.nick || "익명 털뭉치", n: d.likes || 0, liked: !!d.liked, face: d.face, at: d.at }; });
       var list = real.length < 8 ? real.concat(mpSamples(0, 8 - real.length)) : real;
       mpBuild(list); mpApply(); mpCount(); mpPick();
     });
@@ -1325,16 +1325,20 @@
     tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'
   };
   // 계정 대신 기기에 하나씩 주는 무작위 이름. 나중에 익명으로 글이 보일 때도 이 이름을 쓸 수 있다
-  var NAME_A = ["느긋한", "말랑한", "포근한", "동글동글한", "꼬불꼬불한", "보송보송한", "차분한", "느슨한", "졸린", "새침한", "수줍은", "덤덤한"];
-  var NAME_B = ["감정뭉치"]; // 뒤는 고정, 앞만 무작위
+  var NAME_A = ["시무룩한", "머쓱한", "찜찜한", "뒤척이는", "뾰로통한", "울적한", "속상한", "아리송한", "심란한", "들뜬", "설레는", "멍한"];
+  var NAME_B = ["털뭉치", "실타래", "실뭉치"]; // 앞은 감정, 뒤는 털실: 털처럼 보이지만 사실은 감정
   var FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   function myName(fresh) {
     var saved = null;
     if (!fresh) { try { saved = JSON.parse(localStorage.getItem("sab:me") || "null"); } catch (e) {} }
     if (saved && saved.name && saved.face) {
       if (!saved.body) saved.body = CH.body(saved.name);
-      // 예전 이름(졸린 뜨개공 등)은 앞말은 두고 뒤만 '감정뭉치'로
-      var sp = saved.name.split(" "); if (sp.length === 2 && sp[1] !== NAME_B[0]) { saved.name = sp[0] + " " + NAME_B[0]; try { localStorage.setItem("sab:me", JSON.stringify(saved)); } catch (e) {} }
+      // 예전 낱말로 만든 이름(졸린 뜨개공 등)은 새 낱말로 다시 뽑는다. 털실 얼굴과 몸통은 그대로
+      var sp = saved.name.split(" ");
+      if (sp.length !== 2 || NAME_A.indexOf(sp[0]) < 0 || NAME_B.indexOf(sp[1]) < 0) {
+        saved.name = NAME_A[Math.floor(Math.random() * NAME_A.length)] + " " + NAME_B[Math.floor(Math.random() * NAME_B.length)];
+        try { localStorage.setItem("sab:me", JSON.stringify(saved)); } catch (e) {}
+      }
       return saved;
     }
     var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
