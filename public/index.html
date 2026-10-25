@@ -921,8 +921,8 @@
   }
   function mpClamp() {
     var v = mpView(); mp.s = Math.max(mpMin(), Math.min(MP_MAX, mp.s));
-    // 위는 제목 줄, 아래는 모아보기 손잡이와 '내 고민 꺼내기'에 가려지는 만큼 더 끌 수 있게 여유를 둔다
-    var EXT = 56, EXB = 140;
+    // 위는 제목 줄, 아래는 모아보기 손잡이에 가려지는 만큼만 더 끌 수 있게 여유를 둔다 ('내 고민 꺼내기'는 지도 위에 겹쳐 둔다)
+    var EXT = 56, EXB = ($("#mpSheetH") || {}).offsetHeight || 64;
     var minX = Math.min(0, v.clientWidth - MAP_W * mp.s), minY = Math.min(0, v.clientHeight - MAP_H * mp.s) - EXB;
     mp.x = Math.max(minX, Math.min(0, mp.x)); mp.y = Math.max(minY, Math.min(EXT, mp.y));
   }
