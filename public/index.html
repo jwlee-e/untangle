@@ -957,7 +957,7 @@
     mpBuild([]);
     fetch("/api/map?anon=" + encodeURIComponent(anonId())).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
       if ($("#mapPage").hidden) return;
-      var real = (j && j.items || []).map(function (d) { return { id: d.id, t: d.text, nick: d.nick || "익명 털실", n: d.likes || 0, liked: !!d.liked, face: d.face, at: d.at }; });
+      var real = (j && j.items || []).map(function (d) { return { id: d.id, t: d.text, nick: d.nick || "익명 감정뭉치", n: d.likes || 0, liked: !!d.liked, face: d.face, at: d.at }; });
       var list = real.length < 8 ? real.concat(mpSamples(0, 8 - real.length)) : real;
       mpBuild(list); mpApply(); mpCount(); mpPick();
     });
@@ -1326,12 +1326,17 @@
   };
   // 계정 대신 기기에 하나씩 주는 무작위 이름. 나중에 익명으로 글이 보일 때도 이 이름을 쓸 수 있다
   var NAME_A = ["느긋한", "말랑한", "포근한", "동글동글한", "꼬불꼬불한", "보송보송한", "차분한", "느슨한", "졸린", "새침한", "수줍은", "덤덤한"];
-  var NAME_B = ["털실", "실타래", "실뭉치", "뜨개공", "보풀"];
+  var NAME_B = ["감정뭉치"]; // 뒤는 고정, 앞만 무작위
   var FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   function myName(fresh) {
     var saved = null;
     if (!fresh) { try { saved = JSON.parse(localStorage.getItem("sab:me") || "null"); } catch (e) {} }
-    if (saved && saved.name && saved.face) { if (!saved.body) saved.body = CH.body(saved.name); return saved; }
+    if (saved && saved.name && saved.face) {
+      if (!saved.body) saved.body = CH.body(saved.name);
+      // 예전 이름(졸린 뜨개공 등)은 앞말은 두고 뒤만 '감정뭉치'로
+      var sp = saved.name.split(" "); if (sp.length === 2 && sp[1] !== NAME_B[0]) { saved.name = sp[0] + " " + NAME_B[0]; try { localStorage.setItem("sab:me", JSON.stringify(saved)); } catch (e) {} }
+      return saved;
+    }
     var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
     var me = { name: pick(NAME_A) + " " + pick(NAME_B), face: pick(FACES), body: pick(CH.BODIES) };
     try { localStorage.setItem("sab:me", JSON.stringify(me)); } catch (e) {}
@@ -2491,7 +2496,8 @@ function drawPose(ctx, P, opt) {
   // 털실 몸통(눈을 지운 것)과 얼굴(눈만)을 따로 만든다: 몸통은 굴러가고 얼굴은 늘 똑바로
   // 몸통 그림과 눈 그림을 따로 둔다: 몸통은 굴러가고 눈은 늘 똑바로. 키는 "몸통/눈" (예: "square/tired")
   var CHM = window.CH.META;
-  function chKey(e, seed) { return String(e || "").indexOf("/") > 0 ? e : CH.body(seed) + "/" + CH.eye(e || "gomin"); }
+  // 홈 털실 더미는 둥근 몸통만 (도형이 섞이면 어수선하다). 눈만 여러 가지
+  function chKey(e, seed) { return String(e || "").indexOf("/") > 0 ? e : "round/" + CH.eye(e || "gomin"); }
   function chInfo(v) { var p = String(v).split("/"), b = CHM.bodies[p[0]]; return b ? { bx: b.ax, by: b.ay, hit: b.hit } : null; }
   function bodySprite(v) { return IMG["b-" + String(v).split("/")[0]] || null; }
   function faceSprite(v) {
