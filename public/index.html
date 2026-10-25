@@ -358,14 +358,14 @@
 
   /* ---------- 다른 사람들 고민 지도 ---------- */
   /* 지도는 '남의 고민을 보는 마을': 홈(페리윙클)과 달리 따뜻한 크림. 지도 안의 시트·말풍선·카드도 같은 색을 쓴다 */
-  html.in-map, html.in-map body { background: #F1E8D2 !important; }
-  .mp { --bg: #F1E8D2; --paper: #FCF7EC; --pencil: #8C7350; --rule-paper: rgba(140,115,80,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FFFCF6; --map-ground: #F1E8D2; color: var(--ink);
+  html.in-map, html.in-map body { background: #F6EBCD !important; }
+  .mp { --bg: #F1E8D2; --paper: #FCF7EC; --pencil: #8C7350; --rule-paper: rgba(140,115,80,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FFFCF6; --map-ground: #F6EBCD; color: var(--ink);
     position: absolute; inset: 0; z-index: 7; background: var(--map-ground); overflow: hidden; animation: abIn .3s cubic-bezier(.22,1,.36,1); }
   .mp.out { animation: abOut .22s ease forwards; }
   .mp-view { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
   .mp-view.drag { cursor: grabbing; }
   .mp-world { position: absolute; left: 0; top: 0; width: 1200px; height: 1500px; background: url(./map-bg.webp) 0 0 / 100% 100% no-repeat; transform-origin: 0 0; will-change: transform; }
-  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: center; padding-inline: 8px; background: linear-gradient(var(--map-ground) 55%, rgba(241,232,210,0)); pointer-events: none; }
+  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: center; padding-inline: 8px; background: linear-gradient(var(--map-ground) 55%, rgba(246,235,205,0)); pointer-events: none; }
   .mp-bar > * { pointer-events: auto; }
   .mp-bar-t { flex: 1; text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
   .my { position: absolute; width: 56px; height: 56px; margin: -46px 0 0 -28px; padding: 5px; border: 0; background: transparent; cursor: pointer; transform-origin: 28px 46px; transform: scale(var(--k, 1)); transition: transform .2s cubic-bezier(.22,1,.36,1); }
@@ -459,7 +459,7 @@
       <button class="field" id="homeField" type="button">
         <span>뭐가 자꾸 머릿속에 맴돌아요?</span>
       </button>
-      <button class="map-btn" id="mapBtn" type="button" aria-label="다른 사람들 고민 보기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></svg></button>
+      <button class="map-btn" id="mapBtn" type="button" aria-label="다른 고민 둘러보기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15M9 3.236v15"/></svg></button>
     </div>
   </div>
 
@@ -499,13 +499,13 @@
   <div class="dock" id="dock"></div>
 
 
-  <section class="mp" id="mapPage" hidden aria-label="다른 사람들 고민">
+  <section class="mp" id="mapPage" hidden aria-label="다른 고민 둘러보기">
     <div class="mp-view" id="mpView"><div class="mp-world" id="mpWorld"></div></div>
     <div class="mp-zoom"><button type="button" id="mpIn" aria-label="확대"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button><i></i><button type="button" id="mpOut" aria-label="축소"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button></div>
     <div class="mp-dim" id="mpDim"></div>
     <button type="button" class="mp-write" id="mpWrite"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>내 고민 꺼내기</button>
     <div class="mp-sheet" id="mpSheet"><div class="mp-sh-h" id="mpSheetH" role="button" tabindex="0" aria-expanded="false"><span class="grab"></span><span class="mp-sh-t"><b id="mpCount">이 근처 고민</b></span></div><div class="mp-list" id="mpList"></div></div>
-    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="mp-bar-t">다른 사람들 고민</span><span style="width:44px"></span></div>
+    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="mp-bar-t">다른 고민 둘러보기</span><span style="width:44px"></span></div>
   </section>
   <section class="ab" id="aboutPage" hidden aria-label="사실은 별거 아닌 이야기">
     <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="ab-bar-t">사실은 별거 아닌 이야기</span></div>
@@ -877,7 +877,7 @@
      처음엔 말풍선 없이 시작하고, 한 번 움직이면 그때부터는 화면 가운데에서 가장 가까운 털실의 고민이 열린다.
      지금은 테스트용으로 홈 털실의 고민을 띄운다 (같은 고민이 두 번씩 = 나만 그런 게 아니라는 느낌) */
   var MAP_W = 1200, MAP_H = 1500;
-  var MAP_SPOTS = [[470, 560], [560, 600], [620, 540], [450, 470], [880, 600], [940, 720], [1080, 760], [560, 200], [240, 300], [180, 420], [380, 820], [520, 900], [860, 980], [600, 1140], [380, 1260], [520, 1440], [880, 1250], [1080, 1150], [1060, 560], [260, 1120], [760, 660], [430, 770]];
+  var MAP_SPOTS = [[853, 280], [970, 273], [918, 365], [246, 312], [362, 293], [323, 384], [1041, 586], [1125, 625], [906, 651], [446, 775], [517, 781], [1033, 830], [976, 1003], [1067, 1016], [246, 1276], [362, 1263], [304, 1354], [918, 1341], [1009, 1361], [679, 1390], [362, 990], [634, 931]];
   var MAP_FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   var HEART = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
   var FLAG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg>';
