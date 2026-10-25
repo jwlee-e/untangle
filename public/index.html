@@ -360,7 +360,7 @@
   /* ---------- 다른 사람들 고민 지도 ---------- */
   /* 지도는 '남의 고민을 보는 마을': 홈(페리윙클)과 달리 따뜻한 크림. 지도 안의 시트·말풍선·카드도 같은 색을 쓴다 */
   html.in-map, html.in-map body { background: #D9DFC8 !important; }
-  .mp { --bg: #F7F5F0; --paper: #FBFAF6; --pencil: #857560; --rule-paper: rgba(120,110,92,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FBFAF6; --map-ground: #D9DFC8; color: var(--ink);
+  .mp { --bg: #F1EFE9; --paper: #FBFAF6; --pencil: #857560; --rule-paper: rgba(120,110,92,0.22); --ink: #17150F; --ink-2: #4F493E; --ink-3: #6E675A; --ink-4: #9A917F; --line: rgba(23,21,15,0.22); --rule: rgba(23,21,15,0.08); --card: #FCFBF8; --map-ground: #D9DFC8; color: var(--ink);
     position: absolute; inset: 0; z-index: 7; background: var(--map-ground); overflow: hidden; animation: abIn .3s cubic-bezier(.22,1,.36,1); }
   .mp.out { animation: abOut .22s ease forwards; }
   .mp-view { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
@@ -402,7 +402,7 @@
   .mp:has(.mp-sheet.open) .mp-write { opacity: 0; pointer-events: none; }
   .mp:has(.mp-sheet.open) .mb-w { opacity: 0; }
   /* 모아보기 카드: 하나씩 상자로 */
-  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 1.5px solid rgba(120,110,92,0.24); border-radius: 18px; background: var(--bg); cursor: pointer; transition: transform .12s; }
+  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 0; border-radius: 18px; background: var(--card); cursor: pointer; transition: transform .12s; }
   .mp-card:active { transform: scale(.99); }
   .mp-c-meta { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 13.5px; color: var(--ink-4); letter-spacing: -0.2px; }
   .mp-c-meta b { color: var(--ink); font-weight: 700; white-space: nowrap; }
@@ -411,12 +411,13 @@
   .mp-c-rep { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; min-height: 30px; padding: 0 4px; margin-right: -4px; border: 0; background: transparent; font: inherit; font-size: 12.5px; color: var(--ink-4); cursor: pointer; }
   .mp-c-q { margin: 0; font-size: 17px; line-height: 25px; font-weight: 500; letter-spacing: -0.4px; word-break: keep-all; color: var(--ink); }
   .mp-c-f { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
-  .mp-c-f button { display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 0 6px; margin: 0 -6px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-3); cursor: pointer; border-radius: 8px; }
-  .mp-c-f .like svg { width: 20px; height: 20px; }
+  .mp-c-f button { display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 0 6px; margin: 0 -6px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-2); cursor: pointer; border-radius: 8px; }
+  
   .mp-c-f .like b { font-weight: 600; font-variant-numeric: tabular-nums; }
   .mp-c-f .like[aria-pressed="true"] { color: #D9603B; }
   .mp-c-f .like[aria-pressed="true"] svg { fill: currentColor; }
-  .mp-c-f .ask { color: var(--ink); font-weight: 700; gap: 2px; font-size: 13.5px; }
+  .mp-c-f .ask { gap: 3px; }
+  .mp-c-f button svg { width: 18px; height: 18px; flex: none; }
   .mp-sheet.open .mp-card { animation: cardIn .4s cubic-bezier(.22,1,.36,1) backwards; animation-delay: calc(var(--i, 0) * 40ms + 60ms); }
   @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } }
   .mp-empty { padding: 28px 0; text-align: center; font-size: 14px; color: var(--ink-4); }
@@ -901,7 +902,7 @@
   var MAP_SPOTS = [[470,510], [610,470], [740,640], [560,650], [430,760], [620,860], [760,820], [500,960], [210,240], [285,280], [580,225], [655,255], [970,215], [1045,250], [880,1050], [950,1085], [165,1240], [240,1275], [600,1360], [230,690], [1050,600], [770,1180]]; // 앞 8개는 지도를 열었을 때 보이는 가운데 풀밭, 나머지는 공터
   var MAP_FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   var HEART = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
-  var FLAG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
+  var FLAG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1-1v-1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1a1 1 0 0 0 1 1z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg>';
   function readSet(k) { try { return JSON.parse(localStorage.getItem(k) || "{}") || {}; } catch (e) { return {}; } }
   function writeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   // x, y: 지도를 옮긴 양(화면 px), s: 배율. 털실·말풍선은 배율과 상관없이 같은 크기로 보이게 --k(=1/s)로 되돌린다
