@@ -32,6 +32,7 @@
   button, textarea { font-family: inherit; color: inherit; }
   button { -webkit-touch-callout: none; }
   :is(button, input):focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  html[data-input="pointer"] :focus-visible, html[data-input="pointer"] .switch input:focus-visible + i { outline: none; }
   textarea:focus, textarea:focus-visible { outline: none; }
 
   .app { position: relative; max-width: 440px; margin: 0 auto; height: calc(var(--vh) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; padding-inline: 20px; padding-block: 0 12px; overflow: hidden; }
@@ -239,8 +240,9 @@
   .ab.out { animation: abOut .22s ease forwards; }
   @keyframes abIn { from { transform: translateX(22px); opacity: 0; } to { transform: none; opacity: 1; } }
   @keyframes abOut { to { transform: translateX(22px); opacity: 0; } }
-  .ab-bar { flex: none; height: 52px; display: flex; align-items: center; gap: 2px; padding-inline: 8px; }
-  .ab-bar-t { font-size: 15px; font-weight: 700; }
+  /* 모든 화면의 위쪽 줄: 높이 52, 왼쪽 뒤로(44), 가운데 제목 17px */
+  .ab-bar { position: relative; flex: none; height: 52px; display: flex; align-items: center; justify-content: flex-start; padding-inline: 8px; }
+  .ab-bar-t { position: absolute; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; max-width: calc(100% - 120px); overflow: hidden; text-overflow: ellipsis; }
   .ab-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 22px 24px; -webkit-overflow-scrolling: touch; }
   .ab-hero { padding: 18px 0 30px; }
   .ab h1 { margin: 0; font-size: 28px; line-height: 38px; font-weight: 800; letter-spacing: -1px; }
@@ -293,8 +295,6 @@
   .pg-mail { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 14px; border-radius: 12px; background: var(--paper); font-size: 15px; font-weight: 600; margin: 6px 0 10px; }
 
   /* 설정 메뉴: 아이콘 + 큰 글씨, 구분선 없이 */
-  .pg .ab-bar { position: relative; justify-content: flex-start; }
-  .pg .ab-bar-t { position: absolute; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; max-width: calc(100% - 120px); overflow: hidden; text-overflow: ellipsis; }
   .me-card { display: flex; align-items: center; gap: 16px; width: 100%; padding: 14px 0 22px; }
   .me-re { margin-right: -10px; color: var(--ink-2); }
   .me-av { width: 64px; height: 64px; flex: none; border-radius: 18px; background: var(--paper); display: grid; place-items: center; }
@@ -366,9 +366,9 @@
   .mp-view { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
   .mp-view.drag { cursor: grabbing; }
   .mp-world { position: absolute; left: 0; top: 0; width: 1200px; height: 1500px; background: url(./map-bg.webp) 0 0 / 100% 100% no-repeat; transform-origin: 0 0; will-change: transform; }
-  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: center; padding-inline: 8px; background: linear-gradient(var(--map-ground) 55%, rgba(217,223,200,0)); pointer-events: none; }
+  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: flex-start; padding: 4px 8px 0; background: linear-gradient(var(--map-ground) 55%, rgba(217,223,200,0)); pointer-events: none; }
   .mp-bar > * { pointer-events: auto; }
-  .mp-bar-t { flex: 1; text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
+  .mp-bar-t { flex: 1; text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; line-height: 44px; }
   .my { position: absolute; width: 56px; height: 56px; margin: -46px 0 0 -28px; padding: 5px; border: 0; background: transparent; cursor: pointer; transform-origin: 28px 46px; transform: scale(var(--k, 1)); transition: transform .2s cubic-bezier(.22,1,.36,1); }
   .my img { width: 46px; height: 46px; display: block; pointer-events: none; -webkit-user-drag: none; }
   .my::after { content: ""; position: absolute; left: 11px; bottom: 2px; width: 34px; height: 8px; border-radius: 50%; background: rgba(110,90,55,.22); z-index: -1; }
@@ -404,8 +404,7 @@
   .mp:has(.mp-sheet.open) .mp-write { opacity: 0; pointer-events: none; }
   .mp:has(.mp-sheet.open) .mb-w { opacity: 0; }
   /* 모아보기 카드: 하나씩 상자로 */
-  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 0; border-radius: 18px; background: var(--card); cursor: pointer; transition: transform .12s; }
-  .mp-card:active { transform: scale(.99); }
+  .mp-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 12px; border: 0; border-radius: 18px; background: var(--card); }
   .mp-c-meta { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 13.5px; color: var(--ink-4); letter-spacing: -0.2px; }
   .mp-c-meta b { color: var(--ink); font-weight: 700; white-space: nowrap; }
   .mp-c-meta span { white-space: nowrap; }
@@ -424,8 +423,7 @@
   .mp-sheet.open .mp-card { animation: cardIn .4s cubic-bezier(.22,1,.36,1) backwards; animation-delay: calc(var(--i, 0) * 40ms + 60ms); }
   @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } }
   .mp-empty { padding: 28px 0; text-align: center; font-size: 14px; color: var(--ink-4); }
-  .mp-total { margin: 0 2px -2px; font-size: 12.5px; font-weight: 600; color: var(--ink-4); letter-spacing: -0.2px; }
-  .mp-card.off-map { cursor: default; }
+  .mp-total { display: flex; justify-content: space-between; margin: 0 4px -2px; font-size: 12.5px; font-weight: 600; color: var(--ink-4); letter-spacing: -0.2px; font-variant-numeric: tabular-nums; }
   @media (prefers-reduced-motion: reduce) { .mp-sheet, .mp-dim { transition: none; } .mp-sheet.open .mp-card { animation: none; } }
   .mp:has(.mp-sheet.open) .mp-zoom { opacity: 0; pointer-events: none; }
   .mp-zoom { transition: opacity .2s; }
@@ -603,6 +601,12 @@
   };
   window.addEventListener("resize", function () { window.drawFloor(); });
   window.addEventListener("load", function () { window.drawFloor(); });
+  // 마지막으로 쓴 입력 방식: 손가락·마우스면 포커스 테두리를 숨기고, 키보드(Tab)면 보여 준다
+  (function () {
+    var d = document.documentElement; d.setAttribute("data-input", "pointer");
+    window.addEventListener("pointerdown", function () { d.setAttribute("data-input", "pointer"); }, true);
+    window.addEventListener("keydown", function (e) { if (e.key === "Tab" || e.key.indexOf("Arrow") === 0) d.setAttribute("data-input", "key"); }, true);
+  })();
   window.roughBubble = function (x, y, w, h, r, tail, seed) {
     var P = [], step = 3, PI = Math.PI;
     var line = function (x0, y0, x1, y1) { var L = Math.hypot(x1 - x0, y1 - y0), n = Math.max(1, Math.round(L / step)); for (var i = 0; i < n; i++) { var k = i / n; P.push([x0 + (x1 - x0) * k, y0 + (y1 - y0) * k]); } };
@@ -1164,13 +1168,13 @@
     if (s < 60) return "방금"; if (s < 3600) return Math.floor(s / 60) + "분 전"; if (s < 86400) return Math.floor(s / 3600) + "시간 전";
     if (s < 86400 * 30) return Math.floor(s / 86400) + "일 전"; return Math.floor(s / 86400 / 30) + "달 전";
   }
-  function mpTotal() { var t = $("#mpTotal"); if (t) t.textContent = "최신순 · 총 " + (typeof mp.total === "number" ? Math.max(mp.total, mp.all.filter(function (x) { return !x.sample; }).length) + mp.all.filter(function (x) { return x.sample; }).length : mp.all.length) + "개"; }
+  function mpTotal() { var t = $("#mpTotal"); if (t) t.textContent = "총 " + (typeof mp.total === "number" ? Math.max(mp.total, mp.all.filter(function (x) { return !x.sample; }).length) + mp.all.filter(function (x) { return x.sample; }).length : mp.all.length) + "개"; }
   function mpList() {
     var L = $("#mpList");
     var all = mp.all.slice().sort(function (a, b) { if (!a.at && !b.at) return 0; if (!a.at) return 1; if (!b.at) return -1; return a.at < b.at ? 1 : -1; });
     L.textContent = "";
     if (!all.length) { L.append(el("p", "mp-empty", "아직 올라온 고민이 없어요")); return; }
-    L.append(el("p", "mp-total", "")); L.lastChild.id = "mpTotal"; mpTotal();
+    var tr = el("div", "mp-total"); tr.append(el("span", "", "최신순"), el("span", "", "")); tr.lastChild.id = "mpTotal"; L.append(tr); mpTotal();
     all.forEach(function (it, i) { L.append(mpCard(it, i)); });
   }
   function mpCard(it, i) {
@@ -1190,8 +1194,6 @@
       like.addEventListener("click", function (e) { e.stopPropagation(); mpToggleLike(it); draw(); });
       f.append(like);
       c.append(meta, el("p", "mp-c-q", it.t), f);
-      // 지도에 있는 고민이면 그 털실로 데려간다
-      if (it.el) c.addEventListener("click", function () { mpSheet(false); mpGoTo(it); }); else c.classList.add("off-map");
       return c;
   }
   // 시트: 손가락을 따라오고, 놓으면 빠르기·위치를 보고 열거나 닫는다
