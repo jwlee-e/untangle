@@ -3,6 +3,10 @@
 const db = require("./_db");
 
 // 털실 얼굴은 고민마다 정한다 (사람 기준이 아니라서 같은 사람이 쓴 글끼리 묶여 보이지 않는다)
+// 이름도 고민마다 새로 뽑는다 (화면의 무작위 이름과 같은 낱말). 쓴 사람이 정한 이름은 지도에 내보내지 않는다
+const NAME_A = ["느긋한", "말랑한", "포근한", "동글동글한", "꼬불꼬불한", "보송보송한", "차분한", "느슨한", "졸린", "새침한", "수줍은", "덤덤한"];
+const NAME_B = ["털실", "실타래", "실뭉치", "뜨개공", "보풀"];
+function nickOf(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return NAME_A[h % NAME_A.length] + " " + NAME_B[Math.floor(h / NAME_A.length) % NAME_B.length]; }
 function faceOf(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h % 12; }
 
 module.exports = async function handler(req, res) {
@@ -12,7 +16,7 @@ module.exports = async function handler(req, res) {
   if (db.tooMany("map:" + db.ipOf(req), 60)) return res.status(429).json({ code: "rate_limited" });
   const anon = String((req.query && req.query.anon) || "");
   try {
-    const r = await db.q("GET", "entries?select=id,anon_id,nickname,masked_text,created_at,likes(count)" +
+    const r = await db.q("GET", "entries?select=id,masked_text,created_at,likes(count)" +
       "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)&order=created_at.desc&limit=22");
     const rows = Array.isArray(r.data) ? r.data : [];
     let liked = new Set();
@@ -21,7 +25,7 @@ module.exports = async function handler(req, res) {
       liked = new Set((l.data || []).map(function (x) { return x.entry_id; }));
     }
     const items = rows.map(function (x) {
-      return { id: x.id, text: x.masked_text, nick: x.nickname || "익명 털실", likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.id), at: x.created_at };
+      return { id: x.id, text: x.masked_text, nick: nickOf(x.id), likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.id), at: x.created_at };
     });
     return res.status(200).json({ items: items });
   } catch (e) {
