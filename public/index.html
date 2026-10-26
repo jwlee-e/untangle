@@ -413,7 +413,7 @@
     text-shadow: 0 0 2px #D9DFC8, 0 0 2px #D9DFC8, 0 0 3px #D9DFC8, 0 0 4px #D9DFC8; transition: opacity .2s; }
   .mp-world.far .my-n { opacity: 0; }
   .mb-w { position: absolute; z-index: 3; width: 0; height: 0; transform-origin: 0 0; transform: scale(var(--k, 1)); }
-  .mp-zoom { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 1.5px solid var(--pencil); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
+  .mp-zoom { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
   .mp-zoom button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
   .mp-zoom button:disabled { color: var(--ink-4); cursor: default; }
   .mp-zoom i { height: 1px; margin: 0 8px; background: var(--rule-paper); }
@@ -434,7 +434,7 @@
   .mp-sheet.open .mp-list, .mp-sheet.dragging .mp-list { opacity: 1; }
   .mp-dim { position: absolute; inset: 0; z-index: 4; background: rgba(23,24,42,.28); opacity: 0; pointer-events: none; transition: opacity .42s ease; }
   .mp-dim.on { pointer-events: auto; }
-  .mp-write { position: absolute; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 3; display: inline-flex; align-items: center; gap: 6px; height: 46px; padding: 0 18px 0 16px; border: 0; border-radius: 999px; background: var(--ink); color: var(--bg); font: inherit; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; box-shadow: 0 10px 20px -12px rgba(23,24,42,.7); cursor: pointer; transition: opacity .2s, transform .15s; }
+  .mp-write { position: absolute; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 3; display: inline-flex; align-items: center; gap: 6px; height: 46px; padding: 0 18px 0 16px; border: 1.5px solid var(--pencil); border-radius: 999px; background: var(--bg); color: var(--ink); font: inherit; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; box-shadow: 0 10px 20px -12px rgba(23,24,42,.5); cursor: pointer; transition: opacity .2s, transform .15s; }
   .mp-write:active { transform: scale(.97); }
   .mp:has(.mp-sheet.open) .mp-write { opacity: 0; pointer-events: none; }
   .mp:has(.mp-sheet.open) .mb-w { opacity: 0; }
@@ -2747,7 +2747,7 @@ function drawPose(ctx, P, opt) {
       setMini("버렸어요");
       resetAll(true);
       // 버린 뒤 홈에서: 한 일과 바람을 두 줄로
-      toast("생각 하나 덜어냈어요.\n마음이 한결 가벼워졌길 바라요.", 3200, "two");
+      setTimeout(function () { toast("생각 하나 덜어냈어요.\n마음이 한결 가벼워졌길 바라요.", 3200, "two"); }, reduce ? 0 : 650);
     }
     requestAnimationFrame(step);
   }
