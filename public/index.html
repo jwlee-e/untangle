@@ -123,6 +123,7 @@
   .fu-chips .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .app.fu.merging .paper2 { transition: transform .32s ease, opacity .32s ease; transform: translateY(28px) scale(.96); opacity: 0; }
   .app.fu.merging #paper { transition: transform .32s ease, height .32s ease; }
+  .app.fu #paper.fu-fade { opacity: 0; transition: opacity .25s ease; }
   .sv-box .fb-note { display: block !important; width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 14px; background: var(--paper); color: var(--ink); resize: none; }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   .catcher { position: absolute; left: 50%; bottom: 0; width: 72px; height: 76px; transform: translateX(-50%); transform-origin: 50% 100%; pointer-events: none; display: none; }
@@ -252,6 +253,7 @@
   .help b { white-space: nowrap; font-variant-numeric: tabular-nums; }
   @keyframes fade { from { opacity: 0; } }
   @keyframes up { from { transform: translateY(40px); opacity: 0; } }
+  @keyframes toastIn { from { transform: translate(-50%, 12px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
   .seg-mini { display: flex; gap: 6px; }
   .seg-mini .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .toast { position: absolute; left: 50%; top: 58px; transform: translateX(-50%); background: var(--ink); color: var(--bg); font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 999px; white-space: nowrap; z-index: 6; animation: up .25s ease; }
@@ -470,7 +472,7 @@
   .mb-like[aria-pressed="true"] { color: #D9603B; }
   .mb-like[aria-pressed="true"] svg { fill: currentColor; }
   .mb-a button svg { width: 18px; height: 18px; flex: none; }
-  .toast { z-index: 9; }
+  .toast { z-index: 9; animation: toastIn .32s cubic-bezier(.22,1,.36,1); }
   .toast.two { white-space: pre-line; text-align: center; line-height: 21px; border-radius: 18px; padding: 11px 20px; width: max-content; max-width: calc(100% - 40px); word-break: keep-all; }
 
   /* 스크롤 막대: 얇고 연하게 */
@@ -1858,8 +1860,9 @@
   /* ---------- 아직 신경 쓰여요: 질문 하나, 답 하나 ---------- */
   var fu = null, fctl = null;
   function discardNow() {
-    var go2 = function () { if (beginCrumple()) { app.classList.add("discarding"); commitCrumple(); } };
-    if (fu) mergeFollow(go2); else go2();
+    crEl = fu ? $("#paper2") : null;
+    if (fu && fuT > 0) { cancelAnimationFrame(fuAnim); fuApply(0); }
+    if (beginCrumple()) { app.classList.add("discarding"); commitCrumple(); } else crEl = null;
   }
   function drawEdge2(pp) {
     var svg = pp.querySelector("svg.edge"), w = pp.offsetWidth, h = pp.offsetHeight; if (!svg || !w || !h) return;
@@ -2031,7 +2034,7 @@
   }
   function clearFollow() {
     var pp = $("#paper2"), ch = $("#fuChips"); if (pp) pp.remove(); if (ch) ch.remove();
-    app.classList.remove("fu", "spread", "opening", "merging", "fu-has", "typing");
+    app.classList.remove("fu", "spread", "opening", "merging", "fu-has", "typing"); paper.classList.remove("fu-fade"); crEl = null;
     if (paper.getAnimations) paper.getAnimations().forEach(function (x) { x.cancel(); });
     cancelAnimationFrame(fuAnim); fuT = 0; paper.style.height = ""; paper.style.transform = ""; paper.style.filter = ""; 
     if (fctl) fctl.abort(); fu = null;
@@ -2089,8 +2092,9 @@
   function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
   function norm(v) { var l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
 
+  var crEl = null; // 구길 쪽지 (보통은 첫 쪽지, 두 장이면 앞의 두 번째 쪽지)
   function measure() {
-    var r = stage.getBoundingClientRect(), pr = paper.getBoundingClientRect();
+    var r = stage.getBoundingClientRect(), pr = (crEl || paper).getBoundingClientRect();
     SW = r.width; SH = r.height; PW = pr.width; PH = pr.height; PX = pr.left - r.left; PY = pr.top - r.top;
     cv.width = Math.round(SW * dpr); cv.height = Math.round(SH * dpr);
   }
@@ -2114,10 +2118,12 @@
     if (!node || node.hidden || !node.offsetParent) return;
     var r = node.getBoundingClientRect(), cs = getComputedStyle(node), lh = parseFloat(cs.lineHeight) || 24;
     c.font = cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily; c.fillStyle = cs.color; c.textBaseline = "middle";
-    wrapWords(c, node.textContent, r.width + 1).forEach(function (ln, i) { c.fillText(ln, r.left - pr.left, r.top - pr.top + lh * i + lh / 2); });
+    try { c.letterSpacing = cs.letterSpacing === "normal" ? "0px" : cs.letterSpacing; } catch (e) {}
+    var lim = r.width + 1; if (getComputedStyle(node).display === "inline" || node.id === "fuQ") lim = Math.max(lim, pr.right - r.left - 60);
+    wrapWords(c, node.textContent, lim).forEach(function (ln, i) { c.fillText(ln, r.left - pr.left, r.top - pr.top + lh * i + lh / 2); });
   }
   function buildTexture() {
-    var pr = paper.getBoundingClientRect();
+    var el2 = crEl && crEl !== paper ? crEl : null, pr = (el2 || paper).getBoundingClientRect();
     tex.width = Math.round(PW * dpr); tex.height = Math.round(PH * dpr);
     var c = tctx; c.setTransform(dpr, 0, 0, dpr, 0, 0);
     var grainP = null; // 편지지 안 질감은 쓰지 않음
@@ -2125,16 +2131,19 @@
     if (grainP && half && grainP.setTransform) grainP.setTransform(half);
     var pc = paperColors(); c.fillStyle = pc.paper; c.fillRect(0, 0, PW, PH);
     if (grainP) { c.fillStyle = grainP; c.fillRect(0, 0, PW, PH); }
-    c.fillStyle = "#AFB8E8"; c.strokeStyle = "#4B4F86"; c.lineWidth = 1.8; c.lineJoin = "round";
-    c.beginPath(); c.moveTo(PW - 22, 1); c.lineTo(PW - 22, 22); c.lineTo(PW - 1, 22); c.closePath(); c.fill(); c.stroke();
+    if (!el2) {
+      c.fillStyle = "#AFB8E8"; c.strokeStyle = "#4B4F86"; c.lineWidth = 1.8; c.lineJoin = "round";
+      c.beginPath(); c.moveTo(PW - 22, 1); c.lineTo(PW - 22, 22); c.lineTo(PW - 1, 22); c.closePath(); c.fill(); c.stroke();
+    }
     // 뒷면: 무지 종이 + 같은 결
     texB.width = tex.width; texB.height = tex.height; tbctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     tbctx.fillStyle = pc.paper; tbctx.fillRect(0, 0, PW, PH); tbctx.fillStyle = "rgba(0,0,0,0.05)"; tbctx.fillRect(0, 0, PW, PH); if (grainP) { var gb = tbctx.createPattern(grainImg, "repeat"); if (half && gb.setTransform) gb.setTransform(half); tbctx.fillStyle = gb; tbctx.fillRect(0, 0, PW, PH); }
-    drawBlock(c, qLabel, pr); drawBlock(c, written, pr);
-    if (!ans.hidden) {
-      var ar = ans.getBoundingClientRect();
+    var qn = el2 ? el2.querySelector("#fuQ") : qLabel, wn = el2 ? el2.querySelector("#written2") : written, an = el2 ? el2.querySelector("#ans2") : ans;
+    drawBlock(c, qn, pr); if (!wn.hidden) drawBlock(c, wn, pr);
+    if (!an.hidden) {
+      var ar = an.getBoundingClientRect();
       c.strokeStyle = "rgba(75,79,134,0.45)"; c.setLineDash([3, 3]); c.beginPath(); c.moveTo(18, ar.top - pr.top + 0.5); c.lineTo(PW - 18, ar.top - pr.top + 0.5); c.stroke(); c.setLineDash([]);
-      Array.prototype.forEach.call(ans.children, function (n) { drawBlock(c, n, pr); });
+      Array.prototype.forEach.call(an.children, function (n) { drawBlock(c, n, pr); });
     }
   }
   function polyR(d, R) { var m = 0.5; for (var i = 0; i < planes.length; i++) { var t = d[0] * planes[i][0] + d[1] * planes[i][1] + d[2] * planes[i][2]; if (t > m) m = t; } return R / m * 0.8; }
@@ -2701,7 +2710,7 @@ function drawPose(ctx, P, opt) {
   function beginCrumple() {
     if (state !== "result" || crState !== "idle" || !paper.classList.contains("can-crumple")) return false;
     measure(); buildTexture(); if (crumpleMode === "drawn") { drawnPose = "P0"; drawnRot = 0; } else if (crumpleMode === "roto") { rotoStep = 0; rotoBoil = 0; } else if (crumpleMode === "frames") { buildFrames(); fi = -1; } else if (crumpleMode === "flat") buildFlat(); else buildMesh();
-    paper.classList.add("hide"); crState = "drag"; p = 0; pull = 0; ball = null; lastT = 0;
+    (crEl || paper).classList.add("hide"); if (crEl && crEl !== paper) paper.classList.add("fu-fade"); crState = "drag"; p = 0; pull = 0; ball = null; lastT = 0;
     renderCanvas(); return true;
   }
   function animateTo(target, ms, then) {
