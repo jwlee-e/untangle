@@ -1099,7 +1099,7 @@
     });
   }
   // 더 보기: 아래에서 올라오는 메뉴 (숨기기 · 차단하기 · 신고하기)
-  function mpMore(it, card) {
+  function mpMenu(it, card) {
     track("more_open");
     var page = $("#mapPage"), scrim = el("div", "scrim pop-scrim mp-as-scrim"), box = el("div", "mp-as");
     box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "더 보기");
@@ -1177,7 +1177,7 @@
       if ($("#mpSheet").classList.contains("open")) mpList();
     });
     var rep = el("button", "mb-rep"); rep.type = "button"; rep.innerHTML = MORE; rep.setAttribute("aria-label", "더 보기");
-    rep.addEventListener("click", function () { mpMore(it, null); });
+    rep.addEventListener("click", function () { mpMenu(it, null); });
     row.append(like, rep); bb.append(row);
     $("#mpWorld").append(wrap); mp.bubble = wrap;
     var bw = bb.offsetWidth, bh = bb.offsetHeight, NSs = "http://www.w3.org/2000/svg";
@@ -1302,7 +1302,7 @@
       meta.append(fc, el("b", "", it.nick));
       if (it.at) meta.append(el("span", "", "· " + ago(it.at)));
       var rp = el("button", "mp-c-rep"); rp.type = "button"; rp.innerHTML = MORE; rp.setAttribute("aria-label", "더 보기");
-      rp.addEventListener("click", function (e) { e.stopPropagation(); mpMore(it, c); });
+      rp.addEventListener("click", function (e) { e.stopPropagation(); mpMenu(it, c); });
       meta.append(rp);
       var f = el("div", "mp-c-f");
       var like = el("button", "like"); like.type = "button"; like.setAttribute("aria-label", "공감해요");
