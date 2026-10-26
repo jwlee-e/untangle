@@ -99,13 +99,14 @@
 
 
   /* ---------- 아직 신경 쓰여요: 새 쪽지를 앞에 겹쳐 놓는다 ---------- */
-  .app.fu .stage { overflow-y: auto; overflow-x: hidden; touch-action: pan-y; overscroll-behavior: contain; scrollbar-width: none; padding-top: 12px; margin-top: -8px; }
-  .fu-chips .chips-row { margin: 0; padding: 0 0 2px; touch-action: pan-x; }
+  .app.fu .stage { overflow: hidden; touch-action: none; overscroll-behavior: contain; padding: 12px 20px 0; margin: -8px -20px 0; }
+  .fu-chips .chips-row { margin: 0 -20px; padding: 0 20px 2px; touch-action: pan-x; }
   .app.fu .stage::-webkit-scrollbar { display: none; }
-  .app.fu #paper { position: absolute; left: 0; right: 0; top: 12px; z-index: 0; transform-origin: 50% 0; cursor: pointer; }
+  .app.fu #paper { position: absolute; left: 20px; right: 20px; top: 12px; z-index: 0; transform-origin: 50% 0; cursor: pointer; }
   .app.fu #paper { overflow: hidden; will-change: transform, height; }
   .app.fu.spread #paper { cursor: default; }
-  .app.fu:not(.spread) .stage { overflow-y: hidden; }
+  /* 펼쳤을 때 화면 밖으로 나가는 앞 쪽지는 아래로 갈수록 흐려진다 */
+  .app.fu.opening .stage { -webkit-mask-image: linear-gradient(#000 calc(100% - 96px), transparent); mask-image: linear-gradient(#000 calc(100% - 96px), transparent); }
   .paper2 { position: relative; z-index: 1; flex: none; margin-top: 14px; }
   .app[data-state="result"] .paper2 textarea { display: block; height: 84px; min-height: 0; }
   .app[data-state="result"] .paper2 .count-row { display: flex; }
@@ -113,7 +114,7 @@
   .fu-back { flex: none; margin: -8px -8px -8px 0; min-height: 36px; padding: 0 8px; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-3); cursor: pointer; border-radius: 8px; }
   .paper2 .q-row { justify-content: space-between; gap: 6px; }
   .fu-x { width: 32px; height: 32px; margin: -6px -8px -6px 0; border: 0; background: transparent; color: var(--ink-4); display: grid; place-items: center; border-radius: 50%; cursor: pointer; flex: none; }
-  .fu-chips { flex: none; margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .fu-chips { flex: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
   .app .fu-chips { display: flex !important; }
   .app.fu-has .fu-chips { display: none !important; }
   .app:not(.fu-has) #clearBtn2 { visibility: hidden; }
@@ -132,14 +133,14 @@
   .catcher.bump { animation: bump .5s ease-out; }
   @keyframes bump { 0% { transform: translateX(-50%) scale(1,1); } 35% { transform: translateX(-50%) scale(1.12,.88); } 70% { transform: translateX(-50%) scale(.96,1.05); } 100% { transform: translateX(-50%) scale(1,1); } }
 
-  .chips { flex: none; margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .chips { flex: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
   .chips .k { font-size: 12px; line-height: 16px; font-weight: 700; color: var(--ink-3); }
   /* 쓰기 화면의 예시: 한 줄로 옆으로 넘겨 보고, 누르면 바로 채워진다 */
   .chips-row { display: flex; flex-direction: column; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 0 20px 2px; }
   .chips-row .r { display: flex; gap: 8px; width: max-content; }
   .chips-row::-webkit-scrollbar { display: none; }
   .chips-row .chip { flex: none; white-space: nowrap; }
-  .chip { min-height: 36px; padding: 0 14px; border: 1px solid #C7CEEB; border-radius: 999px; background: #DCE2F6; color: var(--ink); font-size: 14px; font-weight: 500; letter-spacing: -0.2px; cursor: pointer; }
+  .chip { min-height: 36px; padding: 0 14px; border: 1px solid #AFB8E3; border-radius: 999px; background: #DCE2F6; color: var(--ink); font-size: 14px; font-weight: 500; letter-spacing: -0.2px; cursor: pointer; }
   .chip:active { transform: scale(.97); }
 
   /* 아래 버튼 영역 */
@@ -381,7 +382,7 @@
   .pop-foot > button { flex: 1; min-width: 0; min-height: 52px; margin: 0; }
   .btn.sub { background: #E3E6F3; color: var(--ink); }
   .sv-box .chip { background: transparent; border-color: rgba(75,79,134,.28); }
-  .sv-box .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .sv-box .chip.on, .pop-a .chip.on { background: transparent; color: var(--ink); border-color: var(--ink); box-shadow: inset 0 0 0 .5px var(--ink); font-weight: 700; }
   @media (prefers-reduced-motion: reduce) { .sv-box { animation: none; } }
 
   .nav-tip { position: relative; display: flex; align-items: center; gap: 2px; }
@@ -633,6 +634,14 @@
   };
   window.addEventListener("resize", function () { window.drawFloor(); });
   window.addEventListener("load", function () { window.drawFloor(); });
+  // 쓰기 화면에서 쪽지를 위로 끌면 (키보드가 올라온 상태의 iOS 등) 화면 전체가 같이 밀려 올라가던 문제:
+  // 글칸·칩 줄처럼 스스로 스크롤되는 곳이 아니면 화면이 끌려 움직이지 않게 막는다
+  document.addEventListener("touchmove", function (e) {
+    var st = document.getElementById("app"); if (!st || st.dataset.state !== "write") return;
+    if (e.target.closest("textarea, .chips-row, .sheet, .sv-box, .pg, .ab, .mp")) return;
+    e.preventDefault();
+  }, { passive: false });
+  window.addEventListener("scroll", function () { var st = document.getElementById("app"); if (st && st.dataset.state === "write" && (window.scrollY || document.documentElement.scrollTop)) window.scrollTo(0, 0); });
   // 마지막으로 쓴 입력 방식: 손가락·마우스면 포커스 테두리를 숨기고, 키보드(Tab)면 보여 준다
   (function () {
     var d = document.documentElement; d.setAttribute("data-input", "pointer");
@@ -1960,6 +1969,7 @@
     paper.style.filter = "brightness(" + (0.97 + 0.03 * e) + ")";
     pp.style.marginTop = (14 + (full + 2) * e) + "px";
     app.classList.toggle("spread", fuT >= 1);
+    app.classList.toggle("opening", fuT > 0.02);
   }
   function fuTween(to) {
     cancelAnimationFrame(fuAnim);
@@ -1982,7 +1992,7 @@
       if (!mode) {
         if (Math.abs(dy) < 6) return;
         // 겹친 상태에서 아래로 끌면 펼치기, 펼친 상태에서 맨 아래에서 위로 끌면 겹치기. 나머지는 그냥 스크롤
-        if (t0 < 1 && dy > 0) mode = "open"; else if (t0 >= 1 && dy < 0 && atBottom()) mode = "close"; else { y0 = null; return; }
+        if (t0 < 1 && dy > 0) mode = "open"; else if (t0 > 0 && dy < 0) mode = "close"; else { y0 = null; return; }
         cancelAnimationFrame(fuAnim);
       }
       e.preventDefault();
@@ -1994,10 +2004,12 @@
     stage.addEventListener("wheel", function (e) {
       if (!fu || fu.stage === "loading") return;
       clearTimeout(wheelT); wheelT = setTimeout(function () {}, 120);
-      if (e.deltaY < -8 && fuT < 1 && stage.scrollTop <= 0) fuTween(1);
-      else if (e.deltaY > 8 && fuT >= 1 && atBottom()) fuTween(0);
+      if (e.deltaY < -8 && fuT < 1) fuTween(1);
+      else if (e.deltaY > 8 && fuT > 0) fuTween(0);
     }, { passive: true });
     paper.addEventListener("click", function () { if (fu && fuT < 1) fuTween(1); });
+    // 펼친 상태에서 앞 쪽지를 누르면 다시 겹친다
+    stage.addEventListener("click", function (e) { var pp = $("#paper2"); if (fu && fuT >= 1 && pp && pp.contains(e.target) && !e.target.closest("button, textarea")) fuTween(0); });
   })();
   // 아직 보내기 전이면 새 쪽지를 내리고 첫 답 화면으로
   function cancelFollow() {
@@ -2018,7 +2030,7 @@
   }
   function clearFollow() {
     var pp = $("#paper2"), ch = $("#fuChips"); if (pp) pp.remove(); if (ch) ch.remove();
-    app.classList.remove("fu", "spread", "merging", "fu-has", "typing");
+    app.classList.remove("fu", "spread", "opening", "merging", "fu-has", "typing");
     if (paper.getAnimations) paper.getAnimations().forEach(function (x) { x.cancel(); });
     cancelAnimationFrame(fuAnim); fuT = 0; paper.style.height = ""; paper.style.transform = ""; paper.style.filter = ""; 
     if (fctl) fctl.abort(); fu = null;
