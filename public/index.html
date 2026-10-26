@@ -99,15 +99,13 @@
 
 
   /* ---------- 아직 신경 쓰여요: 새 쪽지를 앞에 겹쳐 놓는다 ---------- */
-  .app.fu .stage { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; padding-top: 12px; margin-top: -8px; }
+  .app.fu .stage { overflow-y: auto; overflow-x: hidden; touch-action: pan-y; overscroll-behavior: contain; scrollbar-width: none; padding-top: 12px; margin-top: -8px; }
+  .fu-chips .chips-row { margin: 0; padding: 0 0 2px; touch-action: pan-x; }
   .app.fu .stage::-webkit-scrollbar { display: none; }
   .app.fu #paper { position: absolute; left: 0; right: 0; top: 12px; z-index: 0; transform: translateY(-12px) scale(.94); transform-origin: 50% 0; filter: brightness(.97); cursor: pointer; transition: transform .45s cubic-bezier(.22,1,.36,1), filter .3s; }
-  .app.fu #paper.nudge { animation: fuNudge .9s cubic-bezier(.22,1,.36,1); }
-  @keyframes fuNudge { 0%, 100% { transform: translateY(-12px) scale(.94); } 40% { transform: translateY(-26px) scale(.94); } }
+  .app.fu:not(.spread) #paper { height: var(--fu-h, auto); overflow: hidden; }
   .app.fu.spread #paper { position: relative; top: 0; transform: none; filter: none; cursor: default; }
   .paper2 { position: relative; z-index: 1; flex: none; margin-top: 14px; }
-  .paper2.enter { animation: fuIn .55s cubic-bezier(.22,1,.36,1) backwards; }
-  @keyframes fuIn { 0% { transform: translateY(70px) rotate(2.5deg); opacity: 0; } 65% { transform: translateY(-3px) rotate(-.6deg); opacity: 1; } 100% { transform: none; } }
   .app.fu.spread .paper2 { margin-top: 14px; }
   .app[data-state="result"] .paper2 textarea { display: block; height: 84px; min-height: 0; }
   .app[data-state="result"] .paper2 .count-row { display: flex; }
@@ -116,6 +114,9 @@
   .fu-x { width: 32px; height: 32px; margin: -6px -8px -6px 0; border: 0; background: transparent; color: var(--ink-4); display: grid; place-items: center; border-radius: 50%; cursor: pointer; flex: none; }
   .fu-chips { flex: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
   .app .fu-chips { display: flex !important; }
+  .app.fu-has .fu-chips { display: none !important; }
+  .app.fu.typing .stage { flex: none; }
+  .app.fu.typing .dock { padding-top: 12px; }
   .fu-chips .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .app.fu.merging .paper2 { transition: transform .32s ease, opacity .32s ease; transform: translateY(28px) scale(.96); opacity: 0; }
   .app.fu.merging #paper { transform: none; filter: none; }
@@ -376,7 +377,9 @@
   /* 팝업 아래 버튼: 왼쪽은 닫는 쪽(연하게), 오른쪽은 하는 쪽(진하게) */
   .pop-foot { display: flex; flex-direction: row; align-items: stretch; gap: 8px; margin-top: 4px; }
   .pop-foot > button { flex: 1; min-width: 0; min-height: 52px; margin: 0; }
-  .btn.sub { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--pencil); }
+  .btn.sub { background: #E3E6F3; color: var(--ink); }
+  .sv-box .chip { background: #E8EBF7; border-color: transparent; }
+  .sv-box .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   @media (prefers-reduced-motion: reduce) { .sv-box { animation: none; } }
 
   .nav-tip { position: relative; display: flex; align-items: center; gap: 2px; }
@@ -525,7 +528,7 @@
   </div>
 
   <div class="chips">
-    <span class="k">생각이 안 나면, 이런 건 어때요?</span>
+    <span class="k">혹시 이런 고민이에요?</span>
     <div class="chips-row" id="chips"></div>
   </div>
 
@@ -680,13 +683,13 @@
   // 글칸에 커서가 있으면 키보드가 올라와 있다고 본다. 단, 화면 높이로 키보드를 알아챌 수 있는 곳(안드로이드 등)에서
   // 커서는 남긴 채 키보드만 내리면 버튼을 다시 아래로 보낸다
   function syncTyping() {
-    var focused = document.activeElement === document.getElementById("entry");
+    var ae = document.activeElement, focused = !!ae && (ae.id === "entry" || ae.id === "entry2");
     var on = focused && (!kbSeen || kbOpen);
     document.getElementById("app").classList.toggle("typing", on);
   }
   function fitViewport() {
     var vv = window.visualViewport, h = vv ? vv.height : window.innerHeight;
-    var typing = document.activeElement === document.getElementById("entry");
+    var ae2 = document.activeElement, typing = !!ae2 && (ae2.id === "entry" || ae2.id === "entry2");
     if (!typing) baseH = Math.max(window.innerHeight, h);
     var open = typing && baseH - h > 120;
     if (open) kbSeen = true;
@@ -1392,7 +1395,7 @@
   }
   $("#moreBtn").addEventListener("click", function (e) { e.stopPropagation(); privacySheet(null); });
   var CONSENT_KEY = "sab:consent:v2";
-  var START_POINTS = ["적은 글은 답을 만들려고 AI(Claude)에 보내져요.", "적은 고민과 받은 답, 어떤 화면을 눌렀는지 같은 이용 기록이 익명 번호로 저장돼요. 서비스를 더 낫게 만드는 데만 써요.", "나중에 고민이 익명으로 다른 사람들에게 보일 수 있어요. 이름 같은 정보는 가리고, 말끝만 다듬어서 보여요.", "원하지 않으면 언제든 공유하지 않을 수 있어요."];
+  var START_POINTS = ["적은 글은 답을 만들려고 AI(Claude)에 보내져요.", "적은 고민과 받은 답, 어떤 화면을 눌렀는지 같은 이용 기록이 익명 번호로 저장돼요. 서비스를 더 낫게 만드는 데만 써요.", "적은 고민은 이름 같은 정보를 가린 채 익명으로 다른 사람들에게 보여요. 말끝만 조금 다듬어요.", "원하지 않으면 설정의 '내 고민 공유하기'를 꺼 주세요. 언제든 바꿀 수 있어요."];
   function startSheet(onOk) {
     sheet(function (sh, close) {
       sh.append(el("h2", "", "시작하기 전에"));
@@ -1708,11 +1711,11 @@
       "\n\n위 예시와 같은 형식의 JSON 객체 하나만 출력한다. 키는 type, temp, distance, reply, mark, asks." + ASKS_RULE;
   }
   // 사용자가 '아직 신경 쓰여요'를 누르면 보여 줄 질문 (첫 답과 같이 만들어 두면 누를 때 기다리지 않는다)
-  var ASKS_RULE = "\nasks: 사용자가 '아직 신경 쓰여요'를 누르면 보여 줄 질문 3개. 각 항목은 {\"topic\": 칩에 쓸 짧은 주제(2~10자, 명사로 끝남), \"q\": 그 주제를 묻는 질문 한 문장(존댓말, 30자 안쪽)}. 걱정을 더 파고들게 하지 말고, 실제로 있었던 일과 짐작을 나누는 데 필요한 것만 묻는다. type이 risk, skip, heavy면 빈 배열.";
+  var ASKS_RULE = "\nasks: 사용자가 '아직 신경 쓰여요'를 누르면 보여 줄 질문 3개. 각 항목은 {\"topic\": 칩에 쓸 말. 사용자가 덧붙여 말할 내용을 가리키는 구체적인 명사구(5~14자). 입력에 나온 사람이나 일을 넣고, '직전 일', '그때'처럼 시간만 가리키는 말이나 뜻이 흐린 말은 쓰지 않는다(예: '친구가 실제로 한 말', '제일 걸리는 장면', '내가 바라는 것'), \"q\": 그 내용을 묻는 질문 한 문장(존댓말, 30자 안쪽)}. 걱정을 더 파고들게 하지 말고, 실제로 있었던 일과 짐작을 나누는 데 필요한 것만 묻는다. type이 risk, skip, heavy면 빈 배열.";
   var DEFAULT_ASKS = [{ topic: "제일 걸리는 장면", q: "제일 마음에 걸리는 장면이 있어요?" }, { topic: "실제로 있었던 일", q: "실제로 있었던 일은 뭐였어요?" }, { topic: "바라는 것", q: "어떻게 되면 마음이 좀 놓일 것 같아요?" }];
   function cleanAsks(a) {
     var out = (Array.isArray(a) ? a : []).filter(function (x) { return x && typeof x.topic === "string" && typeof x.q === "string" && x.topic.trim() && x.q.trim(); })
-      .map(function (x) { return { topic: x.topic.trim().slice(0, 14), q: x.q.trim().slice(0, 48) }; }).slice(0, 3);
+      .map(function (x) { return { topic: x.topic.trim().slice(0, 18), q: x.q.trim().slice(0, 48) }; }).slice(0, 3);
     return out.length ? out : DEFAULT_ASKS;
   }
   // 이어진 답(마지막 답) 프롬프트
@@ -1865,7 +1868,7 @@
     if (!current || fu) return;
     track("follow_open", { type: current.type });
     fu = { stage: "write", q: null, asks: current.asks || DEFAULT_ASKS };
-    var pp = el("article", "paper paper2 enter"); pp.id = "paper2";
+    var pp = el("article", "paper paper2"); pp.id = "paper2";
     pp.innerHTML = '<svg class="edge" aria-hidden="true"></svg><div class="q-row"><span class="q" id="fuQ">아직 고민이 남았나요?</span>' +
       '<button class="fu-x" id="fuX" type="button" aria-label="질문 지우기" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>' +
       '<textarea id="entry2" rows="3" maxlength="100" placeholder="생각나는 대로 적어 보세요"></textarea><div class="count-row"><span class="count" id="count2">0 / 100</span></div>' +
@@ -1874,23 +1877,26 @@
     chips.append(el("span", "k", "이런 걸 말해 줘도 좋아요"));
     var row = el("div", "chips-row"), r1 = el("div", "r"); row.append(r1); chips.append(row);
     fu.asks.forEach(function (a) { var c = el("button", "chip", a.topic); c.type = "button"; c.dataset.q = a.q; c.addEventListener("click", function () { track("follow_chip"); fuTitle(fu.q === a.q ? null : a.q); $("#entry2").focus({ preventScroll: true }); }); r1.append(c); });
-    // 새 쪽지는 첫 쪽지와 같은 크기로 시작한다
-    pp.style.minHeight = paper.offsetHeight + "px";
     stage.append(pp); stage.append(chips);
     app.classList.add("fu");
     $("#fuX").addEventListener("click", function () { fuTitle(null); });
     var e2 = $("#entry2");
-    e2.addEventListener("input", function () { $("#count2").textContent = e2.value.length + " / 100"; var b = dock.querySelector(".btn"); if (b && fu && fu.stage === "write") b.disabled = !e2.value.trim(); });
-    if (window.ResizeObserver) new ResizeObserver(function () { drawEdge2(pp); }).observe(pp);
+    e2.addEventListener("input", function () { $("#count2").textContent = e2.value.length + " / 100"; app.classList.toggle("fu-has", !!e2.value.trim()); var b = dock.querySelector(".btn"); if (b && fu && fu.stage === "write") b.disabled = !e2.value.trim(); });
+    e2.addEventListener("focus", syncTyping); e2.addEventListener("blur", function () { setTimeout(syncTyping, 0); });
+    var fitBack = function () { drawEdge2(pp); app.style.setProperty("--fu-h", pp.offsetHeight + "px"); };
+    if (window.ResizeObserver) new ResizeObserver(fitBack).observe(pp);
+    fitBack();
     drawEdge2(pp); stage.scrollTop = 0;
-    setTimeout(function () { pp.classList.remove("enter"); }, 600);
-    // 뒤에 쪽지가 하나 더 있다는 걸 한 번 보여 준다
-    setTimeout(function () { paper.classList.add("nudge"); setTimeout(function () { paper.classList.remove("nudge"); }, 950); }, 650);
+    if (!reduce) {
+      paper.animate([{ transform: "none", filter: "none" }, { transform: "translateY(-12px) scale(.94)", filter: "brightness(.97)" }], { duration: 380, easing: "cubic-bezier(.22,1,.36,1)" });
+      pp.animate([{ transform: "translateY(420px) rotate(3deg)", opacity: 0 }, { transform: "translateY(-6px) rotate(-.5deg)", opacity: 1, offset: .7 }, { transform: "none", opacity: 1 }], { duration: 560, delay: 90, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" });
+    }
     setMini("조금 더 들어 볼게요"); clearNote(); renderDock();
     setTimeout(function () { e2.focus({ preventScroll: true }); }, 450);
   }
   function renderFollowDock() {
     if (fu.stage === "write") {
+      var bk = el("button", "text-btn", "돌아가기"); bk.type = "button"; bk.addEventListener("click", cancelFollow); dock.append(bk);
       var b = el("button", "btn", "보내기"); b.type = "button"; b.disabled = !($("#entry2") && $("#entry2").value.trim());
       b.addEventListener("click", sendFollow); dock.append(b);
     } else if (fu.stage === "loading") {
@@ -1898,7 +1904,7 @@
     } else {
       var k = kindOf(fu.res.type);
       if (k !== "calm" && !fu.fb) { var f = el("button", "text-btn", "도움이 안 됐어요"); f.type = "button"; f.addEventListener("click", openFeedback); dock.append(f); }
-      if (k === "normal" && kindOf(current.type) === "normal") { var cb = el("button", "btn", "부풀려진 생각 버리기"); cb.type = "button"; cb.addEventListener("click", discardNow); dock.append(cb); }
+      if (k === "normal" && kindOf(current.type) === "normal" && !fu.fb) { var cb = el("button", "btn", "부풀려진 생각 버리기"); cb.type = "button"; cb.addEventListener("click", discardNow); dock.append(cb); }
       else { var c = el("button", "btn", "닫기"); c.type = "button"; c.addEventListener("click", function () { track("close", { from: "follow" }); resetAll(); }); dock.append(c); }
     }
   }
@@ -1967,6 +1973,17 @@
     }, { passive: true });
     paper.addEventListener("click", function () { if (fu && !app.classList.contains("spread")) fuSpread(true); });
   })();
+  // 아직 보내기 전이면 새 쪽지를 내리고 첫 답 화면으로
+  function cancelFollow() {
+    if (!fu || fu.stage !== "write") return;
+    track("follow_cancel");
+    var pp = $("#paper2"), e2 = $("#entry2"); if (e2) e2.blur();
+    var done = function () { clearFollow(); setMini("다 읽었어요"); clearNote(); renderDock(); };
+    if (reduce || !pp) return done();
+    pp.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(360px) rotate(2deg)", opacity: 0 }], { duration: 320, easing: "ease-in", fill: "forwards" });
+    paper.animate([{ transform: "translateY(-12px) scale(.94)" }, { transform: "none" }], { duration: 360, delay: 120, easing: "cubic-bezier(.22,1,.36,1)" });
+    setTimeout(done, 330);
+  }
   // 버리기 전에 새 쪽지를 첫 쪽지에 포개고 나서 함께 구긴다
   function mergeFollow(then) {
     if (app.classList.contains("spread")) app.classList.remove("spread");
@@ -1975,7 +1992,7 @@
   }
   function clearFollow() {
     var pp = $("#paper2"), ch = $("#fuChips"); if (pp) pp.remove(); if (ch) ch.remove();
-    app.classList.remove("fu", "spread", "merging"); paper.classList.remove("nudge");
+    app.classList.remove("fu", "spread", "merging", "fu-has", "typing"); 
     if (fctl) fctl.abort(); fu = null;
   }
   // 도움이 안 됐어요: 이유 고르기
