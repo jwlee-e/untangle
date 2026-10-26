@@ -115,6 +115,7 @@
   .fu-chips { flex: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
   .app .fu-chips { display: flex !important; }
   .app.fu-has .fu-chips { display: none !important; }
+  .app:not(.fu-has) #clearBtn2 { visibility: hidden; }
   .app.fu.typing .stage { flex: none; }
   .app.fu.typing .dock { padding-top: 12px; }
   .fu-chips .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
@@ -378,7 +379,7 @@
   .pop-foot { display: flex; flex-direction: row; align-items: stretch; gap: 8px; margin-top: 4px; }
   .pop-foot > button { flex: 1; min-width: 0; min-height: 52px; margin: 0; }
   .btn.sub { background: #E3E6F3; color: var(--ink); }
-  .sv-box .chip { background: #E8EBF7; border-color: transparent; }
+  .sv-box .chip { background: transparent; border-color: rgba(75,79,134,.28); }
   .sv-box .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   @media (prefers-reduced-motion: reduce) { .sv-box { animation: none; } }
 
@@ -917,7 +918,7 @@
       if (current && current.type === "vague") {
         // 무슨 일인지가 빠진 글: 새 쪽지에 한 줄 더 적게 한다
         var vc = el("button", "text-btn", "닫기"); vc.type = "button"; vc.addEventListener("click", function () { track("close", { from: "vague", type: "vague" }); resetAll(); }); dock.append(vc);
-        var vb = el("button", "btn", "아직 신경 쓰여요"); vb.type = "button"; vb.addEventListener("click", openFollow); dock.append(vb);
+        var vb = el("button", "btn", "아직 신경 쓰이는 게 남았어요"); vb.type = "button"; vb.addEventListener("click", openFollow); dock.append(vb);
         return;
       }
       if (kind !== "normal") {
@@ -925,7 +926,7 @@
         return;
       }
       // 큰 버튼은 어느 화면에서든 맨 아래 같은 자리: 보조 버튼은 그 위에
-      var rb = el("button", "text-btn", "아직 신경 쓰여요"); rb.type = "button";
+      var rb = el("button", "text-btn", "아직 신경 쓰이는 게 남았어요"); rb.type = "button";
       rb.addEventListener("click", openFollow);
       dock.append(rb);
       var cb = el("button", "btn", "부풀려진 생각 버리기"); cb.type = "button";
@@ -1395,7 +1396,7 @@
   }
   $("#moreBtn").addEventListener("click", function (e) { e.stopPropagation(); privacySheet(null); });
   var CONSENT_KEY = "sab:consent:v2";
-  var START_POINTS = ["적은 글은 답을 만들려고 AI(Claude)에 보내져요.", "적은 고민과 받은 답, 어떤 화면을 눌렀는지 같은 이용 기록이 익명 번호로 저장돼요. 서비스를 더 낫게 만드는 데만 써요.", "적은 고민은 이름 같은 정보를 가린 채 익명으로 다른 사람들에게 보여요. 말끝만 조금 다듬어요.", "원하지 않으면 설정의 '내 고민 공유하기'를 꺼 주세요. 언제든 바꿀 수 있어요."];
+  var START_POINTS = ["적은 글은 답을 만들려고 AI(Claude)에 보내져요.", "적은 고민과 받은 답, 어떤 화면을 눌렀는지 같은 이용 기록이 익명 번호로 저장돼요. 서비스를 더 낫게 만드는 데만 써요.", "적은 고민은 이름 같은 개인정보를 가린 채 익명으로 다른 사람들에게 보여요. 말끝만 조금 다듬어요.", "원하지 않으면 설정의 '내 고민 공유하기'를 꺼 주세요. 언제든 바꿀 수 있어요."];
   function startSheet(onOk) {
     sheet(function (sh, close) {
       sh.append(el("h2", "", "시작하기 전에"));
@@ -1861,7 +1862,6 @@
   function fuTitle(q) {
     fu.q = q || null;
     $("#fuQ").textContent = q || "아직 고민이 남았나요?";
-    $("#fuX").hidden = !q;
     document.querySelectorAll("#fuChips .chip").forEach(function (c) { c.classList.toggle("on", !!q && c.dataset.q === q); });
   }
   function openFollow() {
@@ -1870,8 +1870,8 @@
     fu = { stage: "write", q: null, asks: current.asks || DEFAULT_ASKS };
     var pp = el("article", "paper paper2"); pp.id = "paper2";
     pp.innerHTML = '<svg class="edge" aria-hidden="true"></svg><div class="q-row"><span class="q" id="fuQ">아직 고민이 남았나요?</span>' +
-      '<button class="fu-x" id="fuX" type="button" aria-label="질문 지우기" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>' +
-      '<textarea id="entry2" rows="3" maxlength="100" placeholder="생각나는 대로 적어 보세요"></textarea><div class="count-row"><span class="count" id="count2">0 / 100</span></div>' +
+      '</div>' +
+      '<textarea id="entry2" rows="3" maxlength="100" placeholder="생각나는 대로 적어 보세요"></textarea><div class="count-row"><button class="clear-btn" id="clearBtn2" type="button"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21\"/><path d=\"M22 21H7\"/><path d=\"m5 11 9 9\"/></svg>다시 쓰기</button><span class="count" id="count2">0 / 100</span></div>' +
       '<p class="written" id="written2" hidden></p><div class="ans" id="ans2" hidden></div>';
     var chips = el("div", "fu-chips"); chips.id = "fuChips";
     chips.append(el("span", "k", "이런 걸 말해 줘도 좋아요"));
@@ -1879,8 +1879,10 @@
     fu.asks.forEach(function (a) { var c = el("button", "chip", a.topic); c.type = "button"; c.dataset.q = a.q; c.addEventListener("click", function () { track("follow_chip"); fuTitle(fu.q === a.q ? null : a.q); $("#entry2").focus({ preventScroll: true }); }); r1.append(c); });
     stage.append(pp); stage.append(chips);
     app.classList.add("fu");
-    $("#fuX").addEventListener("click", function () { fuTitle(null); });
-    var e2 = $("#entry2");
+    var e2 = $("#entry2"), c2 = $("#clearBtn2");
+    c2.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    c2.addEventListener("touchstart", function (e) { e.preventDefault(); c2.click(); }, { passive: false });
+    c2.addEventListener("click", function () { e2.value = ""; e2.dispatchEvent(new Event("input")); e2.focus({ preventScroll: true }); });
     e2.addEventListener("input", function () { $("#count2").textContent = e2.value.length + " / 100"; app.classList.toggle("fu-has", !!e2.value.trim()); var b = dock.querySelector(".btn"); if (b && fu && fu.stage === "write") b.disabled = !e2.value.trim(); });
     e2.addEventListener("focus", syncTyping); e2.addEventListener("blur", function () { setTimeout(syncTyping, 0); });
     var fitBack = function () { drawEdge2(pp); app.style.setProperty("--fu-h", pp.offsetHeight + "px"); };
@@ -1926,7 +1928,6 @@
     $("#written2").textContent = t; $("#written2").hidden = false;
     $("#ans2").replaceChildren(el("span", "k", "한 발짝 더 떨어져 보면"), el("div", "skel"), el("div", "skel"), el("div", "skel short")); $("#ans2").hidden = false;
     var ch = $("#fuChips"); if (ch) ch.remove();
-    $("#fuX").hidden = true;
     track("follow_submit", { len: t.length, asked: !!fu.q });
     setMini("적은 걸 읽고 있어요"); clearNote(); renderDock();
     window.__ask = Object.assign({ text: current.orig, follow: { q: fu.q || "", text: t, prev: current.reply } }, window.__ctx || {}, { entry: current.entryId || null });
@@ -1940,7 +1941,7 @@
     } catch (e) {
       if (e && e.name === "AbortError") e = { code: "cancelled" };
       track("follow_fail", { code: (e && e.code) || "unknown" });
-      fu.stage = "write"; pp.classList.remove("sent"); $("#written2").hidden = true; $("#ans2").hidden = true; e2.value = t; $("#fuX").hidden = !fu.q;
+      fu.stage = "write"; pp.classList.remove("sent"); $("#written2").hidden = true; $("#ans2").hidden = true; e2.value = t;
       var msg = (e && e.code === "cancelled") ? "" : (ERR[e && e.code] || "연결이 잠깐 불안정했어요. 다시 눌러주세요.");
       setMini("조금 더 들어 볼게요"); clearNote(); if (msg) showNote(msg); else renderDock();
     } finally { fctl = null; }
@@ -2003,12 +2004,12 @@
     box.append(el("h2", "", "어떤 점이 아쉬웠어요?"));
     var opts = el("div", "pop-a");
     var send = el("button", "btn", "보내기"); send.type = "button"; send.disabled = true;
-    ["내 상황이랑 달라요", "너무 뻔해요", "더 공감해 줬으면", "말투가 별로예요"].forEach(function (t) {
+    ["내 상황이랑 달라요", "너무 뻔해요", "더 공감해 줬으면", "말투가 별로예요", "기타"].forEach(function (t) {
       var c = el("button", "chip", t); c.type = "button";
       c.addEventListener("click", function () { pick = t; opts.querySelectorAll(".chip").forEach(function (x) { x.classList.toggle("on", x === c); }); send.disabled = false; });
       opts.append(c);
     });
-    var note = el("textarea", "fb-note"); note.rows = 2; note.maxLength = 200; note.placeholder = "더 하고 싶은 말 (선택)";
+    var note = el("textarea", "fb-note"); note.rows = 2; note.maxLength = 200; note.placeholder = "남기고 싶은 말 (선택)";
     var close = function () { scrim.remove(); };
     var no = el("button", "btn sub", "닫기"); no.type = "button"; no.addEventListener("click", close);
     send.addEventListener("click", function () {

@@ -43,7 +43,7 @@ module.exports = async function handler(req, res) {
     }
     if (b.a === "feedback") {
       // 도움이 안 됐어요: 고른 이유와 (선택) 한마디. 설문 표에 같이 남긴다
-      const reasons = ["내 상황이랑 달라요", "너무 뻔해요", "더 공감해 줬으면", "말투가 별로예요"];
+      const reasons = ["내 상황이랑 달라요", "너무 뻔해요", "더 공감해 줬으면", "말투가 별로예요", "기타"];
       if (reasons.indexOf(b.reason) < 0) return res.status(400).json({ code: "reason" });
       const answers = { kind: "answer_feedback", reason: b.reason, note: String(b.note || "").slice(0, 200), type: String(b.type || "").slice(0, 16), entry: db.isUuid(b.entry) ? b.entry : null };
       await db.q("POST", "surveys", { anon_id: anon, answers: answers }, { Prefer: "return=minimal" });
