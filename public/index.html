@@ -293,7 +293,7 @@
   .ab-note p { margin: 0; font-size: 14.5px; line-height: 24px; word-break: keep-all; }
   .ab-note mark { background: linear-gradient(transparent 58%, var(--mark) 58%); color: inherit; }
   .ab-end { display: flex; align-items: flex-end; gap: 6px; height: 56px; }
-  .ab-crum { width: 46px; height: 46px; border-radius: 48% 52% 45% 55%; background: radial-gradient(circle at 34% 30%, #FFFDF6, #EADFC6 72%); box-shadow: inset -4px -5px 0 rgba(75,79,134,.22), 0 3px 0 rgba(23,24,42,.07); transform: rotate(-12deg); }
+  .ab-crum { width: 46px; height: 46px; border-radius: 48% 52% 45% 55%; background: radial-gradient(circle at 34% 30%, var(--paper), rgba(0,0,0,.1) 140%), var(--paper); box-shadow: inset -4px -5px 0 rgba(0,0,0,.08), 0 3px 0 rgba(23,24,42,.07); transform: rotate(-12deg); }
   .ab-pay { margin: 14px 0 0; font-size: 22px; line-height: 30px; font-weight: 800; letter-spacing: -0.6px; }
   .ab-sec { margin-top: 44px; padding-top: 28px; border-top: 1px dashed var(--rule-paper); }
   .ab h2 { margin: 0 0 14px; font-size: 18px; line-height: 26px; font-weight: 800; letter-spacing: -0.4px; }
@@ -382,7 +382,7 @@
   .pop-foot > button { flex: 1; min-width: 0; min-height: 52px; margin: 0; }
   .btn.sub { background: #E3E6F3; color: var(--ink); }
   .sv-box .chip { background: transparent; border-color: rgba(75,79,134,.28); }
-  .sv-box .chip.on, .pop-a .chip.on { background: transparent; color: var(--ink); border-color: var(--ink); box-shadow: inset 0 0 0 .5px var(--ink); font-weight: 700; }
+  .sv-box .chip.on, .pop-a .chip.on { background: transparent; color: var(--ink); border: 1.2px solid var(--ink); padding: 0 13.8px; font-weight: 700; }
   @media (prefers-reduced-motion: reduce) { .sv-box { animation: none; } }
 
   .nav-tip { position: relative; display: flex; align-items: center; gap: 2px; }
@@ -1879,7 +1879,7 @@
     track("follow_open", { type: current.type });
     fu = { stage: "write", q: null, asks: current.asks || DEFAULT_ASKS };
     var pp = el("article", "paper paper2"); pp.id = "paper2";
-    pp.innerHTML = '<svg class="edge" aria-hidden="true"></svg><div class="q-row"><span class="q" id="fuQ">아직 고민이 남았나요?</span><button class="fu-back" id="fuBack" type="button">돌아가기</button>' +
+    pp.innerHTML = '<svg class="edge" aria-hidden="true"></svg><div class="q-row"><span class="q" id="fuQ">아직 고민이 남았나요?</span><button class="fu-back" id="fuBack" type="button">취소</button>' +
       '</div>' +
       '<textarea id="entry2" rows="3" maxlength="100" placeholder="생각나는 대로 적어 보세요"></textarea><div class="count-row"><button class="clear-btn" id="clearBtn2" type="button"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21\"/><path d=\"M22 21H7\"/><path d=\"m5 11 9 9\"/></svg>다시 쓰기</button><span class="count" id="count2">0 / 100</span></div>' +
       '<p class="written" id="written2" hidden></p><div class="ans" id="ans2" hidden></div>';
@@ -1905,7 +1905,7 @@
       pp.animate([{ transform: "translateY(420px) rotate(3deg)", opacity: 0 }, { transform: "translateY(-6px) rotate(-.5deg)", opacity: 1, offset: .7 }, { transform: "none", opacity: 1 }], { duration: 560, delay: 90, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" });
     }
     setMini("조금 더 들어 볼게요"); clearNote(); renderDock();
-    setTimeout(function () { e2.focus({ preventScroll: true }); }, 450);
+    e2.focus({ preventScroll: true }); syncTyping();
   }
   function renderFollowDock() {
     if (fu.stage === "write") {
@@ -2122,13 +2122,13 @@
     var grainP = null; // 편지지 안 질감은 쓰지 않음
     var half = (window.DOMMatrix ? new DOMMatrix().scale(256 / (grainImg.naturalWidth || 256)) : null);
     if (grainP && half && grainP.setTransform) grainP.setTransform(half);
-    c.fillStyle = getComputedStyle(paper).backgroundColor || "#FBF3E2"; c.fillRect(0, 0, PW, PH);
+    var pc = paperColors(); c.fillStyle = pc.paper; c.fillRect(0, 0, PW, PH);
     if (grainP) { c.fillStyle = grainP; c.fillRect(0, 0, PW, PH); }
     c.fillStyle = "#AFB8E8"; c.strokeStyle = "#4B4F86"; c.lineWidth = 1.8; c.lineJoin = "round";
     c.beginPath(); c.moveTo(PW - 22, 1); c.lineTo(PW - 22, 22); c.lineTo(PW - 1, 22); c.closePath(); c.fill(); c.stroke();
     // 뒷면: 무지 종이 + 같은 결
     texB.width = tex.width; texB.height = tex.height; tbctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    tbctx.fillStyle = "#EFE2C4"; tbctx.fillRect(0, 0, PW, PH); if (grainP) { var gb = tbctx.createPattern(grainImg, "repeat"); if (half && gb.setTransform) gb.setTransform(half); tbctx.fillStyle = gb; tbctx.fillRect(0, 0, PW, PH); }
+    tbctx.fillStyle = pc.paper; tbctx.fillRect(0, 0, PW, PH); tbctx.fillStyle = "rgba(0,0,0,0.05)"; tbctx.fillRect(0, 0, PW, PH); if (grainP) { var gb = tbctx.createPattern(grainImg, "repeat"); if (half && gb.setTransform) gb.setTransform(half); tbctx.fillStyle = gb; tbctx.fillRect(0, 0, PW, PH); }
     drawBlock(c, qLabel, pr); drawBlock(c, written, pr);
     if (!ans.hidden) {
       var ar = ans.getBoundingClientRect();
@@ -2215,7 +2215,7 @@
   }
   window.__crumpleAt = function (v) { if (state === "result" && crState === "idle") beginCrumple(); crState = "drag"; p = v; pull = v * 40; renderCanvas(); };
   // 그림처럼: 입체 음영 대신 두 가지 종이 색과 먹선(종이 가장자리, 앞뒤가 바뀌는 선, 크게 접힌 선)만 쓴다
-  var PAPER = "#F8F9FE", SHADE = "#D7DCF3", BACK_SH = "rgba(120,90,50,0.16)", PENCIL = "#4B4F86";
+  var PAPER = "#F8F9FE", SHADE = "rgba(0,0,0,0.07)", BACK_SH = "rgba(0,0,0,0.12)", PENCIL = "#4B4F86";
   var stepSX = 1, stepSY = 1, stepRot = 0, boil = 0;
   function edgeJit(a, b) { var h = ((Math.min(a, b) * 73856093) ^ (Math.max(a, b) * 19349663) ^ (boil * 83492791)) >>> 0; return ((h % 1000) / 1000 - 0.5) * 2.2; }
   function strokeEdge(A, B, ia, ib, w, a) {
@@ -2292,7 +2292,7 @@
     var Rb = Math.min(PW, PH) * 0.27, shY = ball ? ball.y + Rb * sc + 6 : oy + (PH + 4) * (1 - ep) + (PH / 2 + Rb + 6) * ep;
     var srx = Math.max(2, (PW * (1 - ep) + Rb * 2 * ep) * sc / 2 * 0.9), sry = 7 * sc;
     ctx.save(); ctx.globalAlpha = alpha; ctx.translate(ox + PW / 2, shY); ctx.scale(1, sry / srx);
-    var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); sg.addColorStop(0, "rgba(176,148,98,0.45)"); sg.addColorStop(1, "rgba(176,148,98,0)");
+    var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); sg.addColorStop(0, "rgba(0,0,0,0.13)"); sg.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
     ctx.save(); ctx.globalAlpha = alpha;
     ctx.translate(ox + PW / 2, oy + PH / 2); ctx.rotate(rot); ctx.scale(sc, sc); ctx.translate(-PW / 2, -PH / 2);
@@ -2414,7 +2414,7 @@
     if (!ball) { // 바닥 그림자
       var sy = cy0 + f.b + 8, srx = f.a * 0.95;
       ctx.save(); ctx.translate(cx0, sy); ctx.scale(1, 8 / srx);
-      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); g.addColorStop(0, "rgba(176,148,98,0.42)"); g.addColorStop(1, "rgba(176,148,98,0)");
+      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); g.addColorStop(0, "rgba(0,0,0,0.13)"); g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     ctx.translate(cx0, cy0); ctx.rotate(f.rot + (ball ? ball.rot : 0));
@@ -2462,7 +2462,7 @@
   // [장면, 가로 배율, 세로 배율, 기울기]  — 눌렸다(납작) 튕기는(길쭉) 두 컷으로 만화 같은 탄력
   var ROTO_SEQ = [[0, 1, 1, 0], [1, 1.02, 0.97, 0.03], [2, 1, 1, -0.04], [3, 1, 1, 0.05], [4, 1, 1, -0.03], [5, 1.1, 0.9, 0.02], [6, 0.92, 1.08, -0.03], [7, 1, 1, 0], [7, 1, 1, 0]];
   var rotoStep = 0, rotoBoil = 0;
-  var TONE_MID = "#EFDFBF", TONE_DARK = "#E0C493";
+  var TONE_MID = "rgba(0,0,0,0.07)", TONE_DARK = "rgba(0,0,0,0.15)";
   function renderRoto() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
     if (crState === "idle" || crState === "gone") return;
@@ -2476,7 +2476,7 @@
       var y1 = -1e9, x0 = 1e9, x1 = -1e9; V.forEach(function (v) { y1 = Math.max(y1, v.y); x0 = Math.min(x0, v.x); x1 = Math.max(x1, v.x); });
       var srx = Math.max(4, (x1 - x0) / 2 * 0.95);
       ctx.save(); ctx.translate(cx0, cy0 + y1 + 8); ctx.scale(1, 8 / srx);
-      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); g.addColorStop(0, "rgba(176,148,98,0.42)"); g.addColorStop(1, "rgba(176,148,98,0)");
+      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); g.addColorStop(0, "rgba(0,0,0,0.13)"); g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx0, cy0); ctx.rotate(rot);
@@ -2574,7 +2574,9 @@ function drawPose(ctx, P, opt) {
 
   var DRAWN_SEQ = [["P0", 0], ["A1", 0], ["A", 0.01], ["AB", 0.02], ["B", -0.03], ["BC", 0.02], ["C", 0.04], ["C", 0.04], ["D", 0.05], ["E1", -0.03], ["E", 0], ["E", 0]];
   var drawnStep = 0, drawnPose = "P0", drawnRot = 0;
-  var DRAWN_OPT = { paper: "#F8F9FE", shade: "#D7DCF3", dark: "#B7BFE6", pen: "#4B4F86", text: "#C9B894" };
+  var DRAWN_OPT = { paper: "#F8F9FE", shade: "rgba(0,0,0,0.07)", dark: "rgba(0,0,0,0.15)", pen: "#4B4F86", text: "rgba(0,0,0,0.16)" };
+  // 쪽지 색과 연필 색은 화면에 쓰인 값을 그대로 가져온다
+  function paperColors() { var cs = getComputedStyle(paper); DRAWN_OPT.paper = (cs.getPropertyValue("--paper") || "").trim() || "#F8F9FE"; DRAWN_OPT.pen = (cs.getPropertyValue("--pencil") || "").trim() || "#4B4F86"; return DRAWN_OPT; }
   function poseBox(P) { var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; P.out.forEach(function (q) { x0 = Math.min(x0, q[0]); y0 = Math.min(y0, q[1]); x1 = Math.max(x1, q[0]); y1 = Math.max(y1, q[1]); }); return [x0, y0, x1, y1]; }
   function renderDrawn() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
@@ -2593,7 +2595,7 @@ function drawPose(ctx, P, opt) {
     if (!ball) {
       var srx = (bx[2] - bx[0]) / 2 * sx * 0.95, yb = cy0 + (bx[3] - 165) * sy + 8;
       ctx.save(); ctx.translate(cx0, yb); ctx.scale(1, 7 / Math.max(4, srx));
-      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, Math.max(4, srx)); g.addColorStop(0, "rgba(176,148,98,0.42)"); g.addColorStop(1, "rgba(176,148,98,0)");
+      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, Math.max(4, srx)); g.addColorStop(0, "rgba(0,0,0,0.13)"); g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, Math.max(4, srx), 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     ctx.translate(cx0, cy0); ctx.rotate(drawnRot + (ball ? ball.rot * 0.1 : 0)); ctx.scale(sx, sy); ctx.translate(-175, -165);
@@ -2624,7 +2626,7 @@ function drawPose(ctx, P, opt) {
     var shY = ball ? ball.y + Rb * 0.95 * sc + 4 : (oy + PH + 4) * (1 - ep) + (oy + PH / 2 + Rb * 0.95 + 4) * ep;
     var srx = Math.max(2, PW * (1 - 0.66 * ep) * sc / 2), sry = 8 * sc;
     ctx.save(); ctx.globalAlpha = alpha; ctx.translate(ox + PW / 2, shY); ctx.scale(1, sry / srx);
-    var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); sg.addColorStop(0, "rgba(176,148,98,0.5)"); sg.addColorStop(1, "rgba(176,148,98,0)");
+    var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); sg.addColorStop(0, "rgba(0,0,0,0.13)"); sg.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
     ctx.save();
     ctx.translate(ox + PW / 2, oy + PH / 2); ctx.rotate(stepRot); ctx.scale(sc * stepSX, sc * stepSY); ctx.translate(-PW / 2, -PH / 2);
