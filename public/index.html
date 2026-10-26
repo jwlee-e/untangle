@@ -413,7 +413,7 @@
     transition: opacity .2s; }
   .mp-world.far .my-n { opacity: 0; }
   .mb-w { position: absolute; z-index: 3; width: 0; height: 0; transform-origin: 0 0; transform: scale(var(--k, 1)); }
-  .mp-zoom { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
+  .mp-zoom { position: absolute; right: 16px; top: calc(50% - 32px - env(safe-area-inset-bottom, 0px) / 2); transform: translateY(-50%); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(110,90,55,.6); }
   .mp-zoom button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
   .mp-zoom button:disabled { color: var(--ink-4); cursor: default; }
   .mp-zoom i { height: 1px; margin: 0 8px; background: var(--rule-paper); }
@@ -427,7 +427,7 @@
   .mp-sh-h .grab { width: 36px; height: 4px; border-radius: 4px; background: var(--rule-paper); transition: width .2s; }
   .mp-sheet.open .mp-sh-h .grab { width: 28px; }
   .mp-sh-t { display: flex; align-items: baseline; gap: 8px; }
-  .mp-sh-t b { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink-2); }
+  .mp-sh-t b { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink-2); }
   .mp-sh-t small { font-size: 12.5px; font-weight: 600; color: var(--ink-4); opacity: 0; transition: opacity .25s; }
   .mp-sheet.open .mp-sh-t small { opacity: 1; }
   .mp-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px 16px 20px; display: flex; flex-direction: column; gap: 10px; opacity: 0; transition: opacity .25s; }
