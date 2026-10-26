@@ -37,7 +37,7 @@
 
   .app { position: relative; max-width: 440px; margin: 0 auto; height: calc(var(--vh) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; padding-inline: 20px; padding-block: 0 12px; overflow: hidden; }
 
-  .bar { height: 52px; flex: none; display: flex; align-items: center; justify-content: space-between; margin-right: -14px; }
+  .bar { height: 56px; flex: none; display: flex; align-items: center; justify-content: space-between; margin-right: -14px; }
   .brand { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
   .brand-mark { display: inline-flex; width: 34px; height: 34px; margin-left: -4px; }
   .brand-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -271,8 +271,8 @@
   @keyframes abIn { from { transform: translateX(22px); opacity: 0; } to { transform: none; opacity: 1; } }
   @keyframes abOut { to { transform: translateX(22px); opacity: 0; } }
   /* 모든 화면의 위쪽 줄: 높이 52, 왼쪽 뒤로(44), 가운데 제목 17px */
-  .ab-bar { position: relative; flex: none; height: 52px; display: flex; align-items: center; justify-content: flex-start; padding-inline: 8px; }
-  .ab-bar-t { position: absolute; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; max-width: calc(100% - 120px); overflow: hidden; text-overflow: ellipsis; }
+  .ab-bar { position: relative; flex: none; height: 56px; display: flex; align-items: center; justify-content: flex-start; padding-inline: 4px; }
+  .ab-bar-t { position: absolute; left: 50%; transform: translateX(-50%); font-size: 18px; font-weight: 700; letter-spacing: -0.3px; white-space: nowrap; max-width: calc(100% - 120px); overflow: hidden; text-overflow: ellipsis; }
   .ab-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 22px 24px; -webkit-overflow-scrolling: touch; }
   .ab-hero { padding: 18px 0 30px; }
   .ab h1 { margin: 0; font-size: 28px; line-height: 38px; font-weight: 800; letter-spacing: -1px; }
@@ -401,9 +401,9 @@
   .mp-view { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
   .mp-view.drag { cursor: grabbing; }
   .mp-world { position: absolute; left: 0; top: 0; width: 1200px; height: 1500px; background: url(./map-bg.webp) 0 0 / 100% 100% no-repeat; transform-origin: 0 0; will-change: transform; }
-  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 72px; display: flex; align-items: flex-start; padding: 4px 8px 0; background: linear-gradient(var(--map-ground) 55%, rgba(217,223,200,0)); pointer-events: none; }
+  .mp-bar { position: absolute; left: 0; right: 0; top: 0; height: 76px; display: flex; align-items: flex-start; padding: 6px 4px 0; background: linear-gradient(var(--map-ground) 55%, rgba(217,223,200,0)); pointer-events: none; }
   .mp-bar > * { pointer-events: auto; }
-  .mp-bar-t { flex: 1; text-align: center; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; line-height: 44px; }
+  .mp-bar-t { flex: 1; text-align: center; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 44px; }
   .my { position: absolute; width: 56px; height: 56px; margin: -46px 0 0 -28px; padding: 5px; border: 0; background: transparent; cursor: pointer; transform-origin: 28px 46px; transform: scale(var(--k, 1)); transition: transform .2s cubic-bezier(.22,1,.36,1); }
   .my img { width: 46px; height: 46px; display: block; pointer-events: none; -webkit-user-drag: none; }
   .my::after { content: ""; position: absolute; left: 11px; bottom: 2px; width: 34px; height: 8px; border-radius: 50%; background: rgba(110,90,55,.22); z-index: -1; }
@@ -427,7 +427,7 @@
   .mp-sh-h .grab { width: 36px; height: 4px; border-radius: 4px; background: var(--rule-paper); transition: width .2s; }
   .mp-sheet.open .mp-sh-h .grab { width: 28px; }
   .mp-sh-t { display: flex; align-items: baseline; gap: 8px; }
-  .mp-sh-t b { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; color: var(--ink-2); }
+  .mp-sh-t b { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink-2); }
   .mp-sh-t small { font-size: 12.5px; font-weight: 600; color: var(--ink-4); opacity: 0; transition: opacity .25s; }
   .mp-sheet.open .mp-sh-t small { opacity: 1; }
   .mp-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px 16px 20px; display: flex; flex-direction: column; gap: 10px; opacity: 0; transition: opacity .25s; }
@@ -445,7 +445,28 @@
   .mp-c-meta span { white-space: nowrap; }
   .mp-c-face { width: 24px; height: 24px; flex: none; margin-right: 2px; }
   .mp-c-rep { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; min-height: 30px; padding: 0 4px; margin-right: -4px; border: 0; background: transparent; font: inherit; font-size: 12.5px; color: var(--ink-2); cursor: pointer; }
-  .mp-c-rep svg { width: 18px; height: 18px; flex: none; }
+  .mp-c-rep svg { width: 20px; height: 20px; flex: none; }
+  .mp-c-rep { min-width: 36px; justify-content: center; color: var(--ink-3); }
+  .mp { --pop: #F6F4EE; }
+  .mp .btn.sub { background: #E7E3D9; }
+  .mp-as-scrim { align-items: flex-end; padding: 0 10px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .mp-as { width: 100%; display: flex; flex-direction: column; gap: 8px; animation: asIn .28s cubic-bezier(.22,1,.36,1); }
+  @keyframes asIn { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .mp-as-g { display: flex; flex-direction: column; background: var(--pop); border-radius: 18px; overflow: hidden; }
+  .mp-as-i { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 20px; border: 0; background: transparent; font: inherit; font-size: 16px; font-weight: 600; letter-spacing: -0.3px; color: var(--ink); text-align: left; cursor: pointer; }
+  .mp-as-i + .mp-as-i { border-top: 1px solid var(--rule-paper); }
+  .mp-as-i svg { flex: none; color: var(--ink-3); }
+  .mp-as-i.warn, .mp-as-i.warn svg { color: #C9502E; }
+  .mp-as-i:active, .mp-as-x:active { background: rgba(23,21,15,.05); }
+  .mp-as-x { min-height: 56px; border: 0; border-radius: 18px; background: var(--pop); font: inherit; font-size: 16px; font-weight: 700; color: var(--ink); cursor: pointer; }
+  .mp-rp-l { display: flex; flex-direction: column; background: var(--paper); border-radius: 14px; overflow: hidden; }
+  .mp-rp-i { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; padding: 0 16px; border: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 500; letter-spacing: -0.3px; color: var(--ink); text-align: left; word-break: keep-all; cursor: pointer; }
+  .mp-rp-i + .mp-rp-i { border-top: 1px solid var(--rule-paper); }
+  .mp-rp-i svg { flex: none; opacity: 0; color: var(--ink); }
+  .mp-rp-i[aria-checked="true"] { font-weight: 700; }
+  .mp-rp-i[aria-checked="true"] svg { opacity: 1; }
+  .mp-rp-n { margin: -4px 2px 0; font-size: 13px; line-height: 19px; color: var(--ink-3); word-break: keep-all; }
+  @media (prefers-reduced-motion: reduce) { .mp-as { animation: none; } }
   .mp-c-q { margin: 0; font-size: 17px; line-height: 25px; font-weight: 500; letter-spacing: -0.4px; word-break: keep-all; color: var(--ink); }
   .mp-c-f { display: flex; align-items: center; justify-content: flex-start; margin-top: 2px; }
   .mp-c-f button { display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 0 6px; margin: 0 -6px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-2); cursor: pointer; border-radius: 8px; }
@@ -472,6 +493,8 @@
   .mb-like[aria-pressed="true"] { color: #D9603B; }
   .mb-like[aria-pressed="true"] svg { fill: currentColor; }
   .mb-a button svg { width: 18px; height: 18px; flex: none; }
+  .mb-a .mb-rep { min-width: 36px; justify-content: center; margin-right: -10px; }
+  .mb-a .mb-rep svg { width: 20px; height: 20px; }
   .toast { z-index: 9; animation: toastIn .32s cubic-bezier(.22,1,.36,1); }
   .toast.two { white-space: pre-line; text-align: center; line-height: 21px; border-radius: 18px; padding: 11px 20px; width: max-content; max-width: calc(100% - 40px); word-break: keep-all; }
 
@@ -547,10 +570,10 @@
     <div class="mp-dim" id="mpDim"></div>
     <button type="button" class="mp-write" id="mpWrite"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>내 고민 꺼내기</button>
     <div class="mp-sheet" id="mpSheet"><div class="mp-sh-h" id="mpSheetH" role="button" tabindex="0" aria-expanded="false"><span class="grab"></span><span class="mp-sh-t"><b id="mpCount">모든 고민 모아보기</b></span></div><div class="mp-list" id="mpList"></div></div>
-    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="mp-bar-t">고민 나눔터</span><span style="width:44px"></span></div>
+    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg></button><span class="mp-bar-t">고민 나눔터</span><span style="width:44px"></span></div>
   </section>
   <section class="ab" id="aboutPage" hidden aria-label="사실은 별거 아닌 이야기">
-    <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="ab-bar-t">사실은 별거 아닌 이야기</span></div>
+    <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg></button><span class="ab-bar-t">사실은 별거 아닌 이야기</span></div>
     <div class="ab-scroll" id="abScroll">
       <header class="ab-hero">
         <h1>걱정은 보통<br>아주 작게 시작해요.</h1>
@@ -955,6 +978,10 @@
   var MAP_SPOTS = [[470,510], [610,470], [740,640], [560,650], [430,760], [620,860], [760,820], [500,960], [210,240], [285,280], [580,225], [655,255], [970,215], [1045,250], [880,1050], [950,1085], [165,1240], [240,1275], [600,1360], [230,690], [1050,600], [770,1180]]; // 앞 8개는 지도를 열었을 때 보이는 가운데 풀밭, 나머지는 공터
   var MAP_FACES = ["gomin", "geokjeong", "simran", "jichim", "muan", "buran", "buran2", "bulman", "uul", "hi", "crying", "excited"];
   var HEART = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
+  var MORE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>';
+  var EYE_OFF = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>';
+  var BAN = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>';
+  var CHECK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
   var FLAG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1-1v-1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1a1 1 0 0 0 1 1z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg>';
   function readSet(k) { try { return JSON.parse(localStorage.getItem(k) || "{}") || {}; } catch (e) { return {}; } }
   function writeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -1071,16 +1098,62 @@
       mp.more = !!j.more; track("list_more");
     });
   }
-  function mpReport(it, card) {
+  // 더 보기: 아래에서 올라오는 메뉴 (숨기기 · 차단하기 · 신고하기)
+  function mpMore(it, card) {
+    track("more_open");
+    var page = $("#mapPage"), scrim = el("div", "scrim pop-scrim mp-as-scrim"), box = el("div", "mp-as");
+    box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "더 보기");
+    var close = function () { scrim.remove(); };
+    var g = el("div", "mp-as-g");
+    [["hide", EYE_OFF, "이 고민 숨기기"], ["block", BAN, "이 사람 차단하기"], ["report", FLAG, "신고하기"]].forEach(function (o) {
+      var b = el("button", "mp-as-i" + (o[0] === "report" ? " warn" : "")); b.type = "button"; b.innerHTML = o[1] + "<span>" + o[2] + "</span>";
+      b.addEventListener("click", function () {
+        close();
+        if (o[0] === "hide") mpRemove(it, card, "hide", "숨겼어요. 이 고민은 더 안 보여요");
+        else if (o[0] === "block") mpRemove(it, card, "block", "차단했어요. 이 사람의 고민은 더 안 보여요");
+        else mpReportPop(it, card);
+      });
+      g.append(b);
+    });
+    var no = el("button", "mp-as-x", "취소"); no.type = "button"; no.addEventListener("click", close);
+    box.append(g, no); scrim.append(box);
+    scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
+    page.append(scrim);
+  }
+  // 신고 사유 고르기
+  var REPORT_REASONS = ["누군지 알아볼 수 있는 정보가 있어요", "욕설이나 혐오 표현이 있어요", "광고나 도배 같아요", "위험해 보여요, 도움이 필요해 보여요", "기타"];
+  function mpReportPop(it, card) {
+    track("report_open");
+    var page = $("#mapPage"), scrim = el("div", "scrim pop-scrim"), box = el("div", "sv-box mp-rp"), pick = null;
+    box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "이 고민에 어떤 문제가 있나요?");
+    box.append(el("h2", "", "이 고민에 어떤 문제가 있나요?"));
+    var list = el("div", "mp-rp-l"); list.setAttribute("role", "radiogroup");
+    var send = el("button", "btn", "신고하기"); send.type = "button"; send.disabled = true;
+    REPORT_REASONS.forEach(function (t) {
+      var r = el("button", "mp-rp-i"); r.type = "button"; r.setAttribute("role", "radio"); r.setAttribute("aria-checked", "false"); r.innerHTML = "<span>" + t + "</span>" + CHECK;
+      r.addEventListener("click", function () { pick = t; list.querySelectorAll(".mp-rp-i").forEach(function (x) { x.setAttribute("aria-checked", x === r ? "true" : "false"); }); send.disabled = false; });
+      list.append(r);
+    });
+    var close = function () { scrim.remove(); };
+    var no = el("button", "btn sub", "취소"); no.type = "button"; no.addEventListener("click", close);
+    send.addEventListener("click", function () { close(); mpRemove(it, card, "report", "신고했어요. 이 고민은 더 안 보여요", pick); });
+    var foot = el("div", "pop-foot"); foot.append(no, send);
+    box.append(list, el("p", "mp-rp-n", "신고한 고민은 내 화면에서 바로 사라지고, 확인한 뒤 처리돼요."), foot); scrim.append(box);
+    scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
+    page.append(scrim);
+  }
+  function mpReport(it, card) { mpRemove(it, card, "report", "신고했어요. 이 고민은 더 안 보여요"); }
+  // 숨기기 · 차단 · 신고 모두 이 기기에서는 바로 안 보이게 한다. 차단은 서버가 그 사람의 다른 고민도 빼고 내려 준다
+  function mpRemove(it, card, kind, msg, reason) {
     var s = readSet("sab:hidden"); s[it.id] = 1; writeSet("sab:hidden", s);
-    track("report", { sample: it.sample });
-    if (!it.sample && LIVE) act("report", { entry: it.id });
+    track(kind, { sample: it.sample, reason: reason || "" });
+    if (!it.sample && LIVE && kind !== "hide") act(kind, kind === "report" ? { entry: it.id, reason: reason || "" } : { entry: it.id });
     if (mp.cur === it) mpOpen(null);
     if (it.el) it.el.remove(); mp.items = mp.items.filter(function (x) { return x !== it; }); mp.all = mp.all.filter(function (x) { return x !== it; });
     if (typeof mp.total === "number") mp.total = Math.max(0, mp.total - 1);
     var after = function () { if (card) card.remove(); if ($("#mpSheet").classList.contains("open")) { mpTotal(); if (!mp.all.length) mpList(); } };
     if (card && !reduce) { card.style.height = card.offsetHeight + "px"; card.classList.add("gone"); setTimeout(after, 260); } else after();
-    toast("신고했어요. 이 고민은 더 안 보여요");
+    toast(msg);
   }
   function mpOpen(it) {
     if (mp.cur === it) return;
@@ -1103,8 +1176,8 @@
       var on = mpToggleLike(it); like.setAttribute("aria-pressed", on ? "true" : "false"); drawLike();
       if ($("#mpSheet").classList.contains("open")) mpList();
     });
-    var rep = el("button", "mb-rep"); rep.type = "button"; rep.innerHTML = FLAG; rep.setAttribute("aria-label", "신고");
-    rep.addEventListener("click", function () { mpReport(it); });
+    var rep = el("button", "mb-rep"); rep.type = "button"; rep.innerHTML = MORE; rep.setAttribute("aria-label", "더 보기");
+    rep.addEventListener("click", function () { mpMore(it, null); });
     row.append(like, rep); bb.append(row);
     $("#mpWorld").append(wrap); mp.bubble = wrap;
     var bw = bb.offsetWidth, bh = bb.offsetHeight, NSs = "http://www.w3.org/2000/svg";
@@ -1223,13 +1296,13 @@
   }
   function mpCard(it, i) {
       var c = el("div", "mp-card"); c.style.setProperty("--i", Math.min(i, 8));
-      // 윗줄: 털실 얼굴 · 이름 · 언제   (오른쪽 끝에 신고)
+      // 윗줄: 털실 얼굴 · 이름 · 언제   (오른쪽 끝에 더 보기: 숨기기 · 차단 · 신고)
       var meta = el("div", "mp-c-meta");
       var fc = el("img", "mp-c-face"); fc.src = CH.src(it.face, it.id != null ? it.id : it.t); fc.alt = "";
       meta.append(fc, el("b", "", it.nick));
       if (it.at) meta.append(el("span", "", "· " + ago(it.at)));
-      var rp = el("button", "mp-c-rep"); rp.type = "button"; rp.innerHTML = FLAG + "<span>신고</span>";
-      rp.addEventListener("click", function (e) { e.stopPropagation(); mpReport(it, c); });
+      var rp = el("button", "mp-c-rep"); rp.type = "button"; rp.innerHTML = MORE; rp.setAttribute("aria-label", "더 보기");
+      rp.addEventListener("click", function (e) { e.stopPropagation(); mpMore(it, c); });
       meta.append(rp);
       var f = el("div", "mp-c-f");
       var like = el("button", "like"); like.type = "button"; like.setAttribute("aria-label", "공감해요");
@@ -1541,7 +1614,7 @@
   function openPage(title, build, onClose) {
     var pg = el("section", "ab pg"); pg.setAttribute("aria-label", title);
     var bar = el("div", "ab-bar"), back = el("button", "icon"); back.type = "button"; back.setAttribute("aria-label", "뒤로");
-    back.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>';
+    back.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg>';
     bar.append(back, el("span", "ab-bar-t", title));
     var body = el("div", "ab-scroll pg-body");
     pg.append(bar, body); app.append(pg);

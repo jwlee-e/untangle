@@ -21,8 +21,15 @@ module.exports = async function handler(req, res) {
     const before = String((req.query && req.query.before) || "");
     const okBefore = /^\d{4}-\d{2}-\d{2}T[\d:.]+(Z|[+-]\d{2}:?\d{2})?$/.test(before);
     const limit = okBefore ? 20 : 22;
+    // 내가 차단한 사람의 고민은 뺀다 (blocks 표가 아직 없으면 그냥 넘어간다)
+    let notIn = "";
+    if (db.isAnon(anon)) {
+      const bl = await db.q("GET", "blocks?select=blocked_anon&anon_id=eq." + encodeURIComponent(anon) + "&limit=500");
+      const ids = (Array.isArray(bl.data) ? bl.data : []).map(function (x) { return x.blocked_anon; }).filter(db.isAnon);
+      if (ids.length) notIn = "&anon_id=not.in.(" + ids.map(function (x) { return '"' + x + '"'; }).join(",") + ")";
+    }
     const r = await db.q("GET", "entries?select=id,masked_text,created_at,likes(count)" +
-      "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)" +
+      "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)" + notIn +
       (okBefore ? "&created_at=lt." + encodeURIComponent(before) : "") + "&order=created_at.desc&limit=" + limit, null, okBefore ? null : { Prefer: "count=exact" });
     const rows = Array.isArray(r.data) ? r.data : [];
     let liked = new Set();

@@ -58,11 +58,25 @@ module.exports = async function handler(req, res) {
     if (b.a === "report") {
       if (!db.isUuid(b.entry)) return res.status(400).json({ code: "entry" });
       const mine = await db.q("GET", "reports?select=id&entry_id=eq." + b.entry + "&anon_id=eq." + encodeURIComponent(anon) + "&limit=1");
-      if (!(mine.data && mine.data.length)) await db.q("POST", "reports", { entry_id: b.entry, anon_id: anon }, { Prefer: "return=minimal" });
+      // 신고 사유는 정해 둔 것 중 하나만 받는다. reason 칸이 아직 없으면(SQL 실행 전) 사유 없이 저장한다
+      const REASONS = ["누군지 알아볼 수 있는 정보가 있어요", "욕설이나 혐오 표현이 있어요", "광고나 도배 같아요", "위험해 보여요, 도움이 필요해 보여요", "기타"];
+      const reason = REASONS.indexOf(b.reason) >= 0 ? b.reason : null;
+      if (!(mine.data && mine.data.length)) {
+        const w = await db.q("POST", "reports", reason ? { entry_id: b.entry, anon_id: anon, reason: reason } : { entry_id: b.entry, anon_id: anon }, { Prefer: "return=minimal" });
+        if (!w.ok && reason) await db.q("POST", "reports", { entry_id: b.entry, anon_id: anon }, { Prefer: "return=minimal" });
+      }
       // 서로 다른 사람 세 명이 신고하면 모두에게서 숨긴다
       const all = await db.q("GET", "reports?select=anon_id&entry_id=eq." + b.entry);
       const who = new Set((all.data || []).map(function (r) { return r.anon_id; }));
       if (who.size >= 3) await db.q("PATCH", "entries?id=eq." + b.entry, { hidden: true }, { Prefer: "return=minimal" });
+      return res.status(200).json({ ok: true });
+    }
+    if (b.a === "block") {
+      // 차단: 그 고민을 쓴 사람의 익명 번호를 서버에만 적어 두고, 지도에서 그 사람의 고민을 모두 뺀다 (번호는 화면에 내려가지 않는다)
+      if (!db.isUuid(b.entry)) return res.status(400).json({ code: "entry" });
+      const e = await db.q("GET", "entries?select=anon_id&id=eq." + b.entry + "&limit=1");
+      const who = e.data && e.data[0] && e.data[0].anon_id;
+      if (who && who !== anon) await db.q("POST", "blocks", { anon_id: anon, blocked_anon: who }, { Prefer: "resolution=ignore-duplicates,return=minimal" });
       return res.status(200).json({ ok: true });
     }
     if (b.a === "share") {
