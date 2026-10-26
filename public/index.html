@@ -471,6 +471,7 @@
   .mb-like[aria-pressed="true"] svg { fill: currentColor; }
   .mb-a button svg { width: 18px; height: 18px; flex: none; }
   .toast { z-index: 9; }
+  .toast.two { white-space: pre-line; text-align: center; line-height: 21px; border-radius: 18px; padding: 11px 20px; width: max-content; max-width: calc(100% - 40px); word-break: keep-all; }
 
   /* 스크롤 막대: 얇고 연하게 */
   * { scrollbar-width: thin; scrollbar-color: rgba(75,79,134,.22) transparent; }
@@ -2073,7 +2074,7 @@
       clearNote(); renderChips();
     }, instant);
   }
-  function toast(t) { var x = el("div", "toast", t); x.setAttribute("role", "status"); app.append(x); setTimeout(function () { x.remove(); }, 1800); }
+  function toast(t, ms, cls) { var x = el("div", "toast" + (cls ? " " + cls : ""), t); x.setAttribute("role", "status"); app.append(x); setTimeout(function () { x.remove(); }, ms || 1800); }
 
   /* ---------- 구겨 버리기: 종이를 삼각형 조각으로 나눠 실제로 접히는 것처럼 그린다 ---------- */
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2736,6 +2737,8 @@ function drawPose(ctx, P, opt) {
       track("discard", { shared: shared });
       setMini("버렸어요");
       resetAll(true);
+      // 버린 뒤 홈에서: 한 일과 바람을 두 줄로
+      toast("생각 하나 덜어냈어요.\n마음이 한결 가벼워졌길 바라요.", 3200, "two");
     }
     requestAnimationFrame(step);
   }
