@@ -143,12 +143,13 @@
 
   .chips { flex: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px}
   .chips .k { color: var(--ink-3); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
+  .chips .k, .fu-chips .k { font-size: 13px; line-height: 18px; }
   /* 쓰기 화면의 예시: 한 줄로 옆으로 넘겨 보고, 누르면 바로 채워진다 */
   .chips-row { display: flex; flex-direction: column; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 0 20px 2px}
   .chips-row .r { display: flex; gap: 8px; width: max-content}
   .chips-row::-webkit-scrollbar { display: none}
   .chips-row .chip { flex: none; white-space: nowrap}
-  .chip { min-height: 36px; padding: 0 14px; border: 1px solid #AFB8E8; border-radius: 9999px; background: var(--white-alpha-500); color: var(--ink); cursor: pointer; font-size: var(--t-chip-fs); font-weight: var(--t-chip-fw); line-height: var(--t-chip-lh);}
+  .chip { min-height: 36px; padding: 0 14px; border: 1px solid #AFB8E8; border-radius: 9999px; background: var(--white-alpha-500); color: var(--ink-2); cursor: pointer; font-size: var(--t-chip-fs); font-weight: var(--t-chip-fw); line-height: var(--t-chip-lh);}
   .chip:active { transform: scale(.97)}
 
   /* 아래 버튼 영역 */
@@ -238,8 +239,8 @@
 
   /* 시트 */
   .pop-scrim { background: rgba(25,26,44,0.455) !important; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px)}
-  .scrim { position: absolute; inset: 0; background: rgba(25,26,44,0.298); display: flex; align-items: flex-end; z-index: 5; animation: fade .2s ease}
-  .sheet { width: 100%; background: var(--paper); border-radius: 24px 24px 0 0; padding: 32px 20px calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 12px; animation: up .28s cubic-bezier(.22,1,.36,1)}
+  .scrim { position: fixed; inset: 0; justify-content: center; background: rgba(25,26,44,0.298); display: flex; align-items: flex-end; z-index: 5; animation: fade .2s ease}
+  .sheet { width: 100%; max-width: 440px; background: var(--paper); border-radius: 24px 24px 0 0; padding: 32px 20px calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 12px; animation: up .28s cubic-bezier(.22,1,.36,1)}
   .sheet h2 { margin: 0; font-size: var(--t-title-fs); font-weight: var(--t-title-fw); line-height: var(--t-title-lh);}
   .sheet p { color: var(--ink-2); word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
   .sheet > .btn { margin-top: 12px; }
@@ -363,7 +364,7 @@
 
   .count-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px}
   .count-row .count { align-self: auto; margin-left: auto}
-  .clear-btn { display: inline-flex; align-items: center; gap: 4px; border: 0; background: transparent; padding: 4px 8px 4px 0; font: inherit; color: var(--ink-3); cursor: pointer; font-size: var(--t-btn-s-fs); font-weight: var(--t-btn-s-fw); line-height: var(--t-btn-s-lh);}
+  .clear-btn { display: inline-flex; align-items: center; gap: 4px; border: 0; background: transparent; padding: 4px 8px 4px 0; font: inherit; color: var(--ink-4); cursor: pointer; font-size: var(--t-btn-s-fs); font-weight: var(--t-btn-s-fw); line-height: var(--t-btn-s-lh);}
   .app:not(.has-text) .clear-btn { visibility: hidden}
 
   /* 입력칸 → 쪽지로 커지는 동안: 진짜 쪽지와 아래 영역은 잠깐 숨겼다가 나타난다 */
@@ -516,8 +517,8 @@
 <div class="app" id="app" data-state="home">
   <header class="bar">
     <span class="sr">사실은 별거 아냐</span><span aria-hidden="true"></span>
-    <span class="bar-r"><button class="icon" id="surveyBtn" type="button" aria-label="의견 남기기"><svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7M17 12H7"/></svg><i class="dot" id="surveyDot" aria-hidden="true"></i></button>
-    <button class="icon" id="settingsBtn" type="button" aria-label="설정"><svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
+    <span class="bar-r"><button class="icon" id="surveyBtn" type="button" aria-label="의견 남기기"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7M17 12H7"/></svg><i class="dot" id="surveyDot" aria-hidden="true"></i></button>
+    <button class="icon" id="settingsBtn" type="button" aria-label="설정"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
   </header>
 
   <section class="story">
@@ -547,7 +548,7 @@
 
   <div class="mini">
     <div class="mini-l"><span class="mini-t sr" id="miniT" aria-live="polite">생각나는 그대로 적어요</span></div>
-    <button class="icon" id="backBtn" type="button" aria-label="닫기"><svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <button class="icon" id="backBtn" type="button" aria-label="닫기"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
   </div>
 
   <div class="stage" id="stage">
@@ -578,10 +579,10 @@
     <div class="mp-dim" id="mpDim"></div>
     <button type="button" class="mp-write" id="mpWrite"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>내 고민 꺼내기</button>
     <div class="mp-sheet" id="mpSheet"><div class="mp-sh-h" id="mpSheetH" role="button" tabindex="0" aria-expanded="false"><span class="grab"></span><span class="mp-sh-t"><b id="mpCount">모든 고민 모아보기</b></span></div><div class="mp-list" id="mpList"></div></div>
-    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg></button><span class="mp-bar-t">고민 나눔터</span><span style="width:44px"></span></div>
+    <div class="mp-bar"><button class="icon" id="mpBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg></button><span class="mp-bar-t">고민 나눔터</span><span style="width:44px"></span></div>
   </section>
   <section class="ab" id="aboutPage" hidden aria-label="사실은 별거 아닌 이야기">
-    <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg></button><span class="ab-bar-t">사실은 별거 아닌 이야기</span></div>
+    <div class="ab-bar"><button class="icon" id="abBack" type="button" aria-label="뒤로"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg></button><span class="ab-bar-t">사실은 별거 아닌 이야기</span></div>
     <div class="ab-scroll" id="abScroll">
       <header class="ab-hero">
         <h1>걱정은 보통<br>아주 작게 시작해요.</h1>
@@ -1622,7 +1623,7 @@
   function openPage(title, build, onClose) {
     var pg = el("section", "ab pg"); pg.setAttribute("aria-label", title);
     var bar = el("div", "ab-bar"), back = el("button", "icon"); back.type = "button"; back.setAttribute("aria-label", "뒤로");
-    back.innerHTML = '<svg width="24" height="24" viewBox="2 2 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg>';
+    back.innerHTML = '<svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 7.5 12l8 8"/></svg>';
     bar.append(back, el("span", "ab-bar-t", title));
     var body = el("div", "ab-scroll pg-body");
     pg.append(bar, body); app.append(pg);
@@ -3405,7 +3406,8 @@ function drawPose(ctx, P, opt) {
     });
     // 털실 콕 찌르기 기록 (한 번 방문에 30번까지만: 기록이 너무 많아지지 않게)
     if (window.__track && (poke.n = (poke.n || 0) + 1) <= 30) window.__track("yarn_poke", { hit: !!target, expr: target ? target.plugin.draw.expr || null : null, n: poke.n });
-    if (poke.n === 5 && window.__askTilt) setTimeout(window.__askTilt, 500);
+    // 기울기 안내 팝업은 띄우지 않는다. 설정 > 화면 효과에서만 켠다
+    if (false && poke.n === 5 && window.__askTilt) setTimeout(window.__askTilt, 500);
     if (target) {
       M.Body.setVelocity(target, { x: target.velocity.x * .5, y: -6 });
       if (target.plugin.draw.text) say(target, target.plugin.draw.text);
