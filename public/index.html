@@ -1105,12 +1105,12 @@
     box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "더 보기");
     var close = function () { scrim.remove(); };
     var g = el("div", "mp-as-g");
-    [["hide", EYE_OFF, "이 고민 숨기기"], ["block", BAN, "이 사람 차단하기"], ["report", FLAG, "신고하기"]].forEach(function (o) {
+    [["hide", EYE_OFF, "이 고민 숨기기"], ["block", BAN, "익명 작성자 차단하기"], ["report", FLAG, "신고하기"]].forEach(function (o) {
       var b = el("button", "mp-as-i" + (o[0] === "report" ? " warn" : "")); b.type = "button"; b.innerHTML = o[1] + "<span>" + o[2] + "</span>";
       b.addEventListener("click", function () {
         close();
         if (o[0] === "hide") mpRemove(it, card, "hide", "숨겼어요. 이 고민은 더 안 보여요");
-        else if (o[0] === "block") mpRemove(it, card, "block", "차단했어요. 이 사람의 고민은 더 안 보여요");
+        else if (o[0] === "block") mpRemove(it, card, "block", "차단했어요. 이 작성자의 고민은 더 안 보여요");
         else mpReportPop(it, card);
       });
       g.append(b);
