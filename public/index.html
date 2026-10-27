@@ -90,6 +90,12 @@
   .count { align-self: flex-end; color: var(--ink-4); font-variant-numeric: tabular-nums; font-size: var(--t-tiny-fs); font-weight: var(--t-tiny-fw); line-height: var(--t-tiny-lh);}
   .fine { color: var(--ink-3); word-break: keep-all; font-size: var(--t-caption-fs); font-weight: var(--t-caption-fw); line-height: var(--t-caption-lh);}
   .link { border: 0; background: transparent; padding: 0; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; color: inherit}
+  /* 답 화면에서 내가 쓴 글은 두 줄까지만. 글을 누르면 펼친다 (답이 항상 첫 화면에 보이게) */
+  .written.clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+  .written.can-open { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  /* 그래도 넘치면 쪽지를 스크롤하고, 아래를 살짝 흐리게 */
+  .app[data-state="result"]:not(.fu) .stage { overflow-y: auto; overscroll-behavior: contain; margin: -8px -20px 0; padding: 12px 20px 16px; }
+  .app[data-state="result"]:not(.fu) .stage.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent); mask-image: linear-gradient(#000 calc(100% - 40px), transparent); }
   .written { line-height: 28px; white-space: pre-wrap; overflow-wrap: anywhere; word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw);}
   .ans { border-top: 1px dashed rgba(25,26,44,0.455); margin-top: 6px; padding-top: 14px; display: flex; flex-direction: column; gap: 6px}
   .k { color: var(--ink-3); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
@@ -802,7 +808,34 @@
     var pb = dock.querySelector(".btn");
     if ((state === "write" || state === "home") && pb) pb.disabled = !entry.value.trim(); else renderDock();
   }
-  entry.addEventListener("input", onInput);
+  entry.addEventListener("input", function () { tidyBlank(entry); onInput(); });
+  // 빈 줄은 하나까지만 남긴다 (엔터를 여러 번 쳐도 쪽지가 빈 줄로 길어지지 않게)
+  function tidyBlank(ta) {
+    var v = ta.value, nv = v.replace(/\n[ \t]*\n([ \t]*\n)+/g, "\n\n");
+    if (nv === v) return;
+    var pos = ta.selectionStart - (v.slice(0, ta.selectionStart).length - v.slice(0, ta.selectionStart).replace(/\n[ \t]*\n([ \t]*\n)+/g, "\n\n").length);
+    ta.value = nv; try { ta.setSelectionRange(pos, pos); } catch (e) {}
+  }
+  function cleanText(t) { return String(t || "").replace(/\n[ \t]*\n([ \t]*\n)+/g, "\n\n").trim(); }
+  // 내가 쓴 글: 두 줄이 넘으면 접고, 누르면 펼치기/접기
+  function clampWritten(node) {
+    node.classList.remove("clamp", "can-open"); node.removeAttribute("role"); node.removeAttribute("aria-expanded"); node.removeAttribute("tabindex");
+    requestAnimationFrame(function () {
+      var lh = parseFloat(getComputedStyle(node).lineHeight) || 28;
+      if (node.scrollHeight > lh * 2 + 4) { node.classList.add("clamp", "can-open"); node.setAttribute("role", "button"); node.setAttribute("tabindex", "0"); node.setAttribute("aria-expanded", "false"); }
+      stageMore();
+    });
+  }
+  function toggleWritten(e) {
+    var node = e.currentTarget; if (!node.classList.contains("can-open")) return;
+    e.stopPropagation();
+    var open = node.classList.toggle("clamp") === false; node.setAttribute("aria-expanded", open ? "true" : "false");
+    track("written_toggle", { open: open }); requestAnimationFrame(stageMore);
+  }
+  function stageMore() { var st = $("#stage"); if (!st) return; st.classList.toggle("more", st.scrollHeight - st.scrollTop - st.clientHeight > 4); }
+  written.addEventListener("click", toggleWritten);
+  written.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleWritten(e); } });
+  $("#stage").addEventListener("scroll", stageMore, { passive: true });
   // 전체 지우기: 누르는 순간 글칸이 초점을 잃지 않게(키보드가 내려가지 않게) 터치 기본 동작을 막고 직접 누른다
   var clearBtn = $("#clearBtn");
   clearBtn.addEventListener("touchstart", function (e) { e.preventDefault(); clearBtn.click(); }, { passive: false });
@@ -1865,7 +1898,9 @@
 
   /* ---------- 답 받기 ---------- */
   var ctl = null, slowTimer = 0;
-  function renderAnswer(r, pop) {
+  var _renderAnswer0 = null;
+  function renderAnswer(r, pop) { renderAnswerBody(r, pop); requestAnimationFrame(stageMore); setTimeout(stageMore, 700); }
+  function renderAnswerBody(r, pop) {
     ans.replaceChildren();
     var kind = kindOf(r.type), calm = kind === "calm";
     paper.classList.toggle("is-calm", calm);
@@ -1889,7 +1924,7 @@
   function cancelRun() { if (ctl) ctl.abort(); }
 
   async function run(again) {
-    var text = (again && current) ? current.orig : entry.value.trim();
+    var text = (again && current) ? current.orig : cleanText(entry.value);
     if (!text) return;
     clearNote();
     await tonePromise;
@@ -1900,7 +1935,7 @@
     track(again ? "answer_retry" : "write_submit", { len: text.length });
     entry.blur();
     go("loading", function () {
-      written.textContent = text; written.hidden = false; qLabel.textContent = "맴도는 생각";
+      written.textContent = text; written.hidden = false; qLabel.textContent = "맴도는 생각"; clampWritten(written);
       renderLoadingAnswer(); setMini("적은 걸 읽고 있어요");
     });
     clearTimeout(slowTimer);
@@ -1980,7 +2015,8 @@
     c2.addEventListener("mousedown", function (e) { e.preventDefault(); });
     c2.addEventListener("touchstart", function (e) { e.preventDefault(); c2.click(); }, { passive: false });
     c2.addEventListener("click", function () { e2.value = ""; e2.dispatchEvent(new Event("input")); e2.focus({ preventScroll: true }); });
-    e2.addEventListener("input", function () { $("#count2").textContent = e2.value.length + " / 100"; app.classList.toggle("fu-has", !!e2.value.trim()); var b = dock.querySelector(".btn"); if (b && fu && fu.stage === "write") b.disabled = !e2.value.trim(); });
+    $("#written2").addEventListener("click", toggleWritten);
+    e2.addEventListener("input", function () { tidyBlank(e2); $("#count2").textContent = e2.value.length + " / 100"; app.classList.toggle("fu-has", !!e2.value.trim()); var b = dock.querySelector(".btn"); if (b && fu && fu.stage === "write") b.disabled = !e2.value.trim(); });
     e2.addEventListener("focus", syncTyping); e2.addEventListener("blur", function () { setTimeout(syncTyping, 0); });
     var fitBack = function () { drawEdge2(pp); fuApply(fuT); };
     if (window.ResizeObserver) new ResizeObserver(fitBack).observe(pp);
@@ -2016,12 +2052,12 @@
     pp.classList.remove("pop"); void pp.offsetWidth; pp.classList.add("pop");
   }
   async function sendFollow() {
-    var e2 = $("#entry2"), t = e2.value.trim(); if (!t || !fu || fu.stage !== "write") return;
+    var e2 = $("#entry2"), t = cleanText(e2.value); if (!t || !fu || fu.stage !== "write") return;
     var sample = await samplePromise;
     if (!sample) { showNote("이 화면에서는 AI 답을 만들 수 없어요. claude.ai에 로그인해서 링크를 열어주세요."); return; }
     fu.stage = "loading"; fu.text = t; e2.blur();
     var pp = $("#paper2"); pp.classList.add("sent");
-    $("#written2").textContent = t; $("#written2").hidden = false;
+    $("#written2").textContent = t; $("#written2").hidden = false; clampWritten($("#written2"));
     $("#ans2").replaceChildren(el("span", "k", "한 발짝 더 떨어져 보면"), el("div", "skel"), el("div", "skel"), el("div", "skel short")); $("#ans2").hidden = false;
     var ch = $("#fuChips"); if (ch) ch.remove();
     track("follow_submit", { len: t.length, asked: !!fu.q });
@@ -2202,7 +2238,9 @@
     c.font = cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily; c.fillStyle = cs.color; c.textBaseline = "middle";
     try { c.letterSpacing = cs.letterSpacing === "normal" ? "0px" : cs.letterSpacing; } catch (e) {}
     var lim = r.width + 1; if (getComputedStyle(node).display === "inline" || node.id === "fuQ") lim = Math.max(lim, pr.right - r.left - 60);
-    wrapWords(c, node.textContent, lim).forEach(function (ln, i) { c.fillText(ln, r.left - pr.left, r.top - pr.top + lh * i + lh / 2); });
+    var lines = wrapWords(c, node.textContent, lim);
+    if (node.classList && node.classList.contains("clamp") && lines.length > 2) { lines = lines.slice(0, 2); lines[1] = lines[1].replace(/\s+$/, "") + "…"; }
+    lines.forEach(function (ln, i) { c.fillText(ln, r.left - pr.left, r.top - pr.top + lh * i + lh / 2); });
   }
   function buildTexture() {
     var el2 = crEl && crEl !== paper ? crEl : null, pr = (el2 || paper).getBoundingClientRect();
