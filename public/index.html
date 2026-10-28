@@ -47,12 +47,6 @@
   .app { position: relative; max-width: 440px; margin: 0 auto; height: calc(var(--vh) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; padding-inline: 20px; padding-block: 0 12px; overflow: hidden}
 
   .bar { height: 56px; flex: none; display: flex; align-items: center; justify-content: space-between; margin-right: -14px}
-  .brand { font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
-  .brand-mark { display: inline-flex; width: 34px; height: 34px; margin-left: -4px}
-  .brand-mark img { width: 100%; height: 100%; object-fit: contain; display: block}
-  .seg { display: inline-flex; gap: 4px}
-  .seg-b { min-height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid rgba(25,26,44,0.173); background: transparent; color: inherit; font: inherit; font-size: 13px}
-  .seg-b.on { background: #17182A; color: #C5CEEF; border-color: #17182A}
   .icon { width: 44px; height: 44px; border: 0; background: transparent; display: grid; place-items: center; cursor: pointer; border-radius: 12px}
 
   /* 홈의 소개 */
@@ -68,23 +62,15 @@
   /* 홈 밖에서 보이는 작은 캐릭터 줄 */
   .mini { height: 48px; flex: none; display: none; align-items: center; justify-content: space-between; margin: 0 -14px 0 -8px}
   .mini-l { display: flex; align-items: center; gap: 6px; min-width: 0}
-  .mini-char { position: relative; width: 38px; height: 40px; flex: none; transform-origin: 50% 100%}
-  .mini-char img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .6s ease}
-  .mini-char .c-col { opacity: 0}
-  .mini-char.resolved .c-col { opacity: 1}
-  .mini-char.resolved .c-base { opacity: 0}
-  .mini-char.bump { animation: bump2 .5s ease-out}
-  @keyframes bump2 { 0% { transform: scale(1,1)} 35% { transform: scale(1.14,.86)} 70% { transform: scale(.96,1.06)} 100% { transform: scale(1,1)} }
   .mini-t { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
 
   /* 종이 */
   .stage { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; margin-top: 20px}
-  /* 종이: 붓결·종이 입자는 미리 만든 이미지(grain.png), 테두리는 연필 선을 SVG로 한 번 그려 둔다 */
+  /* 종이: 테두리는 연필 선을 SVG로 한 번 그려 둔다 */
   /* 쪽지 바탕은 손그림 윤곽선(SVG) 안에만 칠한다: 네모 바탕이 테두리 밖으로 비치지 않게. 그림자도 윤곽선을 따라간다 */
   .paper { position: relative; z-index: 0; isolation: isolate; flex: none; background: transparent; padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 10px; view-transition-name: paper}
   .edge { position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none; overflow: visible; filter: drop-shadow(0 10px 9px rgba(25,26,44,0.173))}
   .q-row { display: flex; align-items: center; gap: 4px; margin: 0}
-  .q-row .mini-char { width: 34px; height: 36px}
   .q { font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
   textarea { width: 100%; border: 0; background: transparent; line-height: 26px; padding: 0; resize: none; outline: none; min-height: 104px;
     background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 25px, var(--rule-paper) 25px, var(--rule-paper) 26px); background-attachment: local; font-size: var(--t-body-fs); font-weight: var(--t-body-fw);}
@@ -132,7 +118,6 @@
   .paper2.sent textarea, .paper2.sent .count-row, .paper2.sent .fu-back { display: none !important}
   .fu-back { flex: none; margin: -8px -8px -8px 0; min-height: 36px; padding: 0 8px; border: 0; background: transparent; font: inherit; color: var(--ink-3); cursor: pointer; border-radius: 8px; font-size: var(--t-btn-s-fs); font-weight: var(--t-btn-s-fw); line-height: var(--t-btn-s-lh);}
   .paper2 .q-row { justify-content: space-between; gap: 6px}
-  .fu-x { width: 32px; height: 32px; margin: -6px -8px -6px 0; border: 0; background: transparent; color: var(--ink-4); display: grid; place-items: center; border-radius: 50%; cursor: pointer; flex: none}
   .fu-chips { flex: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px}
   .app .fu-chips { display: flex !important}
   .app.fu-has .fu-chips { display: none !important}
@@ -148,11 +133,6 @@
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none}
   .catcher { position: absolute; left: 50%; bottom: 0; width: 72px; height: 76px; transform: translateX(-50%); transform-origin: 50% 100%; pointer-events: none; display: none}
   .catcher img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .6s ease}
-  .catcher .c-col { opacity: 0}
-  .catcher.resolved .c-col { opacity: 1}
-  .catcher.resolved .c-base { opacity: 0}
-  .catcher.bump { animation: bump .5s ease-out}
-  @keyframes bump { 0% { transform: translateX(-50%) scale(1,1)} 35% { transform: translateX(-50%) scale(1.12,.88)} 70% { transform: translateX(-50%) scale(.96,1.05)} 100% { transform: translateX(-50%) scale(1,1)} }
 
   .chips { flex: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px}
   .chips .k { color: var(--ink-3); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
@@ -174,9 +154,6 @@
   .btn.ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink)}
   .text-btn { min-height: 44px; border: 0; background: transparent; color: var(--ink-2); text-decoration: underline; cursor: pointer; font-size: var(--t-btn-m-fs); font-weight: var(--t-btn-m-fw); line-height: var(--t-btn-m-lh);}
   .share { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; cursor: pointer}
-  .share-t { display: flex; flex-direction: column}
-  .share-t b { font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
-  .share-t span { color: var(--ink-3); font-size: var(--t-caption-fs); font-weight: var(--t-caption-fw); line-height: var(--t-caption-lh);}
   .switch { position: relative; width: 48px; height: 28px; flex: none}
   .switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer}
   .switch i { position: absolute; inset: 0; border-radius: 9999px; background: rgba(25,26,44,0.173); transition: background .2s; pointer-events: none}
@@ -265,7 +242,6 @@
   .sv-sheet.typing .sv-foot { display: none; }
   .sv-sheet.typing .sv-body { padding-bottom: max(16px, calc(var(--vh, 100vh) - 200px)); }
   .sheet .sv-x { flex: none; color: var(--ink-2); }
-  .sv-sub { margin-top: -6px; color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh); }
   .sv-faces { display: flex; justify-content: space-between; margin-top: 8px; }
   .sv-face { width: 64px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; border: 0; background: transparent; font: inherit; white-space: nowrap; cursor: pointer; color: var(--ink-4); font-size: var(--t-caption-fs); line-height: var(--t-caption-lh); }
   .sv-face i { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--gray-200); transition: box-shadow .15s ease, background .15s ease; }
@@ -288,27 +264,20 @@
   .nav-list { display: flex; flex-direction: column}
   .nav-row { display: flex; align-items: center; justify-content: space-between; min-height: 52px; border: 0; border-top: 1px solid var(--rule); background: transparent; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .nav-row .chev { font-size: 22px; color: var(--ink-3, #60648A); font-weight: 400}
-  .group-k { margin-top: 8px; color: var(--ink-3, #60648A); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
   .sheet h3 { margin: 8px 0 0; font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
   .sheet p { margin: 0; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
-  .steps { margin: 4px 0; padding: 0; list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 12px}
-  .steps li { counter-increment: s; display: grid; grid-template-columns: 26px 1fr; column-gap: 10px; color: var(--ink-2); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
-  .steps li::before { content: counter(s); grid-row: span 2; width: 24px; height: 24px; border-radius: 50%; background: var(--ink, #17182A); color: var(--bg, #C5CEEF); display: grid; place-items: center; font-size: var(--t-caption-fs); font-weight: var(--t-caption-fw); line-height: var(--t-caption-lh);}
-  .steps b { color: var(--ink, #17182A); font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
   .sheet .help { list-style: none; padding: 0; gap: 0}
   .help li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--rule); color: var(--ink, #17182A); font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
   .help b { white-space: nowrap; font-variant-numeric: tabular-nums}
   @keyframes fade { from { opacity: 0} }
   @keyframes up { from { transform: translateY(40px); opacity: 0} }
   @keyframes toastIn { from { transform: translate(-50%, 12px); opacity: 0} to { transform: translate(-50%, 0); opacity: 1} }
-  .seg-mini { display: flex; gap: 6px}
-  .seg-mini .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink)}
   .toast { position: absolute; left: 50%; top: 58px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 9999px; white-space: nowrap; z-index: 6; animation: up .25s ease; font-size: var(--t-btn-s-fs); font-weight: var(--t-btn-s-fw); line-height: var(--t-btn-s-lh);}
 
   ::view-transition-group(paper) { animation-duration: .36s; animation-timing-function: cubic-bezier(.22,1,.36,1)}
   @media (prefers-reduced-motion: reduce) {
     .line, .story-sub { transition: none}
-    .skel, .paper.pop .ans, .catcher.bump, .scrim, .sheet, .toast { animation: none}
+    .skel, .paper.pop .ans, .scrim, .sheet, .toast { animation: none}
   }
 
 
@@ -322,7 +291,6 @@
   .ab-bar-t { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; max-width: calc(100% - 120px); overflow: hidden; text-overflow: ellipsis; font-size: var(--t-appbar-fs); font-weight: var(--t-appbar-fw); line-height: var(--t-appbar-lh);}
   .ab-scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 24px 24px; -webkit-overflow-scrolling: touch}
   .ab-hero { padding: 16px 0 8px; display: flex; flex-direction: column}
-  .ab-brand { color: var(--pencil); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh); margin-bottom: 8px}
   .ab h1 { margin: 0; font-size: 24px; font-weight: var(--t-display-fw); line-height: 32px;}
   .ab-hero p { margin: 10px 0 0; color: var(--ink-2); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .ab-float { position: relative; width: 67px; height: 74px}
@@ -389,7 +357,6 @@
   #aboutPage { z-index: 7}
   .pg-body { padding-top: 4px}
   .pg-body .nav-list { margin-top: 4px; border-bottom: 1px solid var(--rule)}
-  .pg-body .group-k { display: block; margin: 28px 0 6px}
   .pg-body .row { font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .pg-p { margin: 4px 0 14px; color: var(--ink-2); word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
   .pg-list { margin: 4px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; color: var(--ink-2); word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
@@ -428,8 +395,6 @@
   .nav-2 small { color: var(--ink-3); font-size: var(--t-caption-fs); font-weight: var(--t-caption-fw); line-height: var(--t-caption-lh);}
   .fx-row { min-height: 72px !important}
   .fx-row .nav-2 { gap: 4px}
-  .tilt-box { gap: 14px}
-  .tilt-box .pop-sub { margin-top: -6px}
 
   .count-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px}
   .count-row .count { align-self: auto; margin-left: auto}
@@ -452,9 +417,6 @@
   .sv-box { width: 100%; max-width: 360px; max-height: calc(100% - 24px); overflow-y: auto; background: var(--pop, var(--gray-200)); border-radius: 20px; padding: 28px 20px 20px; display: flex; flex-direction: column; gap: 16px; animation: popIn .22s cubic-bezier(.22,1,.36,1); box-shadow: 0 18px 40px rgba(25,26,44,0.173)}
   @keyframes popIn { from { transform: translateY(8px) scale(.98); opacity: 0} to { transform: none; opacity: 1} }
   .sv-box h2 { margin: 0; font-size: var(--t-title-fs); font-weight: var(--t-title-fw); line-height: var(--t-title-lh);}
-  .pop-sub { margin: -10px 0 0; color: var(--ink-3); font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
-  .pop-q { display: flex; flex-direction: column; gap: 8px}
-  .pop-q b { word-break: keep-all; font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
   .pop-a { display: flex; flex-wrap: wrap; gap: 6px}
   .pop-a .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink)}
   /* 팝업 아래 버튼: 왼쪽은 닫는 쪽(연하게), 오른쪽은 하는 쪽(진하게) */
@@ -876,7 +838,7 @@
   if (window.ResizeObserver) new ResizeObserver(drawEdge).observe(paper); else window.addEventListener("resize", drawEdge);
 
   /* ---------- 상태 ---------- */
-  var state = "home", current = null, rerolls = 0, sharePick = true, afterDiscard = false;
+  var state = "home", current = null, afterDiscard = false;
   function go(next, fn, instant) {
     state = next;
     if (next === "home" && window.__backToMap) setTimeout(window.__backToMap, 0);
@@ -1302,7 +1264,6 @@
     scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
     page.append(scrim);
   }
-  function mpReport(it, card) { mpRemove(it, card, "report", "신고했어요. 이 고민은 더 안 보여요"); }
   // 숨기기 · 차단 · 신고 모두 이 기기에서는 바로 안 보이게 한다. 차단은 서버가 그 사람의 다른 고민도 빼고 내려 준다
   function mpRemove(it, card, kind, msg, reason, note) {
     var s = readSet("sab:hidden"); s[it.id] = 1; writeSet("sab:hidden", s);
@@ -1363,12 +1324,6 @@
     bb.prepend(sv);
   }
   // 화면에 보이는 영역(지도 좌표). 아래 시트가 덮는 부분은 뺀다
-  function mpVisible() {
-    // 모아보기를 닫았을 때 보이던 지도 영역 기준 (시트를 올리는 중에도 목록이 바뀌지 않게)
-    var v = mpView(), sh = v.clientHeight - $("#mpSheetH").offsetHeight;
-    var x0 = -mp.x / mp.s, y0 = (-mp.y + 64) / mp.s, x1 = (-mp.x + v.clientWidth) / mp.s, y1 = (-mp.y + Math.min(v.clientHeight, sh)) / mp.s;
-    return mp.items.filter(function (it) { return it.x > x0 + 10 && it.x < x1 - 10 && it.y > y0 + 20 && it.y < y1; });
-  }
   function mpCount() { $("#mpCount").textContent = "모든 고민 모아보기"; }
   // 화면 가운데(말풍선이 위로 뜨니 조금 아래 기준)에서 가장 가까운 털실. 거의 같은 거리면 지금 것을 유지해 깜빡이지 않게
   function mpPick() {
@@ -1528,12 +1483,6 @@
     dim.addEventListener("click", function () { mpSheet(false); });
     $("#mpList").addEventListener("scroll", function () { var L = this; if (L.scrollTop + L.clientHeight > L.scrollHeight - 300) mpMore(); }, { passive: true });
   })();
-  function mpGoTo(it) {
-    var v = mpView(), s = Math.max(mp.s, 1);
-    var tx = v.clientWidth / 2 - it.x * s, ty = v.clientHeight / 2 - 40 - it.y * s;
-    var sx = mp.x, sy = mp.y, ss = mp.s; mp.x = tx; mp.y = ty; mp.s = s; mpClamp(); tx = mp.x; ty = mp.y; mp.x = sx; mp.y = sy; mp.s = ss;
-    mp.started = true; mpTween(tx, ty, s, function () { mpOpen(it); });
-  }
   function openMap() {
     var pg = $("#mapPage"); if (!pg.hidden) return;
     app.append(pg); pg.hidden = false; pg.classList.remove("out"); mapBg(true);
@@ -1574,7 +1523,6 @@
   $("#mpBack").addEventListener("click", function () { closeMap(); });
   $("#mpWrite").addEventListener("click", function () { track("write_from_map"); hideMapForWrite(function () { $("#homeField").click(); }); });
   // 남의 고민으로 내 답 듣기: 그 고민을 쓰기 화면에 채워 두고, 고쳐 쓰거나 지우고 다시 쓸 수 있게
-  function mpAsk(text) { track("ask_from_map"); window.__prefill = text; hideMapForWrite(function () { $("#homeField").click(); }); }
   $("#mapBtn").addEventListener("click", openMap);
 
   /* ---------- 의견 묻기: 서비스 전체에 대한 평가 하나 + 좋았던 점·아쉬웠던 점 (바텀시트) ---------- */
@@ -1693,8 +1641,6 @@
   }
 
   /* ---------- 설정 (말투 버전 등) ---------- */
-  var soundOn = store("sab:sound") !== "0";
-  var crumpleMode = "drawn"; // 만화처럼 그림 몇 장을 컷으로 넘기는 방식 (입체·그림 방식은 비교용 코드로 남김)
   // 아이콘은 모두 Lucide(ISC) 모양: 24 격자, 선 굵기 2, 둥근 끝
   var ICON = {
     book: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
@@ -2061,7 +2007,6 @@
 
   /* ---------- 답 받기 ---------- */
   var ctl = null, slowTimer = 0;
-  var _renderAnswer0 = null;
   function renderAnswer(r, pop) { renderAnswerBody(r, pop); requestAnimationFrame(stageMore); setTimeout(stageMore, 700); }
   function renderAnswerBody(r, pop) {
     ans.replaceChildren();
@@ -2113,29 +2058,16 @@
       track("answer_ok", { type: res.type, temp: res.temp, distance: res.distance, again: !!again });
       clearNote();
       go("result", function () { renderAnswer(current, true); setMini(kindOf(res.type) === "calm" ? "여기 있을게요" : "다 읽었어요"); });
-      if (kindOf(res.type) === "normal") setTimeout(function () { resolveMini(res.tag); }, 380);
     } catch (e) {
       track("answer_fail", { code: (e && e.code) || "unknown", again: !!again });
       if (e && e.name === "AbortError") e = { code: "cancelled" };
       var msg = (e && e.code === "cancelled") ? "" : (ERR[e && e.code] || "연결이 잠깐 불안정했어요. 다시 눌러주세요.");
-      if (again && current) { go("result", function () { renderAnswer(current, false); setMini("다 읽었어요"); }); rerolls = 0; }
+      if (again && current) { go("result", function () { renderAnswer(current, false); setMini("다 읽었어요"); }); }
       else { go("write", function () { written.hidden = true; ans.hidden = true; qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?"; setMini("생각나는 그대로 적어요"); }); }
       if (msg) showNote(msg);
     } finally { ctl = null; clearTimeout(slowTimer); }
   }
 
-  function addLine() {
-    var t = current ? current.orig : entry.value;
-    track("add_line", { len: t.length });
-    current = null; rerolls = 0;
-    go("write", function () {
-      written.hidden = true; ans.hidden = true; grip.hidden = true;
-      paper.classList.remove("is-calm", "can-crumple", "pop"); qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?";
-      setMini("생각나는 그대로 적어요"); clearNote();
-      entry.value = t.length < 99 ? t + "\n" : t; onInput();
-    });
-    setTimeout(function () { entry.focus({ preventScroll: true }); try { entry.setSelectionRange(entry.value.length, entry.value.length); } catch (e) {} }, 60);
-  }
 
   /* ---------- 아직 신경 쓰여요: 질문 하나, 답 하나 ---------- */
   var fu = null, fctl = null;
@@ -2266,10 +2198,8 @@
     fuAnim = requestAnimationFrame(step);
     if ((to === 1) !== (from >= 1)) track(to === 1 ? "follow_spread" : "follow_stack");
   }
-  function fuSpread(on) { if (fu) fuTween(on ? 1 : 0); }
   (function () {
     var y0 = null, t0 = 0, mode = null;
-    var atBottom = function () { return stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 2; };
     stage.addEventListener("touchstart", function (e) {
       if (!fu || fu.stage === "loading") { y0 = null; return; }
       y0 = e.touches[0].clientY; t0 = fuT; mode = null;
@@ -2311,11 +2241,6 @@
     setTimeout(done, 330);
   }
   // 버리기 전에 새 쪽지를 첫 쪽지에 포개고 나서 함께 구긴다
-  function mergeFollow(then) {
-    app.classList.add("merging");
-    paper.style.transform = "none"; paper.style.filter = "none"; paper.style.height = (fu && fu.fullH ? fu.fullH : paper.scrollHeight) + "px";
-    setTimeout(function () { clearFollow(); then(); }, reduce ? 0 : 340);
-  }
   function clearFollow() {
     var pp = $("#paper2"), ch = $("#fuChips"); if (pp) pp.remove(); if (ch) ch.remove();
     app.classList.remove("fu", "spread", "opening", "merging", "fu-has", "typing"); paper.classList.remove("fu-fade"); crEl = null;
@@ -2354,7 +2279,7 @@
     clearFollow();
     app.classList.remove("discarding");
     crState = "idle"; p = 0; pull = 0; ball = null; renderCanvas();
-    current = null; rerolls = 0; sharePick = true;
+    current = null;
     go("home", function () {
       entry.value = ""; onInput(); written.hidden = true; ans.hidden = true; grip.hidden = true;
       paper.classList.remove("hide", "is-calm", "can-crumple", "pop"); qLabel.textContent = "뭐가 자꾸 머릿속에 맴돌아요?";
@@ -2367,14 +2292,7 @@
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var SW = 0, SH = 0, PW = 0, PH = 0, PX = 0, PY = 0;
   var tex = document.createElement("canvas"), tctx = tex.getContext("2d");
-  var texB = document.createElement("canvas"), tbctx = texB.getContext("2d");
-  var grainImg = new Image(); grainImg.src = "./grain.png";
-  var GX = 10, GY = 12, verts = [], tris = [], planes = [], nbs = [];
-  var crState = "idle", p = 0, pull = 0, ball = null, restSpin = 0;
-  var L = norm([-0.35, -0.55, 0.76]), B_FLAT = L[2];
-  var seed = 11;
-  function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
-  function norm(v) { var l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
+  var crState = "idle", p = 0, pull = 0, ball = null;
 
   var crEl = null; // 구길 쪽지 (보통은 첫 쪽지, 두 장이면 앞의 두 번째 쪽지)
   function measure() {
@@ -2412,18 +2330,11 @@
     var el2 = crEl && crEl !== paper ? crEl : null, pr = (el2 || paper).getBoundingClientRect();
     tex.width = Math.round(PW * dpr); tex.height = Math.round(PH * dpr);
     var c = tctx; c.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var grainP = null; // 편지지 안 질감은 쓰지 않음
-    var half = (window.DOMMatrix ? new DOMMatrix().scale(256 / (grainImg.naturalWidth || 256)) : null);
-    if (grainP && half && grainP.setTransform) grainP.setTransform(half);
     var pc = paperColors(); c.fillStyle = pc.paper; c.fillRect(0, 0, PW, PH);
-    if (grainP) { c.fillStyle = grainP; c.fillRect(0, 0, PW, PH); }
     if (!el2) {
       c.fillStyle = "#AFB8E8"; c.strokeStyle = "#4B4F86"; c.lineWidth = 1.8; c.lineJoin = "round";
       c.beginPath(); c.moveTo(PW - 22, 1); c.lineTo(PW - 22, 22); c.lineTo(PW - 1, 22); c.closePath(); c.fill(); c.stroke();
     }
-    // 뒷면: 무지 종이 + 같은 결
-    texB.width = tex.width; texB.height = tex.height; tbctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    tbctx.fillStyle = pc.paper; tbctx.fillRect(0, 0, PW, PH); tbctx.fillStyle = "rgba(0,0,0,0.05)"; tbctx.fillRect(0, 0, PW, PH); if (grainP) { var gb = tbctx.createPattern(grainImg, "repeat"); if (half && gb.setTransform) gb.setTransform(half); tbctx.fillStyle = gb; tbctx.fillRect(0, 0, PW, PH); }
     var qn = el2 ? el2.querySelector("#fuQ") : qLabel, wn = el2 ? el2.querySelector("#written2") : written, an = el2 ? el2.querySelector("#ans2") : ans;
     drawBlock(c, qn, pr); if (!wn.hidden) drawBlock(c, wn, pr);
     if (!an.hidden) {
@@ -2432,391 +2343,8 @@
       Array.prototype.forEach.call(an.children, function (n) { drawBlock(c, n, pr); });
     }
   }
-  function polyR(d, R) { var m = 0.5; for (var i = 0; i < planes.length; i++) { var t = d[0] * planes[i][0] + d[1] * planes[i][1] + d[2] * planes[i][2]; if (t > m) m = t; } return R / m * 0.8; }
-  function buildMesh() {
-    seed = 11; verts = []; tris = []; planes = [];
-    var gr = (1 + Math.sqrt(5)) / 2, ico = [[0,1,gr],[0,-1,gr],[0,1,-gr],[0,-1,-gr],[1,gr,0],[-1,gr,0],[1,-gr,0],[-1,-gr,0],[gr,0,1],[-gr,0,1],[gr,0,-1],[-gr,0,-1]];
-    var tilt = [rnd() * 6.28, rnd() * 6.28];
-    ico.forEach(function (v) {
-      var w = norm([v[0] + (rnd() - 0.5) * 0.2, v[1] + (rnd() - 0.5) * 0.2, v[2] + (rnd() - 0.5) * 0.2]);
-      var c1 = Math.cos(tilt[0]), s1 = Math.sin(tilt[0]), c2 = Math.cos(tilt[1]), s2 = Math.sin(tilt[1]);
-      var x = w[0] * c1 + w[2] * s1, z = -w[0] * s1 + w[2] * c1, y = w[1] * c2 - z * s2; z = w[1] * s2 + z * c2;
-      planes.push([x, y, z]);
-    });
-    var cx = PW / 2, cy = PH / 2, R = Math.min(PW, PH) * 0.25;
-    var f1 = rnd() * 6.3, f2 = rnd() * 6.3, f3 = rnd() * 6.3, f4 = rnd() * 6.3;
-    for (var j = 0; j <= GY; j++) for (var i = 0; i <= GX; i++) {
-      var u = i / GX * PW, v = j / GY * PH, rimX = (i === 0 || i === GX), rimY = (j === 0 || j === GY);
-      if (!rimX) u += (rnd() - 0.5) * 0.8 * PW / GX;
-      if (!rimY) v += (rnd() - 0.5) * 0.8 * PH / GY;
-      var dx = (u - cx) / (PW / 2), dy = (v - cy) / (PH / 2), edge = Math.max(Math.abs(dx), Math.abs(dy));
-      var lon = dx * 2.5, lat = dy * 1.2;
-      var d = norm([Math.sin(lon) * Math.cos(lat) + (rnd() - 0.5) * 0.55, Math.sin(lat) + (rnd() - 0.5) * 0.55, Math.cos(lon) * Math.cos(lat) + (rnd() - 0.5) * 0.55]);
-      var rad = R * (0.86 + 0.14 * (polyR(d, R) / R - 1) * 0.5) * ((rimX || rimY) ? 0.93 + 0.05 * rnd() : 0.88 + 0.1 * rnd());
-      verts.push({ u: u, v: v, hx: u, hy: v, tx: cx + d[0] * rad, ty: cy + d[1] * rad, tz: d[2] * rad, delay: (1 - edge) * 0.38,
-        bz: 38 * (Math.sin(u * 0.022 + f1) * Math.cos(v * 0.019 + f2) + 0.5 * Math.sin(u * 0.05 - v * 0.04 + f3)),
-        bx: 7 * Math.sin(v * 0.03 + f4), by: 7 * Math.cos(u * 0.03 + f2), x: 0, y: 0, z: 0 });
-    }
-    var W = GX + 1;
-    for (var j2 = 0; j2 < GY; j2++) for (var i2 = 0; i2 < GX; i2++) {
-      var a0 = j2 * W + i2, b0 = a0 + 1, c0 = a0 + W, d0 = c0 + 1;
-      if (rnd() < 0.5) { tris.push([a0, b0, d0]); tris.push([a0, d0, c0]); } else { tris.push([a0, b0, c0]); tris.push([b0, d0, c0]); }
-    }
-    // 이웃 조각: 접힌 선을 먹선으로 그리기 위해 각 변을 공유하는 조각을 찾아 둔다
-    var em = {}; nbs = tris.map(function () { return [-1, -1, -1]; });
-    tris.forEach(function (t, ti) {
-      for (var k = 0; k < 3; k++) {
-        var a = t[k], b = t[(k + 1) % 3], key = Math.min(a, b) + "_" + Math.max(a, b);
-        if (em[key]) { var o = em[key]; nbs[ti][k] = o[0]; nbs[o[0]][o[1]] = ti; } else em[key] = [ti, k];
-      }
-    });
-    restSpin = 0; var best = 9, bestO = 0;
-    for (var o = -0.6; o <= 0.6; o += 0.02) {
-      restSpin = o; updateVerts(1, 0);
-      var x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
-      verts.forEach(function (q) { x0 = Math.min(x0, q.x); x1 = Math.max(x1, q.x); y0 = Math.min(y0, q.y); y1 = Math.max(y1, q.y); });
-      var dv = Math.abs(Math.log((x1 - x0) / (y1 - y0))); if (dv < best) { best = dv; bestO = o; }
-    }
-    restSpin = bestO;
-  }
-  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-  function updateVerts(prog, spin) {
-    var cx = PW / 2, cy = PH / 2, sp = spin + restSpin * ease(prog), ay = prog * 0.55 + sp, ax = prog * 0.3 + sp * 0.4;
-    var cyA = Math.cos(ay), syA = Math.sin(ay), cxA = Math.cos(ax), sxA = Math.sin(ax);
-    for (var n = 0; n < verts.length; n++) {
-      var q = verts[n];
-      var k = Math.max(0, Math.min(1, (prog - q.delay) / (1 - q.delay))), e = Math.pow(ease(k), 1.7), bk = Math.sin(Math.PI * Math.min(1, k * 1.15));
-      var x = q.hx + (q.tx - q.hx) * e + q.bx * bk - cx, y = q.hy + (q.ty - q.hy) * e + q.by * bk - cy, z = q.tz * e + q.bz * bk;
-      var x1 = x * cyA + z * syA, z1 = -x * syA + z * cyA, y1 = y * cxA - z1 * sxA, z2 = y * sxA + z1 * cxA;
-      q.x = x1 + cx; q.y = y1 + cy; q.z = z2;
-    }
-  }
-  function drawTex(P, U, img) {
-    var cx = (P[0] + P[2] + P[4]) / 3, cy = (P[1] + P[3] + P[5]) / 3, Q = P.slice();
-    for (var i = 0; i < 6; i += 2) { var dx = Q[i] - cx, dy = Q[i + 1] - cy, l = Math.hypot(dx, dy) || 1; Q[i] += dx / l * 0.7; Q[i + 1] += dy / l * 0.7; }
-    var u0 = U[0], v0 = U[1], u1 = U[2], v1 = U[3], u2 = U[4], v2 = U[5];
-    var den = u0 * (v1 - v2) + u1 * (v2 - v0) + u2 * (v0 - v1);
-    if (Math.abs(den) < 1e-6) return;
-    var a = (P[0] * (v1 - v2) + P[2] * (v2 - v0) + P[4] * (v0 - v1)) / den, b = (P[1] * (v1 - v2) + P[3] * (v2 - v0) + P[5] * (v0 - v1)) / den;
-    var c = (P[0] * (u2 - u1) + P[2] * (u0 - u2) + P[4] * (u1 - u0)) / den, d = (P[1] * (u2 - u1) + P[3] * (u0 - u2) + P[5] * (u1 - u0)) / den;
-    var e = (P[0] * (u1 * v2 - u2 * v1) + P[2] * (u2 * v0 - u0 * v2) + P[4] * (u0 * v1 - u1 * v0)) / den;
-    var g = (P[1] * (u1 * v2 - u2 * v1) + P[3] * (u2 * v0 - u0 * v2) + P[5] * (u0 * v1 - u1 * v0)) / den;
-    ctx.save(); ctx.beginPath(); ctx.moveTo(Q[0], Q[1]); ctx.lineTo(Q[2], Q[3]); ctx.lineTo(Q[4], Q[5]); ctx.closePath(); ctx.clip();
-    ctx.transform(a, b, c, d, e, g); ctx.drawImage(img || tex, 0, 0, PW, PH); ctx.restore();
-  }
-  function fillTri(P, style) {
-    var cx = (P[0] + P[2] + P[4]) / 3, cy = (P[1] + P[3] + P[5]) / 3, Q = P.slice();
-    for (var i = 0; i < 6; i += 2) { var dx = Q[i] - cx, dy = Q[i + 1] - cy, l = Math.hypot(dx, dy) || 1; Q[i] += dx / l * 0.7; Q[i + 1] += dy / l * 0.7; }
-    ctx.beginPath(); ctx.moveTo(Q[0], Q[1]); ctx.lineTo(Q[2], Q[3]); ctx.lineTo(Q[4], Q[5]); ctx.closePath(); ctx.fillStyle = style; ctx.fill();
-  }
   window.__crumpleAt = function (v) { if (state === "result" && crState === "idle") beginCrumple(); crState = "drag"; p = v; pull = v * 40; renderCanvas(); };
-  // 그림처럼: 입체 음영 대신 두 가지 종이 색과 먹선(종이 가장자리, 앞뒤가 바뀌는 선, 크게 접힌 선)만 쓴다
-  var PAPER = "#F8F9FE", SHADE = "rgba(0,0,0,0.07)", BACK_SH = "rgba(0,0,0,0.12)", PENCIL = "#4B4F86";
-  var stepSX = 1, stepSY = 1, stepRot = 0, boil = 0;
-  function edgeJit(a, b) { var h = ((Math.min(a, b) * 73856093) ^ (Math.max(a, b) * 19349663) ^ (boil * 83492791)) >>> 0; return ((h % 1000) / 1000 - 0.5) * 2.2; }
-  function strokeEdge(A, B, ia, ib, w, a) {
-    var mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2, dx = B.x - A.x, dy = B.y - A.y, l = Math.hypot(dx, dy) || 1, j = edgeJit(ia, ib);
-    ctx.globalAlpha = a; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.quadraticCurveTo(mx - dy / l * j, my + dx / l * j, B.x, B.y); ctx.stroke();
-  }
-
-  /* ---------- 그림 방식: 입체 계산 없이, 시안의 세 장(펼친 종이 → 구김 → 공)을 이어서 바꾼다 ---------- */
-  var FKEYS = {"half":{"out":[[74,78],[104,70],[126,86],[150,68],[178,80],[206,66],[230,84],[220,112],[234,140],[218,166],[232,196],[214,226],[186,214],[160,234],[132,218],[104,236],[78,220],[86,190],[70,162],[84,134]],"shades":[[[126,86],[150,68],[178,80],[150,122]],[[220,112],[234,140],[218,166],[188,146]],[[86,190],[70,162],[84,134],[118,158]],[[160,234],[132,218],[146,182],[174,196]],[[206,66],[230,84],[220,112],[196,96]]],"creases":[[[126,86],[150,122]],[[150,122],[188,146]],[[188,146],[220,112]],[[150,122],[118,158]],[[118,158],[84,134]],[[118,158],[146,182]],[[146,182],[132,218]],[[188,146],[174,196]],[[174,196],[186,214]],[[146,182],[174,196]],[[178,80],[150,122]],[[196,96],[188,146]]]},"ball":{"out":[[150,104],[169,114],[190,122],[195,144],[201,166],[185,182],[171,198],[150,207],[131,194],[111,185],[104,164],[99,142],[115,126],[129,110]],"shades":[[[169,114],[190,122],[195,144],[166,140]],[[131,194],[111,185],[104,164],[134,166]],[[185,182],[171,198],[160,174]],[[115,126],[129,110],[150,104],[150,138]]],"creases":[[[150,104],[150,138]],[[150,138],[166,140]],[[166,140],[195,144]],[[150,138],[134,166]],[[134,166],[111,185]],[[134,166],[160,174]],[[160,174],[171,198]],[[160,174],[166,140]],[[150,138],[115,126]]]}};
-  var FN = 64, flatShapes = null;
-  function hj(i, s) { var h = ((i + 7) * 2654435761 ^ (s + 3) * 2246822519) >>> 0; return (h % 1000) / 1000 - 0.5; }
-  function resample(poly, n) {
-    var L = [0], tot = 0;
-    for (var i = 0; i < poly.length; i++) { var a = poly[i], b = poly[(i + 1) % poly.length]; tot += Math.hypot(b[0] - a[0], b[1] - a[1]); L.push(tot); }
-    // 왼쪽 위 꼭짓점에서 시작해 시계 방향
-    var cx = 0, cy = 0; poly.forEach(function (q) { cx += q[0] / poly.length; cy += q[1] / poly.length; });
-    var best = 0, bd = 1e9; poly.forEach(function (q, k) { var d = Math.abs(Math.atan2(q[1] - cy, q[0] - cx) + 2.356); if (d < bd) { bd = d; best = k; } });
-    var off = L[best], out = [];
-    for (var m = 0; m < n; m++) {
-      var d = (off + m / n * tot) % tot, k = 0; while (L[k + 1] < d) k++;
-      var a2 = poly[k], b2 = poly[(k + 1) % poly.length], t = (d - L[k]) / ((L[k + 1] - L[k]) || 1);
-      out.push([a2[0] + (b2[0] - a2[0]) * t, a2[1] + (b2[1] - a2[1]) * t]);
-    }
-    return out;
-  }
-  function centroid(pts) { var x = 0, y = 0; pts.forEach(function (q) { x += q[0]; y += q[1]; }); return [x / pts.length, y / pts.length]; }
-  function radiusAt(pts, c, ang) {
-    var dx = Math.cos(ang), dy = Math.sin(ang), best = 0;
-    for (var i = 0; i < pts.length; i++) {
-      var a = pts[i], b = pts[(i + 1) % pts.length], ex = b[0] - a[0], ey = b[1] - a[1], den = dx * ey - dy * ex;
-      if (Math.abs(den) < 1e-9) continue;
-      var wx = a[0] - c[0], wy = a[1] - c[1], t = (wx * ey - wy * ex) / den, u = (wx * dy - wy * dx) / den;
-      if (t > 0 && u >= 0 && u <= 1 && t > best) best = t;
-    }
-    return best || 1;
-  }
-  function toPolar(pts, out, c) { return pts.map(function (q) { var a = Math.atan2(q[1] - c[1], q[0] - c[0]); return [a, Math.hypot(q[0] - c[0], q[1] - c[1]) / radiusAt(out, c, a)]; }); }
-  function fromPolar(pol, out, c) { return pol.map(function (q) { var r = radiusAt(out, c, q[0]) * q[1]; return [c[0] + Math.cos(q[0]) * r, c[1] + Math.sin(q[0]) * r]; }); }
-  function buildFlat() {
-    var M = function (q) { return [(q[0] - 62) / 178 * PW, (q[1] - 56) / 190 * PH]; };
-    var rect = resample([[0, 0], [PW, 0], [PW, PH], [0, PH]], FN);
-    function key(k) {
-      var out = resample(k.out.map(M), FN), c = centroid(out);
-      return { out: out, c: c,
-        shades: k.shades.map(function (sh) { return toPolar(sh.map(M), out, c); }),
-        creases: k.creases.map(function (cr) { return toPolar(cr.map(M), out, c); }) };
-    }
-    flatShapes = { rect: rect, half: key(FKEYS.half), ball: key(FKEYS.ball) };
-  }
-  function lerpPts(A, B, t) { return A.map(function (a, i) { return [a[0] + (B[i][0] - a[0]) * t, a[1] + (B[i][1] - a[1]) * t]; }); }
-  function flatAt(prog) {
-    var S = flatShapes, e = ease(prog);
-    return e < 0.5 ? lerpPts(S.rect, S.half.out, e / 0.5) : lerpPts(S.half.out, S.ball.out, (e - 0.5) / 0.5);
-  }
-  function ramp(x, a, b) { return Math.max(0, Math.min(1, (x - a) / (b - a))); }
-  function roughPath(pts, s) {
-    ctx.beginPath();
-    for (var i = 0; i <= pts.length; i++) {
-      var p0 = pts[i % pts.length], p1 = pts[(i + 1) % pts.length];
-      if (i === 0) ctx.moveTo(p0[0], p0[1]);
-      if (i === pts.length) break;
-      var mx = (p0[0] + p1[0]) / 2 + hj(i, s) * 1.6, my = (p0[1] + p1[1]) / 2 + hj(i, s + 9) * 1.6;
-      ctx.quadraticCurveTo(mx, my, p1[0], p1[1]);
-    }
-    ctx.closePath();
-  }
-  function renderFlat() {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
-    if (crState === "idle" || crState === "gone") return;
-    var ox = PX, oy = PY + pull, sc = 1, alpha = 1, rot = 0;
-    if (ball) { ox = ball.x - PW / 2; oy = ball.y - PH / 2; sc = ball.sc; alpha = ball.a; rot = ball.rot * 0.6; }
-    var ep = ease(p), pts = flatAt(p), S = flatShapes;
-    // 바닥 그림자
-    var Rb = Math.min(PW, PH) * 0.27, shY = ball ? ball.y + Rb * sc + 6 : oy + (PH + 4) * (1 - ep) + (PH / 2 + Rb + 6) * ep;
-    var srx = Math.max(2, (PW * (1 - ep) + Rb * 2 * ep) * sc / 2 * 0.9), sry = 7 * sc;
-    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(ox + PW / 2, shY); ctx.scale(1, sry / srx);
-    var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); sg.addColorStop(0, "rgba(0,0,0,0.13)"); sg.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    ctx.save(); ctx.globalAlpha = alpha;
-    ctx.translate(ox + PW / 2, oy + PH / 2); ctx.rotate(rot); ctx.scale(sc, sc); ctx.translate(-PW / 2, -PH / 2);
-    // 면
-    roughPath(pts, 1); ctx.fillStyle = PAPER; ctx.fill();
-    ctx.save(); roughPath(pts, 1); ctx.clip();
-    // 글씨는 처음에만 보이고 빨리 흐려진다 (윤곽 상자에 맞춰 함께 줄어듦)
-    var tA = Math.max(0, 1 - p * 2.6);
-    if (tA > 0) {
-      var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; pts.forEach(function (q) { x0 = Math.min(x0, q[0]); y0 = Math.min(y0, q[1]); x1 = Math.max(x1, q[0]); y1 = Math.max(y1, q[1]); });
-      ctx.globalAlpha = alpha * tA; ctx.drawImage(tex, x0, y0, x1 - x0, y1 - y0); ctx.globalAlpha = alpha;
-    }
-    // 그늘 면과 접힘 선: 시안의 구김 장면 → 공 장면으로 넘어가며 바뀐다. 모양은 지금 윤곽에 맞춰 함께 줄어든다
-    var c = centroid(pts);
-    var layers = [[S.half, ramp(p, 0.12, 0.4) * (1 - ramp(p, 0.55, 0.7))], [S.ball, ramp(p, 0.66, 0.86)]];
-    layers.forEach(function (L) {
-      var k = L[0], a = L[1]; if (a <= 0) return;
-      ctx.globalAlpha = alpha * a; ctx.fillStyle = SHADE;
-      k.shades.forEach(function (pol) { var q = fromPolar(pol, pts, c); ctx.beginPath(); q.forEach(function (v, n) { if (n) ctx.lineTo(v[0], v[1]); else ctx.moveTo(v[0], v[1]); }); ctx.closePath(); ctx.fill(); });
-      ctx.strokeStyle = PENCIL; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = 1.6; ctx.globalAlpha = alpha * a * 0.8;
-      k.creases.forEach(function (pol) { var q = fromPolar(pol, pts, c); ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1]); ctx.lineTo(q[1][0], q[1][1]); ctx.stroke(); });
-      ctx.globalAlpha = alpha;
-    });
-    // 접힌 모서리 (처음에만)
-    if (p < 0.3) { ctx.globalAlpha = alpha * (1 - p / 0.3); ctx.fillStyle = "#AFB8E8"; ctx.beginPath(); ctx.moveTo(PW - 22, 1); ctx.lineTo(PW - 22, 22); ctx.lineTo(PW - 1, 22); ctx.closePath(); ctx.fill(); ctx.globalAlpha = alpha; }
-    ctx.restore();
-    // 윤곽 연필 선
-    ctx.strokeStyle = PENCIL; ctx.lineWidth = 2; ctx.lineJoin = "round"; roughPath(pts, 1); ctx.stroke();
-    ctx.globalAlpha = alpha * 0.35; ctx.lineWidth = 1; ctx.save(); ctx.translate(0.7, 0.6); roughPath(pts, 1); ctx.stroke(); ctx.restore();
-    ctx.restore();
-  }
-
-  /* ---------- 만화 컷 방식: 손으로 그린 그림 여러 장을 1초에 12장씩 넘긴다 (사이를 매끈하게 섞지 않음) ----------
-     나중에 직접 그린 그림 파일로 바꿔 끼울 수 있도록, 장면은 FRAME_DEFS 한 곳에만 정의한다. */
-  var FR = [], fi = -1, FPS = 12;
-  var FRAME_DEFS = [
-    { c: 0.10, sx: 1.03, sy: 0.96, rot: -0.03, seed: 3,  scrib: 1.0 },  // 1 움찔: 살짝 눌리며 가장자리가 들뜸
-    { c: 0.30, sx: 1.00, sy: 1.00, rot: 0.05,  seed: 7,  scrib: 0.9 },  // 2 모서리가 접혀 들어감
-    { c: 0.48, sx: 1.00, sy: 1.00, rot: -0.07, seed: 11, scrib: 0.7 },  // 3 크게 구겨짐
-    { c: 0.64, sx: 1.00, sy: 1.00, rot: 0.09,  seed: 19, scrib: 0.5 },  // 4 뭉쳐짐
-    { c: 0.80, sx: 1.14, sy: 0.86, rot: -0.05, seed: 23, scrib: 0.35 }, // 5 꾹 눌림 (납작)
-    { c: 0.90, sx: 0.88, sy: 1.12, rot: 0.07,  seed: 29, scrib: 0.3 },  // 6 튕김 (길쭉)
-    { c: 0.95, sx: 1.00, sy: 1.00, rot: 0.0,   seed: 31, scrib: 0.3 },  // 7 종이 공
-    { c: 0.95, sx: 1.00, sy: 1.00, rot: 0.04,  seed: 37, scrib: 0.3 }   // 8 종이 공 (선이 살짝 다른 한 장: 떨어질 때 번갈아)
-  ];
-  var SEQ = [0, 0, 1, 2, 3, 4, 5, 6, 6];
-  function srand(seed) { var x = seed * 9301 + 49297; return function () { x = (x * 16807) % 2147483647; return x / 2147483647; }; }
-  function makeFrame(d) {
-    var r = srand(d.seed), N = Math.round(34 - 20 * d.c), Rb = Math.min(PW, PH) * 0.27;
-    var a = (PW / 2 + (Rb - PW / 2) * d.c) * d.sx, b = (PH / 2 + (Rb - PH / 2) * d.c) * d.sy, n = 14 + (2.2 - 14) * d.c;
-    var pts = [];
-    for (var i = 0; i < N; i++) {
-      var th = i / N * Math.PI * 2 + (r() - 0.5) * 0.09, ct = Math.cos(th), st = Math.sin(th);
-      var r0 = 1 / Math.pow(Math.pow(Math.abs(ct) / a, n) + Math.pow(Math.abs(st) / b, n), 1 / n);
-      var mid = 4 * d.c * (1 - d.c), jag = 0.03 + 0.1 * mid, k = 1 - jag * r() - (r() < 0.06 + 0.22 * mid ? 0.04 + 0.12 * mid : 0);
-      pts.push([ct * r0 * k, st * r0 * k]);
-    }
-    var K = 3 + Math.round(d.c * 2), ip = [], m = Math.min(a, b);
-    for (var j = 0; j < K; j++) { var an = j / K * Math.PI * 2 + r() * 1.2, rr = m * (0.12 + r() * 0.42); ip.push([Math.cos(an) * rr, Math.sin(an) * rr * 0.9]); }
-    var reg = pts.map(function (p, i) {
-      var q = pts[(i + 1) % N], mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2, best = 0, bd = 1e9;
-      ip.forEach(function (c, ci) { var dd = (c[0] - mx) * (c[0] - mx) + (c[1] - my) * (c[1] - my); if (dd < bd) { bd = dd; best = ci; } });
-      return best;
-    });
-    var start = 0; while (start < N && reg[start] === reg[(start + N - 1) % N]) start++; if (start === N) start = 0;
-    var facets = [], creases = [], cur = null;
-    for (var t = 0; t < N; t++) {
-      var i2 = (start + t) % N;
-      if (!cur || reg[i2] !== cur.reg) {
-        if (cur) { cur.poly.push(pts[i2]); facets.push(cur); creases.push([ip[cur.reg], pts[i2]]); if (cur.reg !== reg[i2]) creases.push([ip[cur.reg], ip[reg[i2]]]); }
-        cur = { reg: reg[i2], poly: [ip[reg[i2]], pts[i2]] };
-      } else cur.poly.push(pts[i2]);
-    }
-    cur.poly.push(pts[start]); facets.push(cur); creases.push([ip[cur.reg], pts[start]]);
-    facets.forEach(function (f, fi2) { f.shade = d.c > 0.15 && (f.reg + d.seed) % 2 === 0; });
-    var sc = [], rows = Math.max(1, Math.round(7 * d.scrib));
-    for (var q = 0; q < rows; q++) {
-      var y = -b * 0.62 + (q + 0.5) * (b * 1.24 / rows), x0 = -a * 0.7 + r() * a * 0.25, len = a * (0.55 + r() * 0.6);
-      sc.push([x0, y, x0 + len, y + (r() - 0.5) * 10 * d.c, r() * 6]);
-    }
-    return { pts: pts, facets: facets, creases: creases, scrib: sc, rot: d.rot, a: a, b: b };
-  }
-  function buildFrames() { FR = FRAME_DEFS.map(makeFrame); }
-  window.__frame = function (k) { if (crState === "idle") beginCrumple(); crState = "drag"; fi = k; renderCanvas(); };
-  function polyPath(P) { ctx.beginPath(); P.forEach(function (v, k) { if (k) ctx.lineTo(v[0], v[1]); else ctx.moveTo(v[0], v[1]); }); ctx.closePath(); }
-  function drawFrame(f, alpha) {
-    // 면
-    roughPath(f.pts, 1); ctx.fillStyle = PAPER; ctx.fill();
-    ctx.save(); roughPath(f.pts, 1); ctx.clip();
-    // 글씨 자리: 실제 글씨 대신 연필로 그은 줄 (만화에서 글씨를 줄로 그리는 것처럼)
-    ctx.strokeStyle = "#B4A27F"; ctx.lineWidth = 2.4; ctx.lineCap = "round";
-    f.scrib.forEach(function (l) { ctx.beginPath(); ctx.moveTo(l[0], l[1]); ctx.quadraticCurveTo((l[0] + l[2]) / 2, l[1] - l[4], l[2], l[3]); ctx.stroke(); });
-    // 그늘 면 (단색)
-    ctx.fillStyle = SHADE; f.facets.forEach(function (fc) { if (fc.shade) { polyPath(fc.poly); ctx.fill(); } });
-    ctx.restore();
-    // 접힘 선
-    ctx.strokeStyle = PENCIL; ctx.lineJoin = "round"; ctx.lineCap = "round"; ctx.lineWidth = 1.6; ctx.globalAlpha = alpha * 0.85;
-    f.creases.forEach(function (c) { ctx.beginPath(); ctx.moveTo(c[0][0], c[0][1]); ctx.lineTo(c[1][0], c[1][1]); ctx.stroke(); });
-    ctx.globalAlpha = alpha;
-    // 윤곽 연필 선
-    ctx.lineWidth = 2.2; roughPath(f.pts, 1); ctx.stroke();
-    ctx.globalAlpha = alpha * 0.35; ctx.lineWidth = 1; ctx.save(); ctx.translate(0.7, 0.6); roughPath(f.pts, 1); ctx.stroke(); ctx.restore(); ctx.globalAlpha = alpha;
-  }
-  function renderFrames() {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
-    if (crState === "idle" || crState === "gone") return;
-    var cx0 = PX + PW / 2, cy0 = PY + pull + PH / 2, alpha = 1;
-    if (ball) { cx0 = ball.x; cy0 = ball.y; alpha = ball.a; }
-    ctx.save(); ctx.globalAlpha = alpha;
-    if (fi < 0) {
-      // 끌어당기는 동안: 진짜 종이(내 글씨 그대로)가 손을 따라 살짝 눌린다
-      var sq = Math.min(0.05, pull / 1200);
-      ctx.translate(cx0, cy0); ctx.scale(1 + sq, 1 - sq);
-      ctx.drawImage(tex, -PW / 2, -PH / 2, PW, PH);
-      ctx.strokeStyle = PENCIL; ctx.lineWidth = 1.8; ctx.strokeRect(-PW / 2 + 1, -PH / 2 + 1, PW - 2, PH - 2);
-      ctx.restore(); return;
-    }
-    var f = FR[fi];
-    if (!ball) { // 바닥 그림자
-      var sy = cy0 + f.b + 8, srx = f.a * 0.95;
-      ctx.save(); ctx.translate(cx0, sy); ctx.scale(1, 8 / srx);
-      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); g.addColorStop(0, "rgba(0,0,0,0.13)"); g.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    }
-    ctx.translate(cx0, cy0); ctx.rotate(f.rot + (ball ? ball.rot : 0));
-    drawFrame(f, alpha);
-    ctx.restore();
-  }
-  function playFrames(then) {
-    crState = "anim"; var seq = reduce ? [6] : SEQ, k = -1, t0 = performance.now(), step = 1000 / FPS;
-    function tick(now) {
-      var idx = Math.min(seq.length - 1, Math.floor((now - t0) / step));
-      if (idx !== k) { k = idx; var nf = seq[idx]; if (nf !== fi) { fi = nf; grain(0.18 + 0.05 * (nf % 3), 0.06); } renderCanvas(); }
-      if ((now - t0) < seq.length * step) requestAnimationFrame(tick); else if (then) then();
-    }
-    requestAnimationFrame(tick);
-  }
-
-  /* ---------- 컷 방식(따라 그리기): 입체 구김을 원본으로, 1초에 12장씩 끊어서 넘긴다 ----------
-     [구김 정도, 가로 배율, 세로 배율, 기울기] — 사이를 매끈하게 잇지 않고 컷마다 선을 살짝 다시 그어 손그림처럼 */
-  var STEP_SEQ = [[0.10, 1.02, 0.97, 0.02], [0.20, 1, 1, -0.03], [0.30, 1, 1, 0.03], [0.38, 1, 1, -0.04], [0.45, 1, 1, 0.04],
-                  [0.53, 1, 1, -0.03], [0.62, 1, 1, 0.03], [0.80, 1.12, 0.88, -0.02], [0.92, 0.9, 1.1, 0.03], [1, 1, 1, 0], [1, 1, 1, 0]];
-  function playSteps(then) {
-    crState = "anim"; var t0 = performance.now(), stepMs = 1000 / 12, k = -1, total = STEP_SEQ.length;
-    if (reduce) { p = 1; stepSX = stepSY = 1; stepRot = 0; renderCanvas(); if (then) then(); return; }
-    function tick(now) {
-      var idx = Math.min(total - 1, Math.floor((now - t0) / stepMs));
-      if (idx !== k) { k = idx; var st = STEP_SEQ[idx]; p = st[0]; stepSX = st[1]; stepSY = st[2]; stepRot = st[3]; boil = idx; pull = 40 * st[0]; grain(0.16 + 0.06 * (idx % 3), 0.06); renderCanvas(); }
-      if (now - t0 < total * stepMs) requestAnimationFrame(tick); else { stepSX = stepSY = 1; stepRot = 0; if (then) then(); }
-    }
-    requestAnimationFrame(tick);
-  }
-  window.__step = function (k) { if (crState === "idle") beginCrumple(); crState = "drag"; var st = STEP_SEQ[k]; p = st[0]; stepSX = st[1]; stepSY = st[2]; stepRot = st[3]; boil = k; renderCanvas(); };
-  function commitCrumple() {
-    if (crumpleMode === "drawn") return playDrawn(throwBall);
-    if (crumpleMode === "mesh") return playSteps(throwBall); if (crumpleMode === "roto") playRoto(throwBall); else if (crumpleMode === "frames") playFrames(throwBall); else animateTo(1, reduce ? 300 : 620, throwBall); }
-
-  /* ---------- 따라 그리기(로토스코핑) 방식 ----------
-     실제 종이처럼 늘어나지 않는 판을 점점 작아지는 공 안에 가두는 물리 계산을 미리 돌려 8장면을 저장해 두고(SIM),
-     그 장면을 일러스트처럼(단색 면 3단계 + 연필 윤곽·능선) 따라 그려 1초에 12장씩 넘긴다. 내 글씨는 종이에 붙어 같이 구겨진다. */
-  var SIM = {"nx": 19, "ny": 19, "uv": [[0.0, 0.0], [0.0556, 0.0], [0.1111, 0.0], [0.1667, 0.0], [0.2222, 0.0], [0.2778, 0.0], [0.3333, 0.0], [0.3889, 0.0], [0.4444, 0.0], [0.5, 0.0], [0.5556, 0.0], [0.6111, 0.0], [0.6667, 0.0], [0.7222, 0.0], [0.7778, 0.0], [0.8333, 0.0], [0.8889, 0.0], [0.9444, 0.0], [1.0, 0.0], [0.0, 0.0556], [0.0556, 0.0556], [0.1111, 0.0556], [0.1667, 0.0556], [0.2222, 0.0556], [0.2778, 0.0556], [0.3333, 0.0556], [0.3889, 0.0556], [0.4444, 0.0556], [0.5, 0.0556], [0.5556, 0.0556], [0.6111, 0.0556], [0.6667, 0.0556], [0.7222, 0.0556], [0.7778, 0.0556], [0.8333, 0.0556], [0.8889, 0.0556], [0.9444, 0.0556], [1.0, 0.0556], [0.0, 0.1111], [0.0556, 0.1111], [0.1111, 0.1111], [0.1667, 0.1111], [0.2222, 0.1111], [0.2778, 0.1111], [0.3333, 0.1111], [0.3889, 0.1111], [0.4444, 0.1111], [0.5, 0.1111], [0.5556, 0.1111], [0.6111, 0.1111], [0.6667, 0.1111], [0.7222, 0.1111], [0.7778, 0.1111], [0.8333, 0.1111], [0.8889, 0.1111], [0.9444, 0.1111], [1.0, 0.1111], [0.0, 0.1667], [0.0556, 0.1667], [0.1111, 0.1667], [0.1667, 0.1667], [0.2222, 0.1667], [0.2778, 0.1667], [0.3333, 0.1667], [0.3889, 0.1667], [0.4444, 0.1667], [0.5, 0.1667], [0.5556, 0.1667], [0.6111, 0.1667], [0.6667, 0.1667], [0.7222, 0.1667], [0.7778, 0.1667], [0.8333, 0.1667], [0.8889, 0.1667], [0.9444, 0.1667], [1.0, 0.1667], [0.0, 0.2222], [0.0556, 0.2222], [0.1111, 0.2222], [0.1667, 0.2222], [0.2222, 0.2222], [0.2778, 0.2222], [0.3333, 0.2222], [0.3889, 0.2222], [0.4444, 0.2222], [0.5, 0.2222], [0.5556, 0.2222], [0.6111, 0.2222], [0.6667, 0.2222], [0.7222, 0.2222], [0.7778, 0.2222], [0.8333, 0.2222], [0.8889, 0.2222], [0.9444, 0.2222], [1.0, 0.2222], [0.0, 0.2778], [0.0556, 0.2778], [0.1111, 0.2778], [0.1667, 0.2778], [0.2222, 0.2778], [0.2778, 0.2778], [0.3333, 0.2778], [0.3889, 0.2778], [0.4444, 0.2778], [0.5, 0.2778], [0.5556, 0.2778], [0.6111, 0.2778], [0.6667, 0.2778], [0.7222, 0.2778], [0.7778, 0.2778], [0.8333, 0.2778], [0.8889, 0.2778], [0.9444, 0.2778], [1.0, 0.2778], [0.0, 0.3333], [0.0556, 0.3333], [0.1111, 0.3333], [0.1667, 0.3333], [0.2222, 0.3333], [0.2778, 0.3333], [0.3333, 0.3333], [0.3889, 0.3333], [0.4444, 0.3333], [0.5, 0.3333], [0.5556, 0.3333], [0.6111, 0.3333], [0.6667, 0.3333], [0.7222, 0.3333], [0.7778, 0.3333], [0.8333, 0.3333], [0.8889, 0.3333], [0.9444, 0.3333], [1.0, 0.3333], [0.0, 0.3889], [0.0556, 0.3889], [0.1111, 0.3889], [0.1667, 0.3889], [0.2222, 0.3889], [0.2778, 0.3889], [0.3333, 0.3889], [0.3889, 0.3889], [0.4444, 0.3889], [0.5, 0.3889], [0.5556, 0.3889], [0.6111, 0.3889], [0.6667, 0.3889], [0.7222, 0.3889], [0.7778, 0.3889], [0.8333, 0.3889], [0.8889, 0.3889], [0.9444, 0.3889], [1.0, 0.3889], [0.0, 0.4444], [0.0556, 0.4444], [0.1111, 0.4444], [0.1667, 0.4444], [0.2222, 0.4444], [0.2778, 0.4444], [0.3333, 0.4444], [0.3889, 0.4444], [0.4444, 0.4444], [0.5, 0.4444], [0.5556, 0.4444], [0.6111, 0.4444], [0.6667, 0.4444], [0.7222, 0.4444], [0.7778, 0.4444], [0.8333, 0.4444], [0.8889, 0.4444], [0.9444, 0.4444], [1.0, 0.4444], [0.0, 0.5], [0.0556, 0.5], [0.1111, 0.5], [0.1667, 0.5], [0.2222, 0.5], [0.2778, 0.5], [0.3333, 0.5], [0.3889, 0.5], [0.4444, 0.5], [0.5, 0.5], [0.5556, 0.5], [0.6111, 0.5], [0.6667, 0.5], [0.7222, 0.5], [0.7778, 0.5], [0.8333, 0.5], [0.8889, 0.5], [0.9444, 0.5], [1.0, 0.5], [0.0, 0.5556], [0.0556, 0.5556], [0.1111, 0.5556], [0.1667, 0.5556], [0.2222, 0.5556], [0.2778, 0.5556], [0.3333, 0.5556], [0.3889, 0.5556], [0.4444, 0.5556], [0.5, 0.5556], [0.5556, 0.5556], [0.6111, 0.5556], [0.6667, 0.5556], [0.7222, 0.5556], [0.7778, 0.5556], [0.8333, 0.5556], [0.8889, 0.5556], [0.9444, 0.5556], [1.0, 0.5556], [0.0, 0.6111], [0.0556, 0.6111], [0.1111, 0.6111], [0.1667, 0.6111], [0.2222, 0.6111], [0.2778, 0.6111], [0.3333, 0.6111], [0.3889, 0.6111], [0.4444, 0.6111], [0.5, 0.6111], [0.5556, 0.6111], [0.6111, 0.6111], [0.6667, 0.6111], [0.7222, 0.6111], [0.7778, 0.6111], [0.8333, 0.6111], [0.8889, 0.6111], [0.9444, 0.6111], [1.0, 0.6111], [0.0, 0.6667], [0.0556, 0.6667], [0.1111, 0.6667], [0.1667, 0.6667], [0.2222, 0.6667], [0.2778, 0.6667], [0.3333, 0.6667], [0.3889, 0.6667], [0.4444, 0.6667], [0.5, 0.6667], [0.5556, 0.6667], [0.6111, 0.6667], [0.6667, 0.6667], [0.7222, 0.6667], [0.7778, 0.6667], [0.8333, 0.6667], [0.8889, 0.6667], [0.9444, 0.6667], [1.0, 0.6667], [0.0, 0.7222], [0.0556, 0.7222], [0.1111, 0.7222], [0.1667, 0.7222], [0.2222, 0.7222], [0.2778, 0.7222], [0.3333, 0.7222], [0.3889, 0.7222], [0.4444, 0.7222], [0.5, 0.7222], [0.5556, 0.7222], [0.6111, 0.7222], [0.6667, 0.7222], [0.7222, 0.7222], [0.7778, 0.7222], [0.8333, 0.7222], [0.8889, 0.7222], [0.9444, 0.7222], [1.0, 0.7222], [0.0, 0.7778], [0.0556, 0.7778], [0.1111, 0.7778], [0.1667, 0.7778], [0.2222, 0.7778], [0.2778, 0.7778], [0.3333, 0.7778], [0.3889, 0.7778], [0.4444, 0.7778], [0.5, 0.7778], [0.5556, 0.7778], [0.6111, 0.7778], [0.6667, 0.7778], [0.7222, 0.7778], [0.7778, 0.7778], [0.8333, 0.7778], [0.8889, 0.7778], [0.9444, 0.7778], [1.0, 0.7778], [0.0, 0.8333], [0.0556, 0.8333], [0.1111, 0.8333], [0.1667, 0.8333], [0.2222, 0.8333], [0.2778, 0.8333], [0.3333, 0.8333], [0.3889, 0.8333], [0.4444, 0.8333], [0.5, 0.8333], [0.5556, 0.8333], [0.6111, 0.8333], [0.6667, 0.8333], [0.7222, 0.8333], [0.7778, 0.8333], [0.8333, 0.8333], [0.8889, 0.8333], [0.9444, 0.8333], [1.0, 0.8333], [0.0, 0.8889], [0.0556, 0.8889], [0.1111, 0.8889], [0.1667, 0.8889], [0.2222, 0.8889], [0.2778, 0.8889], [0.3333, 0.8889], [0.3889, 0.8889], [0.4444, 0.8889], [0.5, 0.8889], [0.5556, 0.8889], [0.6111, 0.8889], [0.6667, 0.8889], [0.7222, 0.8889], [0.7778, 0.8889], [0.8333, 0.8889], [0.8889, 0.8889], [0.9444, 0.8889], [1.0, 0.8889], [0.0, 0.9444], [0.0556, 0.9444], [0.1111, 0.9444], [0.1667, 0.9444], [0.2222, 0.9444], [0.2778, 0.9444], [0.3333, 0.9444], [0.3889, 0.9444], [0.4444, 0.9444], [0.5, 0.9444], [0.5556, 0.9444], [0.6111, 0.9444], [0.6667, 0.9444], [0.7222, 0.9444], [0.7778, 0.9444], [0.8333, 0.9444], [0.8889, 0.9444], [0.9444, 0.9444], [1.0, 0.9444], [0.0, 1.0], [0.0556, 1.0], [0.1111, 1.0], [0.1667, 1.0], [0.2222, 1.0], [0.2778, 1.0], [0.3333, 1.0], [0.3889, 1.0], [0.4444, 1.0], [0.5, 1.0], [0.5556, 1.0], [0.6111, 1.0], [0.6667, 1.0], [0.7222, 1.0], [0.7778, 1.0], [0.8333, 1.0], [0.8889, 1.0], [0.9444, 1.0], [1.0, 1.0]], "tris": [[0, 1, 20], [0, 20, 19], [1, 2, 20], [2, 21, 20], [2, 3, 22], [2, 22, 21], [3, 4, 22], [4, 23, 22], [4, 5, 24], [4, 24, 23], [5, 6, 24], [6, 25, 24], [6, 7, 26], [6, 26, 25], [7, 8, 26], [8, 27, 26], [8, 9, 28], [8, 28, 27], [9, 10, 28], [10, 29, 28], [10, 11, 30], [10, 30, 29], [11, 12, 30], [12, 31, 30], [12, 13, 32], [12, 32, 31], [13, 14, 32], [14, 33, 32], [14, 15, 34], [14, 34, 33], [15, 16, 34], [16, 35, 34], [16, 17, 36], [16, 36, 35], [17, 18, 36], [18, 37, 36], [19, 20, 38], [20, 39, 38], [20, 21, 40], [20, 40, 39], [21, 22, 40], [22, 41, 40], [22, 23, 42], [22, 42, 41], [23, 24, 42], [24, 43, 42], [24, 25, 44], [24, 44, 43], [25, 26, 44], [26, 45, 44], [26, 27, 46], [26, 46, 45], [27, 28, 46], [28, 47, 46], [28, 29, 48], [28, 48, 47], [29, 30, 48], [30, 49, 48], [30, 31, 50], [30, 50, 49], [31, 32, 50], [32, 51, 50], [32, 33, 52], [32, 52, 51], [33, 34, 52], [34, 53, 52], [34, 35, 54], [34, 54, 53], [35, 36, 54], [36, 55, 54], [36, 37, 56], [36, 56, 55], [38, 39, 58], [38, 58, 57], [39, 40, 58], [40, 59, 58], [40, 41, 60], [40, 60, 59], [41, 42, 60], [42, 61, 60], [42, 43, 62], [42, 62, 61], [43, 44, 62], [44, 63, 62], [44, 45, 64], [44, 64, 63], [45, 46, 64], [46, 65, 64], [46, 47, 66], [46, 66, 65], [47, 48, 66], [48, 67, 66], [48, 49, 68], [48, 68, 67], [49, 50, 68], [50, 69, 68], [50, 51, 70], [50, 70, 69], [51, 52, 70], [52, 71, 70], [52, 53, 72], [52, 72, 71], [53, 54, 72], [54, 73, 72], [54, 55, 74], [54, 74, 73], [55, 56, 74], [56, 75, 74], [57, 58, 76], [58, 77, 76], [58, 59, 78], [58, 78, 77], [59, 60, 78], [60, 79, 78], [60, 61, 80], [60, 80, 79], [61, 62, 80], [62, 81, 80], [62, 63, 82], [62, 82, 81], [63, 64, 82], [64, 83, 82], [64, 65, 84], [64, 84, 83], [65, 66, 84], [66, 85, 84], [66, 67, 86], [66, 86, 85], [67, 68, 86], [68, 87, 86], [68, 69, 88], [68, 88, 87], [69, 70, 88], [70, 89, 88], [70, 71, 90], [70, 90, 89], [71, 72, 90], [72, 91, 90], [72, 73, 92], [72, 92, 91], [73, 74, 92], [74, 93, 92], [74, 75, 94], [74, 94, 93], [76, 77, 96], [76, 96, 95], [77, 78, 96], [78, 97, 96], [78, 79, 98], [78, 98, 97], [79, 80, 98], [80, 99, 98], [80, 81, 100], [80, 100, 99], [81, 82, 100], [82, 101, 100], [82, 83, 102], [82, 102, 101], [83, 84, 102], [84, 103, 102], [84, 85, 104], [84, 104, 103], [85, 86, 104], [86, 105, 104], [86, 87, 106], [86, 106, 105], [87, 88, 106], [88, 107, 106], [88, 89, 108], [88, 108, 107], [89, 90, 108], [90, 109, 108], [90, 91, 110], [90, 110, 109], [91, 92, 110], [92, 111, 110], [92, 93, 112], [92, 112, 111], [93, 94, 112], [94, 113, 112], [95, 96, 114], [96, 115, 114], [96, 97, 116], [96, 116, 115], [97, 98, 116], [98, 117, 116], [98, 99, 118], [98, 118, 117], [99, 100, 118], [100, 119, 118], [100, 101, 120], [100, 120, 119], [101, 102, 120], [102, 121, 120], [102, 103, 122], [102, 122, 121], [103, 104, 122], [104, 123, 122], [104, 105, 124], [104, 124, 123], [105, 106, 124], [106, 125, 124], [106, 107, 126], [106, 126, 125], [107, 108, 126], [108, 127, 126], [108, 109, 128], [108, 128, 127], [109, 110, 128], [110, 129, 128], [110, 111, 130], [110, 130, 129], [111, 112, 130], [112, 131, 130], [112, 113, 132], [112, 132, 131], [114, 115, 134], [114, 134, 133], [115, 116, 134], [116, 135, 134], [116, 117, 136], [116, 136, 135], [117, 118, 136], [118, 137, 136], [118, 119, 138], [118, 138, 137], [119, 120, 138], [120, 139, 138], [120, 121, 140], [120, 140, 139], [121, 122, 140], [122, 141, 140], [122, 123, 142], [122, 142, 141], [123, 124, 142], [124, 143, 142], [124, 125, 144], [124, 144, 143], [125, 126, 144], [126, 145, 144], [126, 127, 146], [126, 146, 145], [127, 128, 146], [128, 147, 146], [128, 129, 148], [128, 148, 147], [129, 130, 148], [130, 149, 148], [130, 131, 150], [130, 150, 149], [131, 132, 150], [132, 151, 150], [133, 134, 152], [134, 153, 152], [134, 135, 154], [134, 154, 153], [135, 136, 154], [136, 155, 154], [136, 137, 156], [136, 156, 155], [137, 138, 156], [138, 157, 156], [138, 139, 158], [138, 158, 157], [139, 140, 158], [140, 159, 158], [140, 141, 160], [140, 160, 159], [141, 142, 160], [142, 161, 160], [142, 143, 162], [142, 162, 161], [143, 144, 162], [144, 163, 162], [144, 145, 164], [144, 164, 163], [145, 146, 164], [146, 165, 164], [146, 147, 166], [146, 166, 165], [147, 148, 166], [148, 167, 166], [148, 149, 168], [148, 168, 167], [149, 150, 168], [150, 169, 168], [150, 151, 170], [150, 170, 169], [152, 153, 172], [152, 172, 171], [153, 154, 172], [154, 173, 172], [154, 155, 174], [154, 174, 173], [155, 156, 174], [156, 175, 174], [156, 157, 176], [156, 176, 175], [157, 158, 176], [158, 177, 176], [158, 159, 178], [158, 178, 177], [159, 160, 178], [160, 179, 178], [160, 161, 180], [160, 180, 179], [161, 162, 180], [162, 181, 180], [162, 163, 182], [162, 182, 181], [163, 164, 182], [164, 183, 182], [164, 165, 184], [164, 184, 183], [165, 166, 184], [166, 185, 184], [166, 167, 186], [166, 186, 185], [167, 168, 186], [168, 187, 186], [168, 169, 188], [168, 188, 187], [169, 170, 188], [170, 189, 188], [171, 172, 190], [172, 191, 190], [172, 173, 192], [172, 192, 191], [173, 174, 192], [174, 193, 192], [174, 175, 194], [174, 194, 193], [175, 176, 194], [176, 195, 194], [176, 177, 196], [176, 196, 195], [177, 178, 196], [178, 197, 196], [178, 179, 198], [178, 198, 197], [179, 180, 198], [180, 199, 198], [180, 181, 200], [180, 200, 199], [181, 182, 200], [182, 201, 200], [182, 183, 202], [182, 202, 201], [183, 184, 202], [184, 203, 202], [184, 185, 204], [184, 204, 203], [185, 186, 204], [186, 205, 204], [186, 187, 206], [186, 206, 205], [187, 188, 206], [188, 207, 206], [188, 189, 208], [188, 208, 207], [190, 191, 210], [190, 210, 209], [191, 192, 210], [192, 211, 210], [192, 193, 212], [192, 212, 211], [193, 194, 212], [194, 213, 212], [194, 195, 214], [194, 214, 213], [195, 196, 214], [196, 215, 214], [196, 197, 216], [196, 216, 215], [197, 198, 216], [198, 217, 216], [198, 199, 218], [198, 218, 217], [199, 200, 218], [200, 219, 218], [200, 201, 220], [200, 220, 219], [201, 202, 220], [202, 221, 220], [202, 203, 222], [202, 222, 221], [203, 204, 222], [204, 223, 222], [204, 205, 224], [204, 224, 223], [205, 206, 224], [206, 225, 224], [206, 207, 226], [206, 226, 225], [207, 208, 226], [208, 227, 226], [209, 210, 228], [210, 229, 228], [210, 211, 230], [210, 230, 229], [211, 212, 230], [212, 231, 230], [212, 213, 232], [212, 232, 231], [213, 214, 232], [214, 233, 232], [214, 215, 234], [214, 234, 233], [215, 216, 234], [216, 235, 234], [216, 217, 236], [216, 236, 235], [217, 218, 236], [218, 237, 236], [218, 219, 238], [218, 238, 237], [219, 220, 238], [220, 239, 238], [220, 221, 240], [220, 240, 239], [221, 222, 240], [222, 241, 240], [222, 223, 242], [222, 242, 241], [223, 224, 242], [224, 243, 242], [224, 225, 244], [224, 244, 243], [225, 226, 244], [226, 245, 244], [226, 227, 246], [226, 246, 245], [228, 229, 248], [228, 248, 247], [229, 230, 248], [230, 249, 248], [230, 231, 250], [230, 250, 249], [231, 232, 250], [232, 251, 250], [232, 233, 252], [232, 252, 251], [233, 234, 252], [234, 253, 252], [234, 235, 254], [234, 254, 253], [235, 236, 254], [236, 255, 254], [236, 237, 256], [236, 256, 255], [237, 238, 256], [238, 257, 256], [238, 239, 258], [238, 258, 257], [239, 240, 258], [240, 259, 258], [240, 241, 260], [240, 260, 259], [241, 242, 260], [242, 261, 260], [242, 243, 262], [242, 262, 261], [243, 244, 262], [244, 263, 262], [244, 245, 264], [244, 264, 263], [245, 246, 264], [246, 265, 264], [247, 248, 266], [248, 267, 266], [248, 249, 268], [248, 268, 267], [249, 250, 268], [250, 269, 268], [250, 251, 270], [250, 270, 269], [251, 252, 270], [252, 271, 270], [252, 253, 272], [252, 272, 271], [253, 254, 272], [254, 273, 272], [254, 255, 274], [254, 274, 273], [255, 256, 274], [256, 275, 274], [256, 257, 276], [256, 276, 275], [257, 258, 276], [258, 277, 276], [258, 259, 278], [258, 278, 277], [259, 260, 278], [260, 279, 278], [260, 261, 280], [260, 280, 279], [261, 262, 280], [262, 281, 280], [262, 263, 282], [262, 282, 281], [263, 264, 282], [264, 283, 282], [264, 265, 284], [264, 284, 283], [266, 267, 286], [266, 286, 285], [267, 268, 286], [268, 287, 286], [268, 269, 288], [268, 288, 287], [269, 270, 288], [270, 289, 288], [270, 271, 290], [270, 290, 289], [271, 272, 290], [272, 291, 290], [272, 273, 292], [272, 292, 291], [273, 274, 292], [274, 293, 292], [274, 275, 294], [274, 294, 293], [275, 276, 294], [276, 295, 294], [276, 277, 296], [276, 296, 295], [277, 278, 296], [278, 297, 296], [278, 279, 298], [278, 298, 297], [279, 280, 298], [280, 299, 298], [280, 281, 300], [280, 300, 299], [281, 282, 300], [282, 301, 300], [282, 283, 302], [282, 302, 301], [283, 284, 302], [284, 303, 302], [285, 286, 304], [286, 305, 304], [286, 287, 306], [286, 306, 305], [287, 288, 306], [288, 307, 306], [288, 289, 308], [288, 308, 307], [289, 290, 308], [290, 309, 308], [290, 291, 310], [290, 310, 309], [291, 292, 310], [292, 311, 310], [292, 293, 312], [292, 312, 311], [293, 294, 312], [294, 313, 312], [294, 295, 314], [294, 314, 313], [295, 296, 314], [296, 315, 314], [296, 297, 316], [296, 316, 315], [297, 298, 316], [298, 317, 316], [298, 299, 318], [298, 318, 317], [299, 300, 318], [300, 319, 318], [300, 301, 320], [300, 320, 319], [301, 302, 320], [302, 321, 320], [302, 303, 322], [302, 322, 321], [304, 305, 324], [304, 324, 323], [305, 306, 324], [306, 325, 324], [306, 307, 326], [306, 326, 325], [307, 308, 326], [308, 327, 326], [308, 309, 328], [308, 328, 327], [309, 310, 328], [310, 329, 328], [310, 311, 330], [310, 330, 329], [311, 312, 330], [312, 331, 330], [312, 313, 332], [312, 332, 331], [313, 314, 332], [314, 333, 332], [314, 315, 334], [314, 334, 333], [315, 316, 334], [316, 335, 334], [316, 317, 336], [316, 336, 335], [317, 318, 336], [318, 337, 336], [318, 319, 338], [318, 338, 337], [319, 320, 338], [320, 339, 338], [320, 321, 340], [320, 340, 339], [321, 322, 340], [322, 341, 340], [323, 324, 342], [324, 343, 342], [324, 325, 344], [324, 344, 343], [325, 326, 344], [326, 345, 344], [326, 327, 346], [326, 346, 345], [327, 328, 346], [328, 347, 346], [328, 329, 348], [328, 348, 347], [329, 330, 348], [330, 349, 348], [330, 331, 350], [330, 350, 349], [331, 332, 350], [332, 351, 350], [332, 333, 352], [332, 352, 351], [333, 334, 352], [334, 353, 352], [334, 335, 354], [334, 354, 353], [335, 336, 354], [336, 355, 354], [336, 337, 356], [336, 356, 355], [337, 338, 356], [338, 357, 356], [338, 339, 358], [338, 358, 357], [339, 340, 358], [340, 359, 358], [340, 341, 360], [340, 360, 359]], "frames": [[[-0.5, -0.5, -0.0018], [-0.4444, -0.5, -0.0019], [-0.3889, -0.5, -0.0018], [-0.3333, -0.5, -0.0014], [-0.2778, -0.5, -0.0009], [-0.2222, -0.5, -0.0001], [-0.1667, -0.5, 0.0008], [-0.1111, -0.5, 0.0019], [-0.0556, -0.5, 0.003], [0.0, -0.5, 0.0038], [0.0556, -0.5, 0.0041], [0.1111, -0.5, 0.0033], [0.1667, -0.5, 0.0013], [0.2222, -0.5, -0.0021], [0.2778, -0.5, -0.0064], [0.3333, -0.5, -0.011], [0.3889, -0.5, -0.0149], [0.4444, -0.5, -0.0177], [0.5, -0.5, -0.0189], [-0.5, -0.4444, -0.003], [-0.4444, -0.4444, -0.0032], [-0.3889, -0.4444, -0.0031], [-0.3333, -0.4444, -0.0026], [-0.2778, -0.4444, -0.0018], [-0.2222, -0.4444, -0.0006], [-0.1667, -0.4444, 0.0009], [-0.1111, -0.4444, 0.0028], [-0.0556, -0.4444, 0.0048], [0.0, -0.4444, 0.0067], [0.0556, -0.4444, 0.0079], [0.1111, -0.4444, 0.0077], [0.1667, -0.4444, 0.0054], [0.2222, -0.4444, 0.001], [0.2778, -0.4444, -0.0048], [0.3333, -0.4444, -0.0111], [0.3889, -0.4444, -0.0166], [0.4444, -0.4444, -0.0205], [0.5, -0.4444, -0.0224], [-0.5, -0.3889, -0.0047], [-0.4444, -0.3889, -0.0051], [-0.3889, -0.3889, -0.005], [-0.3333, -0.3889, -0.0044], [-0.2778, -0.3889, -0.0033], [-0.2222, -0.3889, -0.0016], [-0.1667, -0.3889, 0.0008], [-0.1111, -0.3889, 0.0037], [-0.0556, -0.3889, 0.0072], [0.0, -0.3889, 0.0106], [0.0556, -0.3889, 0.0133], [0.1111, -0.3889, 0.0139], [0.1667, -0.3889, 0.0117], [0.2222, -0.3889, 0.0064], [0.2778, -0.3889, -0.0011], [0.3333, -0.3889, -0.0093], [0.3889, -0.3889, -0.0167], [0.4444, -0.3889, -0.022], [0.5, -0.3889, -0.0246], [-0.5, -0.3333, -0.0071], [-0.4444, -0.3333, -0.0077], [-0.3889, -0.3333, -0.0078], [-0.3333, -0.3333, -0.0072], [-0.2778, -0.3333, -0.0058], [-0.2222, -0.3333, -0.0035], [-0.1667, -0.3333, -0.0003], [-0.1111, -0.3333, 0.004], [-0.0556, -0.3333, 0.0092], [0.0, -0.3333, 0.0147], [0.0556, -0.3333, 0.0193], [0.1111, -0.3333, 0.0213], [0.1667, -0.3333, 0.0195], [0.2222, -0.3333, 0.0135], [0.2778, -0.3333, 0.0045], [0.3333, -0.3333, -0.0056], [0.3889, -0.3333, -0.0148], [0.4444, -0.3333, -0.0214], [0.5, -0.3333, -0.0251], [-0.5, -0.2778, -0.01], [-0.4444, -0.2778, -0.0111], [-0.3889, -0.2778, -0.0115], [-0.3333, -0.2778, -0.0111], [-0.2778, -0.2778, -0.0097], [-0.2222, -0.2778, -0.007], [-0.1667, -0.2778, -0.0029], [-0.1111, -0.2778, 0.0029], [-0.0556, -0.2778, 0.01], [0.0, -0.2778, 0.0177], [0.0556, -0.2778, 0.0244], [0.1111, -0.2778, 0.0281], [0.1667, -0.2778, 0.027], [0.2222, -0.2778, 0.0209], [0.2778, -0.2778, 0.0109], [0.3333, -0.2778, -0.0006], [0.3889, -0.2778, -0.0111], [0.4444, -0.2778, -0.019], [0.5, -0.2778, -0.0235], [-0.5, -0.2222, -0.0135], [-0.4444, -0.2222, -0.0152], [-0.3889, -0.2222, -0.0163], [-0.3333, -0.2222, -0.0165], [-0.2778, -0.2222, -0.0155], [-0.2222, -0.2222, -0.0127], [-0.1667, -0.2222, -0.008], [-0.1111, -0.2222, -0.0009], [-0.0556, -0.2222, 0.0081], [0.0, -0.2222, 0.018], [0.0556, -0.2222, 0.0269], [0.1111, -0.2222, 0.0323], [0.1667, -0.2222, 0.0323], [0.2222, -0.2222, 0.0266], [0.2778, -0.2222, 0.0166], [0.3333, -0.2222, 0.0046], [0.3889, -0.2222, -0.0065], [0.4444, -0.2222, -0.0149], [0.5, -0.2222, -0.02], [-0.5, -0.1667, -0.0171], [-0.4444, -0.1667, -0.0198], [-0.3889, -0.1667, -0.022], [-0.3333, -0.1667, -0.0234], [-0.2778, -0.1667, -0.0233], [-0.2222, -0.1667, -0.0212], [-0.1667, -0.1667, -0.0162], [-0.1111, -0.1667, -0.0081], [-0.0556, -0.1667, 0.0026], [0.0, -0.1667, 0.0146], [0.0556, -0.1667, 0.0256], [0.1111, -0.1667, 0.0328], [0.1667, -0.1667, 0.0343], [0.2222, -0.1667, 0.0298], [0.2778, -0.1667, 0.0206], [0.3333, -0.1667, 0.0093], [0.3889, -0.1667, -0.0015], [0.4444, -0.1667, -0.01], [0.5, -0.1667, -0.0153], [-0.5, -0.1111, -0.0206], [-0.4444, -0.1111, -0.0245], [-0.3889, -0.1111, -0.0282], [-0.3333, -0.1111, -0.0313], [-0.2778, -0.1111, -0.033], [-0.2222, -0.1111, -0.0321], [-0.1667, -0.1111, -0.0275], [-0.1111, -0.1111, -0.0187], [-0.0556, -0.1111, -0.0063], [0.0, -0.1111, 0.0077], [0.0556, -0.1111, 0.0206], [0.1111, -0.1111, 0.0297], [0.1667, -0.1111, 0.033], [0.2222, -0.1111, 0.0302], [0.2778, -0.1111, 0.0227], [0.3333, -0.1111, 0.0129], [0.3889, -0.1111, 0.0032], [0.4444, -0.1111, -0.0048], [0.5, -0.1111, -0.0101], [-0.5, -0.0556, -0.0234], [-0.4444, -0.0556, -0.0286], [-0.3889, -0.0556, -0.034], [-0.3333, -0.0556, -0.0393], [-0.2778, -0.0556, -0.0432], [-0.2222, -0.0556, -0.044], [-0.1667, -0.0556, -0.0403], [-0.1111, -0.0556, -0.0311], [-0.0556, -0.0556, -0.0174], [0.0, -0.0556, -0.0014], [0.0556, -0.0556, 0.0135], [0.1111, -0.0556, 0.0244], [0.1667, -0.0556, 0.0296], [0.2222, -0.0556, 0.0288], [0.2778, -0.0556, 0.0234], [0.3333, -0.0556, 0.0154], [0.3889, -0.0556, 0.0071], [0.4444, -0.0556, -0.0], [0.5, -0.0556, -0.0051], [-0.5, 0.0, -0.0251], [-0.4444, 0.0, -0.0313], [-0.3889, 0.0, -0.0384], [-0.3333, 0.0, -0.0457], [-0.2778, 0.0, -0.0518], [-0.2222, 0.0, -0.0545], [-0.1667, 0.0, -0.0518], [-0.1111, 0.0, -0.0426], [-0.0556, 0.0, -0.0279], [0.0, 0.0, -0.0104], [0.0556, 0.0, 0.0062], [0.1111, 0.0, 0.0187], [0.1667, 0.0, 0.0256], [0.2222, 0.0, 0.0266], [0.2778, 0.0, 0.0231], [0.3333, 0.0, 0.017], [0.3889, 0.0, 0.0101], [0.4444, 0.0, 0.0039], [0.5, 0.0, -0.0009], [-0.5, 0.0556, -0.0252], [-0.4444, 0.0556, -0.032], [-0.3889, 0.0556, -0.0401], [-0.3333, 0.0556, -0.0488], [-0.2778, 0.0556, -0.0565], [-0.2222, 0.0556, -0.0607], [-0.1667, 0.0556, -0.059], [-0.1111, 0.0556, -0.05], [-0.0556, 0.0556, -0.035], [0.0, 0.0556, -0.0169], [0.0556, 0.0556, 0.0005], [0.1111, 0.0556, 0.0141], [0.1667, 0.0556, 0.022], [0.2222, 0.0556, 0.0244], [0.2778, 0.0556, 0.0224], [0.3333, 0.0556, 0.0177], [0.3889, 0.0556, 0.012], [0.4444, 0.0556, 0.0067], [0.5, 0.0556, 0.0023], [-0.5, 0.1111, -0.0236], [-0.4444, 0.1111, -0.0304], [-0.3889, 0.1111, -0.0386], [-0.3333, 0.1111, -0.0477], [-0.2778, 0.1111, -0.0559], [-0.2222, 0.1111, -0.0607], [-0.1667, 0.1111, -0.0595], [-0.1111, 0.1111, -0.0512], [-0.0556, 0.1111, -0.0368], [0.0, 0.1111, -0.0193], [0.0556, 0.1111, -0.0023], [0.1111, 0.1111, 0.0111], [0.1667, 0.1111, 0.0193], [0.2222, 0.1111, 0.0223], [0.2778, 0.1111, 0.0212], [0.3333, 0.1111, 0.0176], [0.3889, 0.1111, 0.0129], [0.4444, 0.1111, 0.0083], [0.5, 0.1111, 0.0044], [-0.5, 0.1667, -0.0206], [-0.4444, 0.1667, -0.0268], [-0.3889, 0.1667, -0.0342], [-0.3333, 0.1667, -0.0424], [-0.2778, 0.1667, -0.0499], [-0.2222, 0.1667, -0.0543], [-0.1667, 0.1667, -0.0533], [-0.1111, 0.1667, -0.046], [-0.0556, 0.1667, -0.0331], [0.0, 0.1667, -0.0174], [0.0556, 0.1667, -0.0022], [0.1111, 0.1667, 0.0098], [0.1667, 0.1667, 0.0173], [0.2222, 0.1667, 0.0202], [0.2778, 0.1667, 0.0196], [0.3333, 0.1667, 0.0167], [0.3889, 0.1667, 0.0128], [0.4444, 0.1667, 0.0088], [0.5, 0.1667, 0.0054], [-0.5, 0.2222, -0.0169], [-0.4444, 0.2222, -0.022], [-0.3889, 0.2222, -0.028], [-0.3333, 0.2222, -0.0345], [-0.2778, 0.2222, -0.0403], [-0.2222, 0.2222, -0.0435], [-0.1667, 0.2222, -0.0424], [-0.1111, 0.2222, -0.0362], [-0.0556, 0.2222, -0.0256], [0.0, 0.2222, -0.0127], [0.0556, 0.2222, -0.0003], [0.1111, 0.2222, 0.0095], [0.1667, 0.2222, 0.0156], [0.2222, 0.2222, 0.018], [0.2778, 0.2222, 0.0176], [0.3333, 0.2222, 0.0152], [0.3889, 0.2222, 0.0119], [0.4444, 0.2222, 0.0086], [0.5, 0.2222, 0.0056], [-0.5, 0.2778, -0.0131], [-0.4444, 0.2778, -0.017], [-0.3889, 0.2778, -0.0213], [-0.3333, 0.2778, -0.0259], [-0.2778, 0.2778, -0.0296], [-0.2222, 0.2778, -0.0314], [-0.1667, 0.2778, -0.0299], [-0.1111, 0.2778, -0.0248], [-0.0556, 0.2778, -0.0167], [0.0, 0.2778, -0.007], [0.0556, 0.2778, 0.0022], [0.1111, 0.2778, 0.0095], [0.1667, 0.2778, 0.0139], [0.2222, 0.2778, 0.0156], [0.2778, 0.2778, 0.0151], [0.3333, 0.2778, 0.0132], [0.3889, 0.2778, 0.0106], [0.4444, 0.2778, 0.0078], [0.5, 0.2778, 0.0054], [-0.5, 0.3333, -0.0098], [-0.4444, 0.3333, -0.0125], [-0.3889, 0.3333, -0.0154], [-0.3333, 0.3333, -0.0181], [-0.2778, 0.3333, -0.02], [-0.2222, 0.3333, -0.0204], [-0.1667, 0.3333, -0.0187], [-0.1111, 0.3333, -0.0147], [-0.0556, 0.3333, -0.0088], [0.0, 0.3333, -0.0021], [0.0556, 0.3333, 0.0042], [0.1111, 0.3333, 0.0091], [0.1667, 0.3333, 0.0121], [0.2222, 0.3333, 0.0131], [0.2778, 0.3333, 0.0125], [0.3333, 0.3333, 0.011], [0.3889, 0.3333, 0.0089], [0.4444, 0.3333, 0.0067], [0.5, 0.3333, 0.0048], [-0.5, 0.3889, -0.007], [-0.4444, 0.3889, -0.0089], [-0.3889, 0.3889, -0.0108], [-0.3333, 0.3889, -0.0121], [-0.2778, 0.3889, -0.0127], [-0.2222, 0.3889, -0.0122], [-0.1667, 0.3889, -0.0104], [-0.1111, 0.3889, -0.0073], [-0.0556, 0.3889, -0.0032], [0.0, 0.3889, 0.0012], [0.0556, 0.3889, 0.0051], [0.1111, 0.3889, 0.0082], [0.1667, 0.3889, 0.0099], [0.2222, 0.3889, 0.0104], [0.2778, 0.3889, 0.0099], [0.3333, 0.3889, 0.0087], [0.3889, 0.3889, 0.0071], [0.4444, 0.3889, 0.0055], [0.5, 0.3889, 0.004], [-0.5, 0.4444, -0.0049], [-0.4444, 0.4444, -0.0062], [-0.3889, 0.4444, -0.0073], [-0.3333, 0.4444, -0.0079], [-0.2778, 0.4444, -0.0077], [-0.2222, 0.4444, -0.0067], [-0.1667, 0.4444, -0.005], [-0.1111, 0.4444, -0.0027], [-0.0556, 0.4444, -0.0001], [0.0, 0.4444, 0.0026], [0.0556, 0.4444, 0.005], [0.1111, 0.4444, 0.0068], [0.1667, 0.4444, 0.0078], [0.2222, 0.4444, 0.008], [0.2778, 0.4444, 0.0075], [0.3333, 0.4444, 0.0066], [0.3889, 0.4444, 0.0055], [0.4444, 0.4444, 0.0043], [0.5, 0.4444, 0.0032], [-0.5, 0.5, -0.0032], [-0.4444, 0.5, -0.0041], [-0.3889, 0.5, -0.0047], [-0.3333, 0.5, -0.0049], [-0.2778, 0.5, -0.0044], [-0.2222, 0.5, -0.0034], [-0.1667, 0.5, -0.002], [-0.1111, 0.5, -0.0004], [-0.0556, 0.5, 0.0013], [0.0, 0.5, 0.0029], [0.0556, 0.5, 0.0042], [0.1111, 0.5, 0.0052], [0.1667, 0.5, 0.0057], [0.2222, 0.5, 0.0058], [0.2778, 0.5, 0.0054], [0.3333, 0.5, 0.0048], [0.3889, 0.5, 0.004], [0.4444, 0.5, 0.0032], [0.5, 0.5, 0.0024]], [[-0.1629, 0.3535, -0.5578], [0.6774, 0.0266, 0.0557], [-0.4308, 0.2594, -0.4581], [0.6628, -0.0345, 0.1491], [-0.4524, 0.2446, -0.4453], [0.6611, -0.0429, 0.1544], [-0.4599, 0.2471, -0.4361], [0.659, -0.042, 0.1633], [-0.4639, 0.2397, -0.4359], [0.6617, -0.0534, 0.1485], [-0.4645, 0.2456, -0.432], [0.6614, -0.0446, 0.1527], [-0.4633, 0.2382, -0.4374], [0.6632, -0.0506, 0.1427], [-0.4587, 0.245, -0.4385], [0.6651, -0.0396, 0.137], [-0.4398, 0.2528, -0.4532], [0.6789, 0.0208, 0.0377], [-0.1754, 0.3343, -0.5658], [-0.4978, -0.2868, 0.3642], [0.0699, -0.3673, 0.5682], [-0.6697, -0.1023, 0.0613], [0.2781, -0.3223, 0.5305], [-0.6775, -0.0607, -0.001], [0.3138, -0.3104, 0.5176], [-0.6782, -0.0518, -0.0045], [0.319, -0.3058, 0.5172], [-0.6781, -0.0531, -0.0073], [0.3214, -0.309, 0.5138], [-0.6789, -0.043, -0.0033], [0.3208, -0.2987, 0.5201], [-0.6784, -0.0495, 0.0005], [0.316, -0.3051, 0.5193], [-0.678, -0.0536, 0.0111], [0.2862, -0.3119, 0.5325], [-0.6694, -0.092, 0.0787], [0.0812, -0.3499, 0.5776], [-0.4908, -0.2679, 0.3873], [0.304, 0.3544, -0.4947], [0.4129, 0.3231, -0.4334], [0.1427, 0.3752, -0.5491], [0.5891, 0.2216, -0.2581], [-0.0436, 0.3687, -0.57], [0.616, 0.1908, -0.2163], [-0.0691, 0.3643, -0.5703], [0.6199, 0.1874, -0.2082], [-0.0713, 0.3603, -0.5725], [0.6198, 0.1809, -0.2139], [-0.0775, 0.3598, -0.5721], [0.6193, 0.1825, -0.214], [-0.065, 0.3566, -0.5756], [0.6146, 0.1844, -0.2259], [-0.048, 0.3572, -0.5769], [0.5854, 0.2098, -0.2756], [0.1344, 0.3566, -0.5635], [0.4053, 0.3041, -0.4538], [0.2949, 0.3348, -0.5134], [-0.3466, -0.3358, 0.4793], [-0.3326, -0.3538, 0.4764], [-0.3427, -0.345, 0.4756], [-0.3265, -0.3469, 0.4855], [-0.3989, -0.3258, 0.4443], [-0.2437, -0.3587, 0.5241], [-0.4338, -0.3088, 0.4232], [-0.2313, -0.3597, 0.529], [-0.4345, -0.3067, 0.4241], [-0.2307, -0.3567, 0.5313], [-0.4382, -0.301, 0.4244], [-0.2305, -0.3543, 0.533], [-0.4329, -0.3035, 0.4281], [-0.241, -0.3509, 0.5306], [-0.392, -0.3125, 0.4598], [-0.3225, -0.3302, 0.4996], [-0.3358, -0.3279, 0.4924], [-0.3254, -0.3212, 0.5037], [-0.3375, -0.3323, 0.4882], [0.338, 0.3373, -0.4844], [0.3342, 0.3527, -0.476], [0.3471, 0.3467, -0.4713], [0.3397, 0.3384, -0.4825], [0.3342, 0.3485, -0.4792], [0.3449, 0.3477, -0.4721], [0.3327, 0.3331, -0.491], [0.3482, 0.3337, -0.4797], [0.3397, 0.3449, -0.4779], [0.3367, 0.3289, -0.4911], [0.3273, 0.3386, -0.4908], [0.346, 0.3378, -0.4784], [0.3387, 0.3241, -0.4929], [0.329, 0.3329, -0.4936], [0.3417, 0.3323, -0.4853], [0.3375, 0.3187, -0.4972], [0.3265, 0.3299, -0.4973], [0.3364, 0.3296, -0.4908], [0.3317, 0.3174, -0.502], [-0.3324, -0.3583, 0.4731], [-0.3383, -0.339, 0.4831], [-0.3494, -0.3445, 0.4711], [-0.3333, -0.3545, 0.4754], [-0.3391, -0.3384, 0.483], [-0.3463, -0.3417, 0.4754], [-0.3356, -0.3468, 0.4794], [-0.3384, -0.3325, 0.4875], [-0.3464, -0.3364, 0.4792], [-0.3336, -0.3431, 0.4834], [-0.3366, -0.3281, 0.4917], [-0.3447, -0.3319, 0.4835], [-0.332, -0.3373, 0.4886], [-0.3349, -0.3216, 0.4971], [-0.3453, -0.3273, 0.4862], [-0.3268, -0.336, 0.493], [-0.3357, -0.3144, 0.5012], [-0.3395, -0.3276, 0.49], [-0.3227, -0.3293, 0.5001], [0.3414, 0.3576, -0.4672], [0.347, 0.3383, -0.4774], [0.3318, 0.3447, -0.4835], [0.3421, 0.3549, -0.4688], [0.3498, 0.3366, -0.4765], [0.3363, 0.337, -0.4858], [0.3477, 0.3446, -0.4723], [0.3336, 0.3455, -0.4817], [0.3384, 0.3293, -0.4897], [0.3429, 0.3427, -0.4772], [0.3472, 0.3273, -0.4848], [0.3324, 0.3292, -0.4938], [0.337, 0.3378, -0.4849], [0.347, 0.3234, -0.4875], [0.3326, 0.3221, -0.4983], [0.3323, 0.3337, -0.4908], [0.3449, 0.3206, -0.4909], [0.3327, 0.3173, -0.5013], [0.332, 0.3352, -0.49], [-0.3486, -0.3366, 0.4774], [-0.3449, -0.3519, 0.469], [-0.3352, -0.346, 0.4802], [-0.3496, -0.3351, 0.4777], [-0.347, -0.35, 0.4688], [-0.3351, -0.3422, 0.483], [-0.3497, -0.3318, 0.48], [-0.3464, -0.3447, 0.4732], [-0.3346, -0.3373, 0.4869], [-0.3479, -0.3266, 0.4848], [-0.3447, -0.3391, 0.4785], [-0.3329, -0.3312, 0.4921], [-0.3464, -0.3199, 0.4903], [-0.343, -0.3342, 0.4831], [-0.3311, -0.3264, 0.4965], [-0.3437, -0.3162, 0.4946], [-0.3395, -0.3296, 0.4887], [-0.3308, -0.3235, 0.4986], [-0.3449, -0.3146, 0.4948], [0.3456, 0.3354, -0.4804], [0.3405, 0.3517, -0.4724], [0.3548, 0.3449, -0.4668], [0.3461, 0.334, -0.4811], [0.3395, 0.348, -0.4757], [0.3518, 0.3445, -0.4694], [0.3404, 0.3338, -0.4852], [0.3524, 0.3302, -0.4791], [0.348, 0.3408, -0.4749], [0.3422, 0.3277, -0.4881], [0.337, 0.3354, -0.4864], [0.349, 0.3322, -0.4801], [0.3447, 0.3192, -0.4919], [0.3348, 0.328, -0.4929], [0.3443, 0.3304, -0.4847], [0.3458, 0.3147, -0.494], [0.3307, 0.3219, -0.4997], [0.3394, 0.3283, -0.4896], [0.3459, 0.3101, -0.4969], [-0.3431, -0.353, 0.4694], [-0.3471, -0.3361, 0.4788], [-0.3578, -0.3401, 0.4679], [-0.3434, -0.3497, 0.4717], [-0.3452, -0.3334, 0.4821], [-0.3572, -0.3366, 0.471], [-0.343, -0.3446, 0.4758], [-0.3456, -0.3269, 0.4862], [-0.3565, -0.3324, 0.4745], [-0.3411, -0.3399, 0.4805], [-0.3435, -0.3226, 0.4906], [-0.3535, -0.3268, 0.4806], [-0.3383, -0.3338, 0.4867], [-0.3411, -0.3162, 0.4964], [-0.3521, -0.3221, 0.4847], [-0.335, -0.3304, 0.4912], [-0.3394, -0.3113, 0.5006], [-0.3487, -0.3182, 0.4898], [-0.3334, -0.3278, 0.4941], [0.351, 0.3492, -0.4664], [0.3553, 0.3358, -0.473], [0.3445, 0.34, -0.4779], [0.3507, 0.3473, -0.468], [0.3573, 0.333, -0.4735], [0.3466, 0.3329, -0.4814], [0.3553, 0.3385, -0.471], [0.344, 0.3375, -0.4801], [0.3488, 0.3236, -0.4861], [0.3503, 0.3374, -0.4755], [0.3566, 0.3228, -0.4811], [0.3409, 0.3216, -0.493], [0.342, 0.3331, -0.4846], [0.3545, 0.3213, -0.4836], [0.3426, 0.3142, -0.4966], [0.3369, 0.3262, -0.4928], [0.3505, 0.3218, -0.4861], [0.3452, 0.3098, -0.4976], [0.333, 0.326, -0.4956], [-0.3584, -0.3288, 0.4756], [-0.3542, -0.3479, 0.465], [-0.3437, -0.3417, 0.4773], [-0.3592, -0.3295, 0.4744], [-0.3567, -0.3447, 0.4654], [-0.3437, -0.3373, 0.4804], [-0.3583, -0.3243, 0.4787], [-0.3552, -0.3377, 0.4717], [-0.344, -0.3313, 0.4844], [-0.3567, -0.3204, 0.4825], [-0.3532, -0.3331, 0.4764], [-0.3414, -0.3251, 0.4904], [-0.3549, -0.3142, 0.4879], [-0.3495, -0.3292, 0.4819], [-0.3385, -0.3198, 0.4958], [-0.3518, -0.3114, 0.4919], [-0.3465, -0.3259, 0.4863], [-0.3368, -0.3187, 0.4977], [-0.3535, -0.3085, 0.4925], [0.3539, 0.3297, -0.4783], [0.3492, 0.3469, -0.4695], [0.3623, 0.3407, -0.4641], [0.3549, 0.3297, -0.4776], [0.3475, 0.3415, -0.4747], [0.3588, 0.3398, -0.4675], [0.3506, 0.326, -0.4832], [0.3618, 0.3252, -0.4755], [0.3554, 0.335, -0.4735], [0.3516, 0.3208, -0.486], [0.3449, 0.3288, -0.4854], [0.356, 0.3297, -0.4767], [0.3562, 0.3121, -0.4883], [0.341, 0.3199, -0.4941], [0.3482, 0.3281, -0.4836], [0.3566, 0.3127, -0.4876], [0.3407, 0.3122, -0.4992], [0.3413, 0.3245, -0.4908], [0.3557, 0.3142, -0.4873], [-0.3517, -0.3502, 0.4652], [-0.3531, -0.3337, 0.4761], [-0.3652, -0.3351, 0.4658], [-0.3501, -0.3464, 0.4692], [-0.3532, -0.3291, 0.4792], [-0.3636, -0.3306, 0.4703], [-0.3512, -0.3379, 0.4745], [-0.3516, -0.3239, 0.4839], [-0.3614, -0.3265, 0.4749], [-0.3504, -0.3328, 0.4787], [-0.3505, -0.3199, 0.4873], [-0.3594, -0.3217, 0.4796], [-0.3472, -0.3283, 0.4842], [-0.3479, -0.3128, 0.4938], [-0.359, -0.3175, 0.4828], [-0.3409, -0.3265, 0.4898], [-0.3477, -0.3074, 0.4973], [-0.3516, -0.32, 0.4865], [-0.3334, -0.3222, 0.4977], [0.3564, 0.3493, -0.4623], [0.3602, 0.3326, -0.4716], [0.3509, 0.3376, -0.475], [0.3562, 0.3438, -0.4665], [0.3644, 0.3281, -0.4715], [0.3517, 0.3285, -0.4807], [0.3571, 0.3344, -0.4726], [0.3533, 0.3315, -0.4775], [0.351, 0.3229, -0.485], [0.3577, 0.3308, -0.4747], [0.3576, 0.3226, -0.4803], [0.3526, 0.317, -0.4877], [0.3435, 0.3292, -0.4861], [0.3596, 0.3228, -0.4787], [0.3543, 0.308, -0.4922], [0.3412, 0.321, -0.4932], [0.3501, 0.324, -0.485], [0.3534, 0.3108, -0.4911], [0.3307, 0.318, -0.5022], [-0.3584, -0.3308, 0.4742], [-0.3521, -0.3464, 0.4677], [-0.3609, -0.3375, 0.4675], [-0.3441, -0.3401, 0.4782], [-0.4125, -0.3071, 0.4453], [-0.2607, -0.3654, 0.5111], [-0.4477, -0.2805, 0.4285], [-0.2531, -0.3644, 0.5156], [-0.4519, -0.2787, 0.4252], [-0.2459, -0.3656, 0.5183], [-0.4467, -0.2785, 0.4308], [-0.2516, -0.3631, 0.5173], [-0.4459, -0.2762, 0.4331], [-0.2599, -0.3556, 0.5184], [-0.4092, -0.2916, 0.4585], [-0.3371, -0.3225, 0.495], [-0.35, -0.3177, 0.4892], [-0.3366, -0.3144, 0.5006], [-0.3524, -0.3228, 0.4841], [0.3223, 0.354, -0.4832], [0.4287, 0.3042, -0.4318], [0.1616, 0.399, -0.5267], [0.5983, 0.1647, -0.2786], [-0.024, 0.4159, -0.5377], [0.623, 0.1277, -0.2415], [-0.0465, 0.4161, -0.5361], [0.6258, 0.1195, -0.2383], [-0.0548, 0.4093, -0.5405], [0.6268, 0.12, -0.2355], [-0.0513, 0.4104, -0.54], [0.6255, 0.1129, -0.2422], [-0.0497, 0.4065, -0.5431], [0.6214, 0.1205, -0.2492], [-0.0278, 0.4047, -0.5461], [0.5935, 0.1514, -0.2958], [0.1502, 0.3779, -0.5453], [0.417, 0.2827, -0.457], [0.3101, 0.3302, -0.5075], [-0.5109, -0.2513, 0.3723], [0.0514, -0.4222, 0.5309], [-0.673, -0.0193, 0.0971], [0.2612, -0.3995, 0.4846], [-0.6784, 0.0301, 0.0401], [0.2969, -0.3881, 0.4732], [-0.6782, 0.0371, 0.0363], [0.3024, -0.3908, 0.4675], [-0.6786, 0.0367, 0.0297], [0.3038, -0.3811, 0.4745], [-0.6776, 0.0448, 0.0399], [0.302, -0.3846, 0.4729], [-0.678, 0.0384, 0.0392], [0.2979, -0.3819, 0.4776], [-0.6774, 0.036, 0.0506], [0.2674, -0.3867, 0.4916], [-0.6706, -0.009, 0.1137], [0.0642, -0.4001, 0.5463], [-0.5016, -0.2298, 0.3979], [-0.1454, 0.419, -0.5157], [0.6769, -0.0662, 0.0122], [-0.417, 0.352, -0.4061], [0.6591, -0.136, 0.0988], [-0.4398, 0.3399, -0.3921], [0.6568, -0.1376, 0.1111], [-0.4455, 0.3408, -0.3849], [0.6554, -0.1482, 0.1059], [-0.4494, 0.3332, -0.387], [0.6557, -0.1439, 0.1097], [-0.4499, 0.3375, -0.3826], [0.6557, -0.1495, 0.1021], [-0.4492, 0.3284, -0.3913], [0.6577, -0.1406, 0.102], [-0.4412, 0.3376, -0.3926], [0.6595, -0.1389, 0.0918], [-0.4241, 0.3413, -0.4079], [0.6764, -0.0722, -0.0034], [-0.1584, 0.3968, -0.5293]], [[-0.1326, 0.2956, -0.4815], [0.5782, 0.0285, 0.0421], [-0.3562, 0.2205, -0.4017], [0.5686, -0.0193, 0.1145], [-0.3698, 0.2115, -0.3942], [0.5662, -0.0195, 0.1261], [-0.375, 0.2151, -0.3872], [0.5681, -0.0288, 0.1152], [-0.3805, 0.2061, -0.3868], [0.5665, -0.0322, 0.1218], [-0.3836, 0.2141, -0.3793], [0.5693, -0.0241, 0.1104], [-0.3822, 0.2053, -0.3855], [0.5697, -0.0313, 0.1061], [-0.3787, 0.2121, -0.3852], [0.5711, -0.0185, 0.102], [-0.3666, 0.2158, -0.3948], [0.5793, 0.0265, 0.0233], [-0.1495, 0.2796, -0.4862], [-0.4135, -0.2465, 0.3242], [0.0347, -0.309, 0.49], [-0.5671, -0.1005, 0.0715], [0.2058, -0.2777, 0.4663], [-0.5749, -0.0738, 0.0291], [0.2306, -0.2673, 0.4607], [-0.5759, -0.0672, 0.0268], [0.2369, -0.27, 0.4559], [-0.5758, -0.0684, 0.0237], [0.2373, -0.2648, 0.4587], [-0.5769, -0.0553, 0.0317], [0.2441, -0.2628, 0.4563], [-0.5759, -0.0647, 0.0324], [0.2376, -0.2683, 0.4565], [-0.5749, -0.067, 0.0427], [0.2162, -0.2693, 0.4665], [-0.5656, -0.0945, 0.0896], [0.0496, -0.2952, 0.4972], [-0.4032, -0.2337, 0.346], [0.2718, 0.2943, -0.42], [0.3315, 0.2777, -0.3871], [0.1759, 0.3095, -0.4584], [0.4699, 0.2138, -0.2652], [0.0249, 0.3127, -0.4883], [0.4928, 0.1975, -0.2345], [0.0174, 0.3128, -0.4886], [0.4954, 0.1869, -0.2377], [0.0127, 0.3068, -0.4925], [0.4953, 0.1878, -0.2372], [0.009, 0.3122, -0.4892], [0.4938, 0.1887, -0.2397], [0.0115, 0.301, -0.4961], [0.4921, 0.1854, -0.2455], [0.0167, 0.3049, -0.4936], [0.4635, 0.2064, -0.2818], [0.1633, 0.2964, -0.4715], [0.3208, 0.2649, -0.4047], [0.2598, 0.2818, -0.4359], [-0.3019, -0.2796, 0.4093], [-0.2901, -0.2961, 0.4062], [-0.2927, -0.2879, 0.4102], [-0.2908, -0.2843, 0.4141], [-0.3044, -0.2918, 0.3988], [-0.2783, -0.2868, 0.4209], [-0.3076, -0.2786, 0.4057], [-0.2718, -0.2945, 0.4198], [-0.3071, -0.2844, 0.402], [-0.2727, -0.2834, 0.4268], [-0.306, -0.2748, 0.4096], [-0.2666, -0.2842, 0.4301], [-0.3002, -0.2795, 0.4106], [-0.2716, -0.2876, 0.4247], [-0.2941, -0.2732, 0.4191], [-0.2821, -0.2724, 0.4279], [-0.2842, -0.2838, 0.419], [-0.2725, -0.2742, 0.4329], [-0.2938, -0.2724, 0.4199], [0.2906, 0.2799, -0.4172], [0.293, 0.2961, -0.4041], [0.3025, 0.2873, -0.4035], [0.289, 0.2848, -0.415], [0.2945, 0.2942, -0.4044], [0.2961, 0.2872, -0.4083], [0.2882, 0.2871, -0.414], [0.2904, 0.2787, -0.4181], [0.3, 0.284, -0.4076], [0.2791, 0.2842, -0.4221], [0.2859, 0.2907, -0.4131], [0.2912, 0.2811, -0.416], [0.2858, 0.2733, -0.4248], [0.2739, 0.2862, -0.4242], [0.2933, 0.2816, -0.4142], [0.2839, 0.268, -0.4294], [0.2743, 0.2831, -0.426], [0.2886, 0.2783, -0.4197], [0.2798, 0.2636, -0.4348], [-0.2889, -0.3013, 0.4033], [-0.2956, -0.2816, 0.4125], [-0.3062, -0.2878, 0.4003], [-0.2887, -0.2982, 0.4057], [-0.293, -0.2812, 0.4146], [-0.2977, -0.2884, 0.4063], [-0.2897, -0.294, 0.408], [-0.2873, -0.2789, 0.4201], [-0.3005, -0.2802, 0.4099], [-0.2845, -0.2935, 0.412], [-0.2862, -0.2766, 0.4224], [-0.291, -0.2836, 0.4144], [-0.2826, -0.2874, 0.4176], [-0.2823, -0.2724, 0.4277], [-0.2927, -0.2781, 0.4169], [-0.2751, -0.2849, 0.4243], [-0.2813, -0.2659, 0.4325], [-0.2889, -0.2741, 0.4222], [-0.274, -0.2824, 0.4266], [0.3017, 0.2995, -0.3951], [0.3007, 0.2808, -0.4093], [0.2874, 0.2927, -0.4106], [0.3021, 0.2951, -0.3981], [0.2994, 0.2786, -0.4118], [0.2861, 0.2875, -0.4151], [0.3021, 0.2824, -0.4072], [0.2919, 0.292, -0.4079], [0.2842, 0.2825, -0.4198], [0.2967, 0.2855, -0.409], [0.2913, 0.275, -0.42], [0.2791, 0.2837, -0.4224], [0.2886, 0.2877, -0.4133], [0.2925, 0.2696, -0.4226], [0.2754, 0.2749, -0.4306], [0.2832, 0.2833, -0.42], [0.2899, 0.268, -0.4254], [0.2769, 0.2705, -0.4324], [0.2841, 0.2837, -0.4191], [-0.3065, -0.2771, 0.4076], [-0.3012, -0.2968, 0.3976], [-0.2894, -0.2899, 0.4112], [-0.3043, -0.279, 0.4079], [-0.3014, -0.2921, 0.4008], [-0.2882, -0.2869, 0.4141], [-0.3003, -0.2754, 0.4133], [-0.2987, -0.2886, 0.4054], [-0.2853, -0.285, 0.4174], [-0.2943, -0.2746, 0.4181], [-0.2934, -0.2862, 0.4109], [-0.2808, -0.2821, 0.4224], [-0.2911, -0.2721, 0.422], [-0.2896, -0.2824, 0.4162], [-0.2756, -0.2777, 0.4287], [-0.2884, -0.2652, 0.4282], [-0.2885, -0.2784, 0.4197], [-0.2757, -0.2772, 0.4289], [-0.2887, -0.264, 0.4288], [0.298, 0.2804, -0.4116], [0.3002, 0.2943, -0.4001], [0.3104, 0.2831, -0.4004], [0.2955, 0.2799, -0.4137], [0.296, 0.2931, -0.4041], [0.3075, 0.283, -0.4027], [0.2885, 0.2838, -0.416], [0.2987, 0.2727, -0.4162], [0.3014, 0.2809, -0.4088], [0.2864, 0.2787, -0.4209], [0.2872, 0.2874, -0.4144], [0.2988, 0.2759, -0.4141], [0.2855, 0.2702, -0.4271], [0.2815, 0.2833, -0.4211], [0.2942, 0.2743, -0.4184], [0.2848, 0.2641, -0.4313], [0.2783, 0.278, -0.4268], [0.2904, 0.2738, -0.4214], [0.2837, 0.2633, -0.4325], [-0.2984, -0.2955, 0.4006], [-0.3029, -0.2781, 0.4096], [-0.3132, -0.282, 0.3991], [-0.2971, -0.293, 0.4034], [-0.2975, -0.2759, 0.415], [-0.3097, -0.2784, 0.4043], [-0.2949, -0.2895, 0.4075], [-0.2929, -0.2732, 0.42], [-0.305, -0.2757, 0.4097], [-0.2901, -0.2869, 0.4128], [-0.289, -0.2719, 0.4235], [-0.3007, -0.2728, 0.4147], [-0.2874, -0.2837, 0.4168], [-0.2842, -0.2684, 0.429], [-0.297, -0.2678, 0.4207], [-0.2854, -0.28, 0.4207], [-0.2801, -0.2649, 0.4338], [-0.2949, -0.2636, 0.4247], [-0.2835, -0.2811, 0.4212], [0.3118, 0.2901, -0.3943], [0.3072, 0.2755, -0.4081], [0.2974, 0.2866, -0.4077], [0.3093, 0.2867, -0.3987], [0.3068, 0.2722, -0.4106], [0.2942, 0.2808, -0.414], [0.3091, 0.2759, -0.4064], [0.2976, 0.2853, -0.4086], [0.2903, 0.2745, -0.421], [0.3032, 0.2783, -0.4093], [0.2983, 0.2672, -0.4201], [0.2859, 0.277, -0.4223], [0.2959, 0.2794, -0.4138], [0.2976, 0.2633, -0.423], [0.2836, 0.2699, -0.4284], [0.2901, 0.2765, -0.4198], [0.2958, 0.2619, -0.4251], [0.2831, 0.2642, -0.4323], [0.2896, 0.2779, -0.4193], [-0.3134, -0.2706, 0.4067], [-0.3088, -0.2887, 0.3977], [-0.2978, -0.2828, 0.4101], [-0.3109, -0.2712, 0.4082], [-0.3092, -0.2848, 0.4002], [-0.2952, -0.2809, 0.4133], [-0.3066, -0.2687, 0.4131], [-0.3047, -0.2815, 0.4059], [-0.2912, -0.2775, 0.4184], [-0.3013, -0.267, 0.418], [-0.2999, -0.2791, 0.4111], [-0.2883, -0.275, 0.422], [-0.2988, -0.2628, 0.4225], [-0.2991, -0.2741, 0.4151], [-0.2854, -0.272, 0.4259], [-0.2936, -0.2586, 0.4287], [-0.2964, -0.2703, 0.4194], [-0.283, -0.2713, 0.4279], [-0.2925, -0.2547, 0.4317], [0.3027, 0.274, -0.4124], [0.3075, 0.2869, -0.4], [0.3155, 0.2752, -0.402], [0.3019, 0.2743, -0.4129], [0.3045, 0.2849, -0.4037], [0.313, 0.2752, -0.4039], [0.2956, 0.2765, -0.4159], [0.3048, 0.2664, -0.4159], [0.3076, 0.275, -0.4082], [0.2924, 0.2721, -0.4211], [0.2938, 0.2812, -0.414], [0.3058, 0.2677, -0.4143], [0.2927, 0.2638, -0.4261], [0.2908, 0.2745, -0.4206], [0.3031, 0.2674, -0.4165], [0.2931, 0.2559, -0.4306], [0.2828, 0.2718, -0.4278], [0.2972, 0.2694, -0.4195], [0.2933, 0.2515, -0.4331], [-0.3057, -0.2869, 0.4013], [-0.3069, -0.2729, 0.4101], [-0.3166, -0.2746, 0.4015], [-0.3048, -0.2849, 0.4034], [-0.3033, -0.2698, 0.4148], [-0.3119, -0.2694, 0.4087], [-0.3035, -0.2813, 0.4069], [-0.2969, -0.2691, 0.4199], [-0.3113, -0.2688, 0.4094], [-0.2957, -0.2817, 0.4124], [-0.2969, -0.2652, 0.4223], [-0.3024, -0.2706, 0.4149], [-0.2953, -0.2765, 0.4161], [-0.2901, -0.2629, 0.4284], [-0.3055, -0.2595, 0.4197], [-0.2928, -0.2746, 0.4192], [-0.2876, -0.2587, 0.4327], [-0.3, -0.2575, 0.4249], [-0.2889, -0.2727, 0.4231], [0.3108, 0.2818, -0.401], [0.3112, 0.2705, -0.4084], [0.3039, 0.28, -0.4076], [0.3116, 0.2789, -0.4024], [0.3104, 0.2655, -0.4123], [0.2964, 0.2776, -0.4146], [0.3162, 0.2691, -0.4055], [0.3009, 0.2807, -0.4093], [0.2994, 0.2703, -0.4173], [0.3042, 0.2735, -0.4117], [0.3037, 0.2631, -0.4188], [0.2884, 0.2741, -0.4226], [0.3026, 0.2724, -0.4136], [0.2986, 0.2621, -0.4231], [0.2943, 0.264, -0.4249], [0.2924, 0.2722, -0.4211], [0.3023, 0.258, -0.423], [0.2915, 0.2571, -0.431], [0.2882, 0.2731, -0.4234], [-0.312, -0.2671, 0.4101], [-0.3074, -0.2806, 0.4044], [-0.3086, -0.2744, 0.4078], [-0.3057, -0.27, 0.4129], [-0.3202, -0.2757, 0.3979], [-0.29, -0.285, 0.4142], [-0.3186, -0.2633, 0.4074], [-0.2892, -0.2756, 0.421], [-0.3204, -0.263, 0.4062], [-0.2832, -0.2815, 0.4212], [-0.3156, -0.2668, 0.4075], [-0.2839, -0.2698, 0.4284], [-0.3148, -0.2567, 0.4145], [-0.2846, -0.2758, 0.424], [-0.3058, -0.2637, 0.4169], [-0.292, -0.259, 0.4296], [-0.2985, -0.2705, 0.4178], [-0.2884, -0.2659, 0.4277], [-0.3014, -0.2495, 0.4287], [0.2879, 0.2809, -0.4184], [0.3475, 0.2588, -0.3862], [0.1918, 0.3118, -0.4504], [0.481, 0.1719, -0.2756], [0.0395, 0.3346, -0.4726], [0.5029, 0.1466, -0.25], [0.0318, 0.3331, -0.4742], [0.5013, 0.1475, -0.2526], [0.0265, 0.3333, -0.4744], [0.5043, 0.1408, -0.2503], [0.0286, 0.3306, -0.4761], [0.5005, 0.1442, -0.256], [0.0278, 0.3261, -0.4793], [0.4992, 0.1406, -0.2605], [0.0319, 0.3272, -0.4783], [0.472, 0.1643, -0.2951], [0.1772, 0.2995, -0.4645], [0.3328, 0.246, -0.4069], [0.2731, 0.2695, -0.4354], [-0.4268, -0.2135, 0.3303], [0.0175, -0.3393, 0.4705], [-0.5715, -0.0365, 0.0943], [0.1914, -0.3265, 0.44], [-0.5777, -0.0076, 0.0553], [0.22, -0.3188, 0.4323], [-0.578, -0.0009, 0.0527], [0.2258, -0.3208, 0.4277], [-0.5782, -0.0032, 0.0501], [0.2242, -0.3157, 0.4323], [-0.5777, 0.0089, 0.0555], [0.2272, -0.3136, 0.4323], [-0.5776, 0.0015, 0.0571], [0.2202, -0.3166, 0.4338], [-0.5764, -0.0012, 0.0679], [0.2012, -0.3168, 0.4427], [-0.5685, -0.0312, 0.1128], [0.0348, -0.3254, 0.4793], [-0.4138, -0.2025, 0.3531], [-0.1154, 0.3368, -0.4584], [0.5785, -0.0438, 0.0149], [-0.3444, 0.2849, -0.3702], [0.5671, -0.0926, 0.0815], [-0.3607, 0.2771, -0.3605], [0.5658, -0.0909, 0.092], [-0.366, 0.2788, -0.3538], [0.5646, -0.1027, 0.0868], [-0.371, 0.2701, -0.3553], [0.5648, -0.098, 0.0907], [-0.3706, 0.2763, -0.351], [0.5653, -0.1031, 0.0819], [-0.3697, 0.2681, -0.3582], [0.5665, -0.0959, 0.0822], [-0.3636, 0.2767, -0.3579], [0.5677, -0.0963, 0.0724], [-0.3537, 0.2758, -0.3683], [0.5787, -0.0441, -0.0038], [-0.135, 0.321, -0.4643]], [[-0.1008, 0.2404, -0.4153], [0.4879, 0.0287, 0.0397], [-0.2866, 0.1835, -0.353], [0.4803, -0.0108, 0.0982], [-0.299, 0.1763, -0.3463], [0.4779, -0.0105, 0.1094], [-0.3066, 0.1792, -0.3382], [0.4805, -0.0152, 0.0966], [-0.3128, 0.1694, -0.3375], [0.4794, -0.0215, 0.1006], [-0.3132, 0.1849, -0.3289], [0.4814, -0.0131, 0.092], [-0.3121, 0.1779, -0.3338], [0.4823, -0.0195, 0.0861], [-0.307, 0.1875, -0.3332], [0.4833, -0.0068, 0.0828], [-0.2994, 0.1866, -0.3406], [0.4891, 0.031, 0.0146], [-0.1272, 0.2429, -0.4065], [-0.3408, -0.2081, 0.2846], [0.0012, -0.2542, 0.4193], [-0.4774, -0.0916, 0.0643], [0.1474, -0.2319, 0.4061], [-0.4838, -0.0728, 0.0328], [0.1746, -0.2225, 0.4006], [-0.485, -0.0655, 0.0298], [0.1805, -0.2262, 0.3958], [-0.485, -0.0662, 0.0285], [0.1812, -0.2244, 0.3965], [-0.4855, -0.0586, 0.0364], [0.1843, -0.2315, 0.391], [-0.4843, -0.0671, 0.0368], [0.1789, -0.231, 0.3938], [-0.4824, -0.072, 0.0507], [0.1594, -0.2358, 0.3993], [-0.4733, -0.0938, 0.0872], [0.0232, -0.2576, 0.4166], [-0.3203, -0.2149, 0.3027], [0.2407, 0.2419, -0.3521], [0.268, 0.2328, -0.3383], [0.198, 0.2484, -0.3735], [0.3778, 0.1923, -0.2464], [0.0581, 0.2579, -0.413], [0.405, 0.176, -0.2131], [0.0478, 0.2581, -0.4142], [0.4059, 0.1672, -0.2184], [0.0428, 0.253, -0.4179], [0.4047, 0.1723, -0.2166], [0.0426, 0.2634, -0.4114], [0.4025, 0.1701, -0.2224], [0.0437, 0.2599, -0.4135], [0.3991, 0.1758, -0.2242], [0.051, 0.2633, -0.4105], [0.3637, 0.1948, -0.2649], [0.1816, 0.2513, -0.3798], [0.2464, 0.2377, -0.351], [0.2206, 0.246, -0.3623], [-0.2598, -0.2316, 0.3454], [-0.2532, -0.2419, 0.3433], [-0.2537, -0.2368, 0.3464], [-0.2562, -0.2322, 0.3477], [-0.26, -0.2441, 0.3365], [-0.2452, -0.2362, 0.3529], [-0.2601, -0.2288, 0.3471], [-0.244, -0.244, 0.3484], [-0.2547, -0.2406, 0.3431], [-0.2397, -0.2313, 0.3598], [-0.2545, -0.238, 0.345], [-0.2336, -0.2503, 0.351], [-0.251, -0.2339, 0.3503], [-0.2391, -0.2391, 0.3551], [-0.244, -0.2465, 0.3466], [-0.23, -0.2377, 0.362], [-0.2484, -0.2324, 0.3532], [-0.2355, -0.2483, 0.3512], [-0.2244, -0.2396, 0.3642], [0.2478, 0.231, -0.3545], [0.2579, 0.2441, -0.3382], [0.2615, 0.2324, -0.3436], [0.2509, 0.2352, -0.3495], [0.2565, 0.2432, -0.3398], [0.2582, 0.2353, -0.3441], [0.2482, 0.2385, -0.3493], [0.2493, 0.23, -0.3541], [0.2584, 0.234, -0.3448], [0.2383, 0.2391, -0.3556], [0.2465, 0.2449, -0.3459], [0.2476, 0.237, -0.3506], [0.2397, 0.2355, -0.3571], [0.2323, 0.2491, -0.3527], [0.2504, 0.2421, -0.3452], [0.238, 0.2296, -0.3621], [0.2248, 0.2461, -0.3596], [0.2402, 0.2459, -0.3497], [0.2325, 0.2295, -0.3657], [-0.2489, -0.2464, 0.3431], [-0.2576, -0.2288, 0.3489], [-0.2661, -0.2357, 0.3377], [-0.251, -0.2435, 0.3438], [-0.2542, -0.2296, 0.3508], [-0.2627, -0.2355, 0.3405], [-0.2492, -0.2455, 0.3436], [-0.2469, -0.2299, 0.3559], [-0.2583, -0.2306, 0.3472], [-0.2451, -0.2465, 0.3458], [-0.2373, -0.235, 0.359], [-0.2486, -0.2298, 0.3547], [-0.245, -0.247, 0.3456], [-0.2315, -0.2419, 0.3583], [-0.2422, -0.2308, 0.3585], [-0.2433, -0.2447, 0.3484], [-0.2235, -0.2452, 0.361], [-0.2344, -0.2307, 0.3637], [-0.2405, -0.2458, 0.3496], [0.2666, 0.2382, -0.3356], [0.2582, 0.2279, -0.3491], [0.2517, 0.2401, -0.3456], [0.2656, 0.2374, -0.3369], [0.2586, 0.2259, -0.3501], [0.2472, 0.238, -0.3503], [0.2629, 0.2304, -0.3439], [0.2512, 0.2437, -0.3434], [0.2409, 0.2344, -0.357], [0.2559, 0.2363, -0.3451], [0.2476, 0.2279, -0.3566], [0.236, 0.2412, -0.3557], [0.2453, 0.2424, -0.3486], [0.2452, 0.2298, -0.3571], [0.2293, 0.2384, -0.362], [0.2359, 0.2463, -0.3523], [0.2426, 0.2312, -0.358], [0.2266, 0.2332, -0.367], [0.2317, 0.2497, -0.3527], [-0.2676, -0.2232, 0.345], [-0.2601, -0.2395, 0.3397], [-0.2529, -0.2323, 0.35], [-0.2662, -0.2238, 0.3457], [-0.2614, -0.2399, 0.3384], [-0.2478, -0.2345, 0.3522], [-0.2591, -0.2238, 0.351], [-0.2589, -0.2377, 0.3419], [-0.2415, -0.2386, 0.3538], [-0.2489, -0.2248, 0.3577], [-0.2541, -0.2366, 0.3463], [-0.236, -0.2428, 0.3547], [-0.2397, -0.2283, 0.3618], [-0.2475, -0.2346, 0.3524], [-0.2319, -0.2444, 0.3563], [-0.2319, -0.2297, 0.3659], [-0.2422, -0.2336, 0.3566], [-0.2297, -0.2433, 0.3584], [-0.229, -0.2282, 0.3687], [0.2542, 0.2274, -0.3523], [0.2628, 0.2372, -0.3392], [0.269, 0.2239, -0.3434], [0.2539, 0.2286, -0.3517], [0.2586, 0.2381, -0.3419], [0.2655, 0.2283, -0.3432], [0.248, 0.2334, -0.3528], [0.2543, 0.223, -0.355], [0.2583, 0.2305, -0.3473], [0.2415, 0.2324, -0.3579], [0.2442, 0.24, -0.351], [0.2515, 0.2296, -0.3529], [0.2361, 0.2287, -0.3639], [0.235, 0.2419, -0.3559], [0.246, 0.2328, -0.3546], [0.2333, 0.2257, -0.3675], [0.2266, 0.242, -0.3613], [0.2387, 0.2362, -0.3573], [0.2313, 0.2237, -0.37], [-0.2545, -0.2373, 0.3454], [-0.2629, -0.2209, 0.35], [-0.2704, -0.2295, 0.3386], [-0.2537, -0.2371, 0.3462], [-0.2571, -0.2225, 0.3533], [-0.2665, -0.2267, 0.3436], [-0.2514, -0.2376, 0.3475], [-0.2496, -0.2224, 0.3588], [-0.2599, -0.2249, 0.3497], [-0.2476, -0.2379, 0.3501], [-0.2407, -0.2284, 0.361], [-0.2514, -0.2245, 0.3562], [-0.2427, -0.2403, 0.3519], [-0.2317, -0.2311, 0.3652], [-0.2448, -0.2235, 0.3613], [-0.2384, -0.2399, 0.3551], [-0.2254, -0.2312, 0.369], [-0.238, -0.2251, 0.3649], [-0.2339, -0.2406, 0.3575], [0.2699, 0.2302, -0.3385], [0.2614, 0.2203, -0.3515], [0.2553, 0.2324, -0.3483], [0.2679, 0.2297, -0.3404], [0.2609, 0.2196, -0.3524], [0.2507, 0.2302, -0.353], [0.264, 0.2237, -0.3474], [0.2533, 0.2346, -0.3482], [0.2451, 0.2265, -0.3593], [0.2574, 0.2286, -0.3491], [0.2491, 0.2209, -0.36], [0.2375, 0.2344, -0.3593], [0.2471, 0.2342, -0.3528], [0.2448, 0.2219, -0.3623], [0.2313, 0.2308, -0.3656], [0.2383, 0.2366, -0.3573], [0.2427, 0.2219, -0.3637], [0.2276, 0.2261, -0.3708], [0.2355, 0.2398, -0.357], [-0.2691, -0.216, 0.3484], [-0.2621, -0.2317, 0.3436], [-0.2547, -0.225, 0.3535], [-0.2679, -0.2165, 0.349], [-0.2632, -0.2323, 0.3424], [-0.2505, -0.2264, 0.3556], [-0.2604, -0.218, 0.3538], [-0.2587, -0.2304, 0.347], [-0.245, -0.2283, 0.3582], [-0.2526, -0.218, 0.3593], [-0.2543, -0.2303, 0.3503], [-0.2379, -0.2321, 0.3605], [-0.2444, -0.2195, 0.3641], [-0.2485, -0.2306, 0.3543], [-0.2314, -0.233, 0.3641], [-0.2383, -0.2181, 0.3689], [-0.2433, -0.2294, 0.3587], [-0.2299, -0.2322, 0.3656], [-0.2368, -0.2163, 0.3709], [0.2526, 0.2173, -0.3597], [0.2624, 0.2315, -0.3435], [0.271, 0.2159, -0.3469], [0.2556, 0.2206, -0.3556], [0.2586, 0.2313, -0.3465], [0.2671, 0.2212, -0.3466], [0.2477, 0.2259, -0.3578], [0.2558, 0.2152, -0.3587], [0.2595, 0.2232, -0.3511], [0.2432, 0.2252, -0.3614], [0.2467, 0.2321, -0.3546], [0.2539, 0.2209, -0.3567], [0.2391, 0.2206, -0.3669], [0.2375, 0.234, -0.3596], [0.2499, 0.2245, -0.3572], [0.2366, 0.2153, -0.3716], [0.2287, 0.233, -0.3659], [0.2427, 0.2284, -0.3597], [0.236, 0.213, -0.3734], [-0.2542, -0.2316, 0.3496], [-0.2604, -0.213, 0.3567], [-0.2705, -0.2208, 0.3443], [-0.2547, -0.2301, 0.3502], [-0.2576, -0.2145, 0.3579], [-0.2661, -0.2219, 0.3469], [-0.2526, -0.2304, 0.3515], [-0.2504, -0.2155, 0.3624], [-0.2618, -0.2201, 0.3514], [-0.2463, -0.232, 0.3548], [-0.2448, -0.2169, 0.3654], [-0.2561, -0.2194, 0.356], [-0.2433, -0.2325, 0.3566], [-0.2373, -0.2195, 0.3687], [-0.2504, -0.2185, 0.3605], [-0.2373, -0.2329, 0.3604], [-0.2323, -0.2171, 0.3733], [-0.2442, -0.2179, 0.3651], [-0.2328, -0.2329, 0.3633], [0.2634, 0.2262, -0.3462], [0.2616, 0.2107, -0.3572], [0.2528, 0.2263, -0.354], [0.2659, 0.2241, -0.3458], [0.2613, 0.213, -0.3561], [0.2479, 0.2252, -0.3582], [0.2656, 0.2169, -0.3505], [0.2522, 0.2288, -0.3528], [0.2483, 0.2212, -0.3604], [0.255, 0.2238, -0.354], [0.2521, 0.2156, -0.3611], [0.239, 0.2278, -0.3625], [0.2514, 0.2266, -0.3548], [0.2467, 0.2164, -0.3644], [0.2385, 0.2222, -0.3663], [0.2401, 0.229, -0.361], [0.2441, 0.2169, -0.3658], [0.2352, 0.2163, -0.372], [0.235, 0.2307, -0.3633], [-0.2626, -0.2107, 0.3565], [-0.2588, -0.2231, 0.3517], [-0.2573, -0.2189, 0.3555], [-0.2582, -0.2156, 0.3568], [-0.2654, -0.2255, 0.3452], [-0.2477, -0.2234, 0.3594], [-0.2625, -0.21, 0.3569], [-0.2472, -0.2309, 0.355], [-0.2605, -0.2178, 0.3537], [-0.243, -0.2207, 0.3642], [-0.2587, -0.2261, 0.3498], [-0.2385, -0.2274, 0.3631], [-0.2536, -0.2118, 0.3623], [-0.2394, -0.2303, 0.3607], [-0.2462, -0.2217, 0.3614], [-0.2423, -0.213, 0.3693], [-0.247, -0.2289, 0.3564], [-0.2308, -0.2238, 0.3702], [-0.2443, -0.2083, 0.3706], [0.2441, 0.2199, -0.364], [0.2728, 0.2134, -0.3471], [0.1994, 0.2397, -0.3784], [0.3819, 0.1529, -0.2669], [0.0602, 0.2717, -0.4037], [0.408, 0.1315, -0.2381], [0.0528, 0.2737, -0.4034], [0.4087, 0.1245, -0.2407], [0.0464, 0.2717, -0.4056], [0.4087, 0.1294, -0.238], [0.0465, 0.2762, -0.4025], [0.406, 0.1256, -0.2446], [0.0448, 0.2681, -0.4081], [0.4034, 0.1308, -0.2461], [0.0524, 0.2699, -0.406], [0.3679, 0.1564, -0.2839], [0.1851, 0.2402, -0.3854], [0.2504, 0.2176, -0.3611], [0.2249, 0.224, -0.3737], [-0.3442, -0.1754, 0.302], [-0.0014, -0.2724, 0.4077], [-0.479, -0.0324, 0.0996], [0.1463, -0.2693, 0.3828], [-0.4851, -0.0105, 0.0707], [0.1719, -0.2646, 0.3753], [-0.4861, -0.0067, 0.0639], [0.1767, -0.269, 0.3699], [-0.4859, -0.0043, 0.0659], [0.1796, -0.2643, 0.3719], [-0.486, 0.0023, 0.0653], [0.1797, -0.2731, 0.3655], [-0.4854, -0.0023, 0.0697], [0.1754, -0.2698, 0.37], [-0.4831, -0.0052, 0.084], [0.1551, -0.2738, 0.3761], [-0.4742, -0.0301, 0.1212], [0.0177, -0.2769, 0.4043], [-0.3237, -0.18, 0.3214], [-0.0978, 0.2707, -0.397], [0.489, -0.0365, 0.0016], [-0.287, 0.2349, -0.3207], [0.4813, -0.0748, 0.0563], [-0.3005, 0.2293, -0.3124], [0.4807, -0.0704, 0.0666], [-0.3051, 0.2311, -0.3065], [0.4796, -0.0818, 0.0607], [-0.3122, 0.2236, -0.3049], [0.4789, -0.0797, 0.0687], [-0.3069, 0.2395, -0.2982], [0.4789, -0.092, 0.0515], [-0.307, 0.2357, -0.301], [0.4799, -0.0857, 0.053], [-0.3008, 0.2462, -0.2989], [0.4808, -0.0865, 0.0428], [-0.2936, 0.2434, -0.3082], [0.488, -0.0403, -0.0255], [-0.1225, 0.276, -0.3863]], [[-0.0751, 0.2181, -0.3513], [0.4164, 0.0405, 0.0399], [-0.2311, 0.1646, -0.31], [0.4131, 0.0103, 0.0768], [-0.2393, 0.1568, -0.3078], [0.411, 0.0114, 0.0869], [-0.2468, 0.1619, -0.2991], [0.4136, 0.0095, 0.0737], [-0.2519, 0.1512, -0.3005], [0.4132, 0.002, 0.0765], [-0.255, 0.1635, -0.2913], [0.4144, 0.0096, 0.0695], [-0.2535, 0.1585, -0.2954], [0.4156, 0.0003, 0.0621], [-0.2506, 0.1684, -0.2924], [0.4156, 0.0142, 0.0608], [-0.2439, 0.1657, -0.2994], [0.4181, 0.0406, 0.0116], [-0.1047, 0.2149, -0.3457], [-0.2813, -0.2001, 0.2397], [-0.0284, -0.2319, 0.3494], [-0.4025, -0.1036, 0.0624], [0.0959, -0.2112, 0.3504], [-0.4058, -0.0966, 0.0514], [0.1111, -0.2046, 0.3499], [-0.4079, -0.0884, 0.0496], [0.1184, -0.2083, 0.3453], [-0.4077, -0.0902, 0.0479], [0.1237, -0.206, 0.3448], [-0.4087, -0.0808, 0.0556], [0.1197, -0.2078, 0.3451], [-0.4067, -0.0892, 0.0569], [0.1179, -0.2137, 0.3421], [-0.4041, -0.0924, 0.0692], [0.1097, -0.2124, 0.3456], [-0.3972, -0.1047, 0.0887], [-0.0018, -0.2301, 0.3517], [-0.261, -0.2002, 0.2616], [0.211, 0.2275, -0.2835], [0.2253, 0.2154, -0.2819], [0.2064, 0.2226, -0.2906], [0.2803, 0.1989, -0.2418], [0.1161, 0.2282, -0.3332], [0.3052, 0.1892, -0.2184], [0.1034, 0.23, -0.3362], [0.3073, 0.1814, -0.2221], [0.1006, 0.2262, -0.3396], [0.3055, 0.1855, -0.2212], [0.0969, 0.2361, -0.3339], [0.3025, 0.1821, -0.2279], [0.1, 0.2308, -0.3367], [0.2992, 0.1856, -0.2295], [0.1083, 0.2333, -0.3324], [0.2647, 0.1998, -0.2581], [0.1825, 0.2199, -0.3082], [0.2011, 0.2172, -0.2983], [0.19, 0.2266, -0.2986], [-0.2317, -0.2122, 0.2791], [-0.2168, -0.2261, 0.2801], [-0.2184, -0.2135, 0.2886], [-0.2292, -0.2144, 0.2794], [-0.2167, -0.2215, 0.2839], [-0.2089, -0.2065, 0.3006], [-0.2265, -0.2125, 0.2832], [-0.211, -0.2244, 0.2859], [-0.2107, -0.2175, 0.2914], [-0.2075, -0.2088, 0.2999], [-0.2205, -0.2143, 0.2864], [-0.1962, -0.229, 0.2927], [-0.2101, -0.2106, 0.2968], [-0.2077, -0.2177, 0.2934], [-0.2021, -0.2217, 0.2943], [-0.2002, -0.2129, 0.302], [-0.2087, -0.2166, 0.2936], [-0.1942, -0.2251, 0.2971], [-0.1957, -0.2105, 0.3066], [0.2153, 0.2132, -0.2912], [0.2237, 0.225, -0.2756], [0.2263, 0.2117, -0.2839], [0.2181, 0.2145, -0.2882], [0.2184, 0.2212, -0.2828], [0.2242, 0.2131, -0.2845], [0.2099, 0.2165, -0.2928], [0.2155, 0.2084, -0.2945], [0.2193, 0.2135, -0.288], [0.2043, 0.2178, -0.2957], [0.2084, 0.2241, -0.2881], [0.2151, 0.2093, -0.2942], [0.1988, 0.2134, -0.3026], [0.2031, 0.2247, -0.2914], [0.2114, 0.2117, -0.2952], [0.1969, 0.2116, -0.305], [0.1934, 0.228, -0.2954], [0.2066, 0.2161, -0.2954], [0.1903, 0.2103, -0.3101], [-0.2112, -0.223, 0.2868], [-0.228, -0.2069, 0.2861], [-0.2298, -0.2206, 0.2741], [-0.2122, -0.2195, 0.2889], [-0.224, -0.2068, 0.2893], [-0.2241, -0.2184, 0.2805], [-0.2086, -0.2199, 0.2911], [-0.2143, -0.2054, 0.2975], [-0.2224, -0.2121, 0.2866], [-0.2059, -0.2242, 0.2898], [-0.2036, -0.21, 0.3018], [-0.2166, -0.2079, 0.2941], [-0.2056, -0.2234, 0.2906], [-0.1961, -0.2132, 0.3044], [-0.2108, -0.2067, 0.2991], [-0.2026, -0.2244, 0.292], [-0.1892, -0.2149, 0.3076], [-0.2026, -0.2085, 0.3035], [-0.1996, -0.2242, 0.2941], [0.2332, 0.2164, -0.2746], [0.2236, 0.2071, -0.2894], [0.2172, 0.2196, -0.285], [0.2303, 0.2161, -0.2773], [0.223, 0.2046, -0.2916], [0.2117, 0.2159, -0.2919], [0.2251, 0.2085, -0.2872], [0.2157, 0.2193, -0.2864], [0.2062, 0.2126, -0.2982], [0.2201, 0.212, -0.2885], [0.2106, 0.2052, -0.3003], [0.2003, 0.2189, -0.2976], [0.2126, 0.2163, -0.2909], [0.2072, 0.2039, -0.3035], [0.1939, 0.217, -0.3032], [0.2058, 0.2181, -0.2945], [0.2035, 0.2038, -0.3061], [0.1904, 0.2136, -0.3079], [0.2038, 0.2187, -0.2954], [-0.2368, -0.2071, 0.2786], [-0.2212, -0.2184, 0.2829], [-0.221, -0.2055, 0.2925], [-0.235, -0.2067, 0.2805], [-0.2198, -0.2208, 0.2821], [-0.2149, -0.2064, 0.2964], [-0.2265, -0.204, 0.2893], [-0.2183, -0.2182, 0.2853], [-0.2074, -0.2115, 0.2981], [-0.2171, -0.2024, 0.2975], [-0.2169, -0.216, 0.288], [-0.1988, -0.2161, 0.3007], [-0.2084, -0.2017, 0.3042], [-0.2134, -0.2137, 0.2923], [-0.1931, -0.2185, 0.3027], [-0.2005, -0.2003, 0.3104], [-0.2091, -0.2101, 0.2979], [-0.1933, -0.218, 0.3029], [-0.1966, -0.1989, 0.3137], [0.2202, 0.2062, -0.2926], [0.2287, 0.2156, -0.279], [0.2352, 0.2016, -0.284], [0.2197, 0.2065, -0.2928], [0.224, 0.216, -0.2824], [0.2309, 0.2057, -0.2846], [0.2119, 0.2115, -0.295], [0.2186, 0.2007, -0.2976], [0.2234, 0.2069, -0.2896], [0.2071, 0.2095, -0.2997], [0.2104, 0.2161, -0.2927], [0.2175, 0.2029, -0.2969], [0.2007, 0.2045, -0.3074], [0.2028, 0.2183, -0.2964], [0.2141, 0.2028, -0.2995], [0.1949, 0.2012, -0.3133], [0.1961, 0.2173, -0.3016], [0.208, 0.2061, -0.3015], [0.1926, 0.1991, -0.3161], [-0.2183, -0.2105, 0.291], [-0.2345, -0.1989, 0.2864], [-0.2332, -0.2128, 0.2774], [-0.2183, -0.2104, 0.291], [-0.2279, -0.1986, 0.292], [-0.2297, -0.2085, 0.2835], [-0.2142, -0.2121, 0.2929], [-0.2188, -0.1983, 0.299], [-0.2239, -0.2052, 0.2905], [-0.21, -0.2133, 0.295], [-0.209, -0.2004, 0.3046], [-0.2195, -0.2017, 0.2962], [-0.2059, -0.2147, 0.2969], [-0.1998, -0.2018, 0.3098], [-0.2139, -0.1976, 0.303], [-0.2032, -0.2143, 0.299], [-0.192, -0.2031, 0.3139], [-0.2055, -0.1977, 0.3087], [-0.2015, -0.2141, 0.3003], [0.2382, 0.2083, -0.2766], [0.2289, 0.198, -0.2916], [0.2218, 0.2103, -0.2885], [0.2349, 0.2086, -0.2791], [0.2285, 0.1964, -0.293], [0.2172, 0.2068, -0.2944], [0.2305, 0.1996, -0.2892], [0.2194, 0.2111, -0.2898], [0.2107, 0.2029, -0.3018], [0.2235, 0.2035, -0.292], [0.2155, 0.1956, -0.3031], [0.2038, 0.2084, -0.3028], [0.2159, 0.2067, -0.2955], [0.2103, 0.1929, -0.3085], [0.1973, 0.2061, -0.3086], [0.2084, 0.2074, -0.3003], [0.2068, 0.1934, -0.3105], [0.1939, 0.2022, -0.3133], [0.2069, 0.2089, -0.3003], [-0.24, -0.1995, 0.2815], [-0.2246, -0.2096, 0.2868], [-0.2255, -0.1972, 0.2947], [-0.2385, -0.1972, 0.2843], [-0.2257, -0.2115, 0.2845], [-0.2191, -0.1995, 0.298], [-0.2297, -0.1951, 0.293], [-0.2227, -0.2082, 0.2893], [-0.2111, -0.2013, 0.3025], [-0.2224, -0.192, 0.3005], [-0.2207, -0.2066, 0.292], [-0.204, -0.2042, 0.3055], [-0.2135, -0.1906, 0.3078], [-0.217, -0.2032, 0.2971], [-0.197, -0.2066, 0.3084], [-0.2048, -0.1893, 0.3144], [-0.2122, -0.2001, 0.3026], [-0.1969, -0.2066, 0.3085], [-0.2012, -0.1885, 0.3172], [0.22, 0.1974, -0.2988], [0.2305, 0.2087, -0.2828], [0.2381, 0.1938, -0.2869], [0.2227, 0.1975, -0.2967], [0.2252, 0.2087, -0.287], [0.2335, 0.1989, -0.2873], [0.2161, 0.2007, -0.2994], [0.2241, 0.1909, -0.2999], [0.2268, 0.1987, -0.2927], [0.2115, 0.198, -0.3044], [0.2132, 0.206, -0.2979], [0.2238, 0.1926, -0.2991], [0.2059, 0.1921, -0.312], [0.2057, 0.2076, -0.302], [0.2188, 0.1926, -0.3027], [0.1998, 0.1893, -0.3176], [0.1989, 0.2065, -0.3073], [0.2117, 0.1962, -0.3055], [0.1968, 0.1879, -0.3203], [-0.2195, -0.201, 0.2967], [-0.2343, -0.193, 0.2906], [-0.2317, -0.206, 0.2837], [-0.2196, -0.201, 0.2967], [-0.2308, -0.1895, 0.2957], [-0.233, -0.2019, 0.2856], [-0.2146, -0.2066, 0.2965], [-0.2204, -0.1876, 0.3047], [-0.2294, -0.1958, 0.2927], [-0.214, -0.2048, 0.2982], [-0.2134, -0.1889, 0.3088], [-0.2247, -0.192, 0.2987], [-0.2107, -0.2048, 0.3004], [-0.2046, -0.1913, 0.3133], [-0.2181, -0.1883, 0.3059], [-0.2065, -0.2043, 0.3037], [-0.1969, -0.1911, 0.3183], [-0.2107, -0.1873, 0.3117], [-0.2042, -0.2039, 0.3055], [0.2358, 0.2025, -0.2829], [0.2276, 0.19, -0.2979], [0.2189, 0.2061, -0.2937], [0.2358, 0.2003, -0.2844], [0.2286, 0.1882, -0.2982], [0.2176, 0.1988, -0.2996], [0.2313, 0.1939, -0.2925], [0.22, 0.2027, -0.2952], [0.2148, 0.1935, -0.305], [0.2255, 0.1973, -0.2947], [0.2204, 0.1875, -0.3048], [0.2088, 0.1978, -0.3064], [0.2184, 0.1985, -0.2992], [0.2159, 0.1835, -0.3103], [0.2018, 0.1964, -0.312], [0.2128, 0.1984, -0.3033], [0.2092, 0.1847, -0.3143], [0.1981, 0.192, -0.317], [0.208, 0.2006, -0.3051], [-0.2362, -0.1982, 0.2856], [-0.2241, -0.2016, 0.2929], [-0.2278, -0.1899, 0.2977], [-0.2344, -0.1956, 0.2888], [-0.2227, -0.2037, 0.2925], [-0.2154, -0.1909, 0.3062], [-0.2349, -0.1889, 0.2929], [-0.2224, -0.204, 0.2925], [-0.2179, -0.1939, 0.3026], [-0.2169, -0.1894, 0.3061], [-0.2251, -0.2004, 0.2929], [-0.2061, -0.2, 0.3069], [-0.222, -0.1771, 0.3098], [-0.2146, -0.1963, 0.3033], [-0.208, -0.1952, 0.3087], [-0.2084, -0.1835, 0.3155], [-0.2167, -0.1931, 0.304], [-0.2011, -0.1995, 0.3105], [-0.207, -0.1804, 0.3182], [0.2157, 0.195, -0.3034], [0.2335, 0.1981, -0.2879], [0.2153, 0.2058, -0.2965], [0.2827, 0.158, -0.2678], [0.129, 0.2414, -0.3189], [0.3095, 0.1349, -0.2503], [0.116, 0.2432, -0.3225], [0.31, 0.1286, -0.2529], [0.1113, 0.2472, -0.3211], [0.3116, 0.1305, -0.25], [0.1117, 0.2427, -0.3244], [0.31, 0.1206, -0.2569], [0.1071, 0.2406, -0.3275], [0.306, 0.1259, -0.2592], [0.1135, 0.2386, -0.3269], [0.2729, 0.1508, -0.2818], [0.1924, 0.2031, -0.3136], [0.2124, 0.1921, -0.3076], [0.1954, 0.1905, -0.3196], [-0.2881, -0.1563, 0.263], [-0.0407, -0.2722, 0.3176], [-0.3999, -0.0034, 0.1293], [0.0814, -0.2853, 0.2977], [-0.4026, 0.0089, 0.1202], [0.0964, -0.2828, 0.2955], [-0.4047, 0.0132, 0.1124], [0.1009, -0.2874, 0.2896], [-0.4039, 0.0161, 0.1149], [0.1061, -0.279, 0.2959], [-0.4042, 0.0226, 0.1128], [0.1065, -0.2808, 0.294], [-0.4035, 0.0161, 0.1163], [0.1056, -0.2737, 0.301], [-0.3996, 0.0113, 0.1296], [0.0985, -0.2749, 0.3023], [-0.3939, -0.0057, 0.1465], [-0.0162, -0.2619, 0.3283], [-0.2671, -0.1546, 0.2853], [-0.0619, 0.2856, -0.302], [0.411, -0.0792, -0.0383], [-0.2176, 0.27, -0.2374], [0.4052, -0.1113, -0.0043], [-0.2264, 0.2647, -0.2352], [0.4059, -0.1089, 0.0031], [-0.2295, 0.2688, -0.2273], [0.4031, -0.1188, -0.0004], [-0.2362, 0.2615, -0.229], [0.4043, -0.1147, 0.0029], [-0.2355, 0.268, -0.2221], [0.4032, -0.1183, -0.0072], [-0.2416, 0.2528, -0.2331], [0.4063, -0.1075, -0.0035], [-0.2359, 0.2613, -0.2295], [0.4058, -0.1086, -0.0135], [-0.2298, 0.2573, -0.2401], [0.4101, -0.0727, -0.0566], [-0.0885, 0.2723, -0.3077]], [[-0.0769, 0.2219, -0.2732], [0.3598, 0.0066, -0.016], [-0.1922, 0.1924, -0.2363], [0.3598, -0.018, 0.0032], [-0.1995, 0.183, -0.2377], [0.3595, -0.0173, 0.0142], [-0.204, 0.1892, -0.2288], [0.3598, -0.0177, 0.0008], [-0.2093, 0.1783, -0.2328], [0.3593, -0.0258, 0.0041], [-0.2114, 0.1874, -0.2235], [0.3596, -0.0205, -0.0064], [-0.213, 0.1817, -0.2267], [0.3585, -0.0338, -0.011], [-0.2095, 0.1894, -0.2236], [0.3595, -0.019, -0.0121], [-0.2049, 0.1848, -0.2315], [0.358, -0.0052, -0.0401], [-0.0937, 0.2065, -0.2799], [-0.2206, -0.1782, 0.2221], [-0.0316, -0.2242, 0.2802], [-0.3304, -0.0828, 0.1173], [0.0579, -0.2213, 0.2783], [-0.3331, -0.0822, 0.1099], [0.0604, -0.2146, 0.2829], [-0.3338, -0.0691, 0.1165], [0.0674, -0.2182, 0.2786], [-0.3331, -0.0723, 0.1165], [0.0678, -0.2139, 0.2818], [-0.3334, -0.0603, 0.1223], [0.0769, -0.2142, 0.2792], [-0.3311, -0.0681, 0.1246], [0.0706, -0.2157, 0.2798], [-0.3288, -0.0637, 0.1326], [0.0724, -0.2098, 0.2837], [-0.3254, -0.0709, 0.1373], [-0.0136, -0.2084, 0.2935], [-0.209, -0.1553, 0.2489], [0.1715, 0.1901, -0.2534], [0.1778, 0.1948, -0.2453], [0.1708, 0.2023, -0.2443], [0.1868, 0.1807, -0.2494], [0.164, 0.1896, -0.2587], [0.1874, 0.1892, -0.2426], [0.1596, 0.1966, -0.2562], [0.1868, 0.1754, -0.2532], [0.1582, 0.1851, -0.2655], [0.1831, 0.1836, -0.2501], [0.1543, 0.1893, -0.2648], [0.1794, 0.1751, -0.2587], [0.1566, 0.1845, -0.2668], [0.1803, 0.168, -0.2627], [0.1511, 0.1836, -0.2706], [0.1749, 0.1788, -0.2592], [0.1591, 0.1704, -0.2747], [0.1651, 0.1726, -0.2697], [0.1583, 0.1871, -0.264], [-0.1849, -0.201, 0.2349], [-0.1678, -0.195, 0.2521], [-0.1801, -0.1846, 0.2515], [-0.1853, -0.1964, 0.2384], [-0.1649, -0.1984, 0.2514], [-0.1777, -0.1801, 0.2564], [-0.1798, -0.1887, 0.2487], [-0.1676, -0.1935, 0.2534], [-0.1648, -0.1802, 0.2649], [-0.1799, -0.1791, 0.2556], [-0.1649, -0.1907, 0.2573], [-0.1635, -0.1783, 0.2669], [-0.1699, -0.1777, 0.2633], [-0.1657, -0.1869, 0.2596], [-0.1538, -0.1742, 0.2753], [-0.1738, -0.1667, 0.2679], [-0.1677, -0.1814, 0.2622], [-0.1576, -0.1792, 0.2698], [-0.1665, -0.1649, 0.2736], [0.1688, 0.2042, -0.2441], [0.1858, 0.1917, -0.2419], [0.1769, 0.1848, -0.2536], [0.1697, 0.2003, -0.2467], [0.182, 0.1979, -0.2398], [0.1811, 0.1788, -0.255], [0.1641, 0.1891, -0.259], [0.183, 0.1874, -0.2473], [0.1686, 0.1913, -0.2544], [0.1672, 0.1741, -0.2674], [0.1581, 0.1919, -0.2606], [0.1766, 0.1824, -0.2555], [0.1651, 0.1718, -0.2702], [0.1582, 0.1856, -0.2651], [0.1716, 0.1805, -0.2602], [0.166, 0.1651, -0.2738], [0.1565, 0.1798, -0.2701], [0.1687, 0.1778, -0.264], [0.1647, 0.1643, -0.275], [-0.1713, -0.1862, 0.2564], [-0.1869, -0.1907, 0.2418], [-0.1752, -0.2018, 0.2415], [-0.1732, -0.1884, 0.2536], [-0.1862, -0.1845, 0.2471], [-0.1779, -0.198, 0.2427], [-0.1679, -0.1865, 0.2584], [-0.1792, -0.1793, 0.2559], [-0.1761, -0.1901, 0.2502], [-0.1594, -0.1872, 0.2632], [-0.1721, -0.1727, 0.2652], [-0.1739, -0.1844, 0.256], [-0.1576, -0.184, 0.2666], [-0.1663, -0.1691, 0.2711], [-0.1727, -0.1765, 0.2623], [-0.1573, -0.1817, 0.2684], [-0.1605, -0.1638, 0.2778], [-0.1729, -0.169, 0.2671], [-0.1576, -0.1841, 0.2665], [0.1904, 0.1831, -0.245], [0.1729, 0.191, -0.2518], [0.1794, 0.2006, -0.2394], [0.1894, 0.1849, -0.2444], [0.1741, 0.1855, -0.255], [0.1763, 0.1972, -0.2445], [0.1884, 0.1841, -0.2457], [0.1655, 0.1874, -0.2594], [0.1706, 0.1772, -0.2632], [0.1741, 0.189, -0.2525], [0.1765, 0.1738, -0.2615], [0.1601, 0.1778, -0.2693], [0.1682, 0.1853, -0.2592], [0.1747, 0.1682, -0.2664], [0.1581, 0.1705, -0.2752], [0.1641, 0.1802, -0.2653], [0.175, 0.1655, -0.2678], [0.1608, 0.1645, -0.2772], [0.1631, 0.1822, -0.2645], [-0.1879, -0.1948, 0.2377], [-0.1757, -0.1917, 0.2492], [-0.1853, -0.1821, 0.2495], [-0.1879, -0.1926, 0.2395], [-0.1745, -0.1944, 0.248], [-0.181, -0.1795, 0.2545], [-0.1876, -0.1846, 0.246], [-0.1714, -0.1914, 0.2525], [-0.1714, -0.1766, 0.2631], [-0.1822, -0.1772, 0.2553], [-0.1682, -0.1889, 0.2565], [-0.1639, -0.1719, 0.2708], [-0.1776, -0.1695, 0.2636], [-0.1682, -0.1824, 0.2611], [-0.1585, -0.1682, 0.2763], [-0.176, -0.1612, 0.2698], [-0.1696, -0.1763, 0.2644], [-0.1598, -0.1704, 0.2742], [-0.1746, -0.1594, 0.2718], [0.1749, 0.1943, -0.2478], [0.1917, 0.19, -0.2386], [0.1865, 0.1799, -0.2502], [0.175, 0.1932, -0.2486], [0.1898, 0.1913, -0.239], [0.1848, 0.1769, -0.2536], [0.174, 0.1865, -0.2543], [0.1855, 0.179, -0.2516], [0.181, 0.1854, -0.2502], [0.1712, 0.1737, -0.2651], [0.1668, 0.1834, -0.2613], [0.1809, 0.1759, -0.2571], [0.1705, 0.1639, -0.2717], [0.1619, 0.178, -0.2681], [0.1783, 0.1727, -0.2611], [0.1716, 0.1562, -0.2756], [0.161, 0.1718, -0.2726], [0.1741, 0.1713, -0.2648], [0.1715, 0.1549, -0.2763], [-0.1806, -0.1807, 0.2539], [-0.1963, -0.1847, 0.239], [-0.1829, -0.1967, 0.24], [-0.1804, -0.1814, 0.2536], [-0.1929, -0.179, 0.246], [-0.1856, -0.1916, 0.2422], [-0.1753, -0.1815, 0.2571], [-0.1866, -0.1727, 0.2551], [-0.182, -0.1851, 0.2498], [-0.1685, -0.1796, 0.2629], [-0.1793, -0.1672, 0.2639], [-0.1799, -0.1769, 0.2571], [-0.1651, -0.1754, 0.2679], [-0.1743, -0.1617, 0.2707], [-0.179, -0.1696, 0.2627], [-0.165, -0.1724, 0.2698], [-0.1703, -0.1557, 0.2766], [-0.1804, -0.1629, 0.2659], [-0.1641, -0.1742, 0.2693], [0.1984, 0.1827, -0.2388], [0.1856, 0.1834, -0.2483], [0.1852, 0.1921, -0.242], [0.1965, 0.181, -0.2417], [0.1838, 0.1776, -0.2539], [0.1822, 0.1907, -0.2454], [0.1952, 0.1755, -0.2467], [0.1745, 0.1842, -0.2557], [0.1763, 0.1712, -0.2634], [0.1843, 0.1815, -0.2507], [0.184, 0.1642, -0.2626], [0.165, 0.173, -0.2695], [0.1766, 0.1789, -0.258], [0.1825, 0.1608, -0.2657], [0.1671, 0.1633, -0.2742], [0.1729, 0.1724, -0.2648], [0.1828, 0.1582, -0.2671], [0.1703, 0.158, -0.2753], [0.1735, 0.1732, -0.264], [-0.1975, -0.191, 0.233], [-0.1832, -0.1846, 0.2493], [-0.1947, -0.1743, 0.248], [-0.1954, -0.1861, 0.2386], [-0.1815, -0.186, 0.2495], [-0.1884, -0.1719, 0.2544], [-0.1935, -0.1781, 0.2462], [-0.1788, -0.185, 0.2521], [-0.18, -0.1685, 0.2626], [-0.1906, -0.1703, 0.2539], [-0.1748, -0.182, 0.2571], [-0.1732, -0.1647, 0.2696], [-0.1842, -0.1644, 0.2623], [-0.1751, -0.176, 0.261], [-0.1692, -0.1607, 0.2745], [-0.1853, -0.1557, 0.2668], [-0.1787, -0.1694, 0.2629], [-0.1694, -0.1626, 0.2731], [-0.1849, -0.1514, 0.2695], [0.1838, 0.1825, -0.2503], [0.1962, 0.1872, -0.2371], [0.1981, 0.1725, -0.2465], [0.1829, 0.1806, -0.2524], [0.192, 0.1875, -0.2403], [0.1996, 0.1713, -0.2461], [0.1777, 0.1797, -0.2567], [0.1893, 0.1684, -0.2561], [0.1904, 0.1768, -0.2495], [0.1766, 0.169, -0.2646], [0.1746, 0.1788, -0.2594], [0.1897, 0.1674, -0.2564], [0.1768, 0.1573, -0.2716], [0.1708, 0.1746, -0.2648], [0.1889, 0.1652, -0.2585], [0.1792, 0.1504, -0.2739], [0.1712, 0.1662, -0.2699], [0.1846, 0.164, -0.2623], [0.1806, 0.1483, -0.2741], [-0.1873, -0.1727, 0.2546], [-0.2023, -0.1789, 0.2384], [-0.1877, -0.1898, 0.2419], [-0.1871, -0.1727, 0.2548], [-0.2011, -0.1721, 0.2444], [-0.1893, -0.1871, 0.2427], [-0.1808, -0.1743, 0.2582], [-0.1937, -0.166, 0.2543], [-0.188, -0.1793, 0.2495], [-0.1756, -0.1716, 0.2636], [-0.1882, -0.1619, 0.2611], [-0.1861, -0.173, 0.2553], [-0.1734, -0.1682, 0.2672], [-0.1846, -0.1548, 0.2678], [-0.188, -0.1657, 0.2587], [-0.1728, -0.1673, 0.2682], [-0.1795, -0.1492, 0.2744], [-0.19, -0.1563, 0.2631], [-0.1742, -0.168, 0.2668], [0.2026, 0.1822, -0.2357], [0.1911, 0.1716, -0.2525], [0.1855, 0.1865, -0.2461], [0.2011, 0.1814, -0.2375], [0.1923, 0.1686, -0.2538], [0.1845, 0.1756, -0.2547], [0.1959, 0.1761, -0.2457], [0.1859, 0.1801, -0.2505], [0.1807, 0.1662, -0.2636], [0.1917, 0.1744, -0.2502], [0.1879, 0.1606, -0.262], [0.1767, 0.1654, -0.2668], [0.1845, 0.1734, -0.2562], [0.1904, 0.1528, -0.2649], [0.1736, 0.1596, -0.2723], [0.1826, 0.1685, -0.2608], [0.1926, 0.1539, -0.2627], [0.1788, 0.1513, -0.2737], [0.1798, 0.1674, -0.2635], [-0.1967, -0.1844, 0.2389], [-0.1889, -0.1775, 0.2501], [-0.1962, -0.1724, 0.2481], [-0.1975, -0.1847, 0.238], [-0.1817, -0.1826, 0.2518], [-0.1945, -0.1662, 0.2536], [-0.1954, -0.1762, 0.246], [-0.1846, -0.1768, 0.2538], [-0.1856, -0.1631, 0.2622], [-0.1958, -0.1687, 0.2509], [-0.1774, -0.1773, 0.2586], [-0.1845, -0.1599, 0.2649], [-0.1887, -0.1647, 0.2589], [-0.1812, -0.1685, 0.2618], [-0.1768, -0.1551, 0.2728], [-0.194, -0.1515, 0.263], [-0.1832, -0.1683, 0.2605], [-0.175, -0.1598, 0.2713], [-0.1916, -0.1442, 0.2688], [0.1828, 0.174, -0.2571], [0.1972, 0.1822, -0.2402], [0.1893, 0.1796, -0.2483], [0.1998, 0.1676, -0.2485], [0.1815, 0.19, -0.2464], [0.2044, 0.1748, -0.2397], [0.176, 0.1774, -0.2595], [0.2022, 0.1566, -0.2536], [0.1764, 0.1825, -0.2556], [0.1984, 0.1638, -0.2522], [0.1708, 0.1799, -0.2612], [0.2002, 0.1573, -0.2548], [0.1697, 0.1674, -0.2701], [0.196, 0.1586, -0.2573], [0.1736, 0.171, -0.2653], [0.191, 0.1484, -0.267], [0.1726, 0.158, -0.2739], [0.1887, 0.1616, -0.2609], [0.1817, 0.1558, -0.2692], [-0.2348, -0.1487, 0.2292], [-0.0519, -0.2408, 0.2629], [-0.3316, -0.0287, 0.1378], [0.0328, -0.2576, 0.2497], [-0.3323, -0.0213, 0.1374], [0.0363, -0.2519, 0.2549], [-0.3344, -0.0164, 0.1329], [0.0426, -0.2556, 0.2502], [-0.332, -0.0149, 0.139], [0.0446, -0.2464, 0.259], [-0.3318, -0.0073, 0.1401], [0.0443, -0.2471, 0.2584], [-0.3308, -0.0148, 0.1419], [0.049, -0.2383, 0.2657], [-0.327, -0.0093, 0.1508], [0.0418, -0.2396, 0.2657], [-0.3248, -0.0185, 0.1546], [-0.0438, -0.2193, 0.2824], [-0.2244, -0.129, 0.2506], [-0.0523, 0.257, -0.2469], [0.3513, -0.0632, -0.0488], [-0.168, 0.2481, -0.1999], [0.3484, -0.0866, -0.0295], [-0.1748, 0.2426, -0.2009], [0.3495, -0.0852, -0.0196], [-0.1776, 0.2481, -0.1915], [0.3457, -0.0966, -0.0307], [-0.181, 0.2418, -0.1963], [0.3472, -0.0921, -0.0271], [-0.1851, 0.2448, -0.1886], [0.345, -0.097, -0.0363], [-0.1856, 0.232, -0.2037], [0.3485, -0.0854, -0.0314], [-0.1825, 0.2381, -0.1994], [0.3466, -0.0894, -0.0407], [-0.1766, 0.2325, -0.211], [0.3479, -0.0705, -0.0614], [-0.0591, 0.2383, -0.2636]], [[-0.067, 0.1904, -0.2355], [0.3093, 0.0165, -0.0173], [-0.1654, 0.1639, -0.205], [0.3101, -0.0038, -0.0047], [-0.1738, 0.1542, -0.2055], [0.3101, -0.0031, 0.007], [-0.1789, 0.1601, -0.1964], [0.3101, -0.003, -0.0075], [-0.1854, 0.1492, -0.199], [0.31, -0.0112, -0.0048], [-0.1865, 0.1598, -0.1895], [0.3098, -0.0053, -0.015], [-0.1882, 0.154, -0.1926], [0.309, -0.0185, -0.0201], [-0.1838, 0.1626, -0.1897], [0.3094, -0.0028, -0.0213], [-0.1782, 0.1587, -0.1983], [0.3067, 0.0071, -0.046], [-0.0919, 0.1777, -0.237], [-0.1773, -0.162, 0.1963], [-0.0364, -0.1927, 0.2404], [-0.2774, -0.0849, 0.1099], [0.0476, -0.1906, 0.2401], [-0.2804, -0.0847, 0.102], [0.0523, -0.1835, 0.2446], [-0.2814, -0.0714, 0.1092], [0.059, -0.1875, 0.24], [-0.2804, -0.0763, 0.1084], [0.0618, -0.1838, 0.2421], [-0.2805, -0.0652, 0.1153], [0.0686, -0.1861, 0.2385], [-0.2776, -0.0729, 0.1176], [0.0625, -0.1876, 0.239], [-0.2749, -0.0692, 0.1259], [0.0614, -0.1828, 0.2429], [-0.2698, -0.0765, 0.1325], [-0.0121, -0.1812, 0.2515], [-0.1596, -0.1455, 0.2226], [0.1438, 0.166, -0.2191], [0.1482, 0.1724, -0.2111], [0.1437, 0.1791, -0.2086], [0.1545, 0.1582, -0.2175], [0.1383, 0.1641, -0.224], [0.1527, 0.1707, -0.2093], [0.1356, 0.1735, -0.2184], [0.1493, 0.1556, -0.2229], [0.1302, 0.1611, -0.2309], [0.1481, 0.1679, -0.2147], [0.1301, 0.1649, -0.2283], [0.1415, 0.1572, -0.2269], [0.1259, 0.1722, -0.2252], [0.1432, 0.1506, -0.2303], [0.1212, 0.1609, -0.2359], [0.1384, 0.1643, -0.2237], [0.1264, 0.1513, -0.2395], [0.1298, 0.1546, -0.2355], [0.1253, 0.1674, -0.2291], [-0.1594, -0.1759, 0.1996], [-0.1384, -0.1725, 0.2175], [-0.1506, -0.1593, 0.2194], [-0.1588, -0.1696, 0.2055], [-0.1385, -0.1777, 0.2132], [-0.1441, -0.1596, 0.2235], [-0.1507, -0.1635, 0.2163], [-0.1393, -0.173, 0.2165], [-0.1316, -0.1607, 0.2304], [-0.1478, -0.1551, 0.2243], [-0.1378, -0.1697, 0.22], [-0.13, -0.1616, 0.2307], [-0.137, -0.1564, 0.2302], [-0.1366, -0.1674, 0.2225], [-0.1195, -0.1604, 0.2371], [-0.1362, -0.1486, 0.2357], [-0.1352, -0.1614, 0.2278], [-0.1228, -0.1627, 0.2338], [-0.1303, -0.1461, 0.2406], [0.1431, 0.18, -0.2082], [0.1587, 0.1657, -0.2088], [0.1473, 0.1608, -0.2206], [0.1407, 0.177, -0.2124], [0.1548, 0.1734, -0.2054], [0.1503, 0.1559, -0.2221], [0.1347, 0.167, -0.224], [0.1508, 0.1617, -0.2176], [0.143, 0.1717, -0.2151], [0.1349, 0.1528, -0.2339], [0.1281, 0.1699, -0.2257], [0.1464, 0.1616, -0.2207], [0.133, 0.1508, -0.2362], [0.1242, 0.1688, -0.2287], [0.1409, 0.161, -0.2246], [0.1306, 0.1458, -0.2406], [0.1208, 0.1639, -0.234], [0.1366, 0.1588, -0.2288], [0.1286, 0.1455, -0.2419], [-0.14, -0.1635, 0.2233], [-0.1606, -0.1629, 0.2095], [-0.15, -0.1783, 0.2047], [-0.1414, -0.1657, 0.2209], [-0.1566, -0.1581, 0.2161], [-0.152, -0.1732, 0.2076], [-0.1366, -0.1663, 0.2234], [-0.1482, -0.1543, 0.2246], [-0.1489, -0.1651, 0.2163], [-0.1289, -0.1676, 0.227], [-0.1388, -0.151, 0.2327], [-0.1452, -0.1613, 0.2217], [-0.1278, -0.1655, 0.2291], [-0.1312, -0.1501, 0.2376], [-0.1411, -0.1549, 0.2288], [-0.1258, -0.1649, 0.2307], [-0.1235, -0.1476, 0.2432], [-0.1385, -0.1475, 0.2351], [-0.1282, -0.1654, 0.229], [0.1628, 0.1554, -0.2134], [0.1447, 0.1669, -0.2178], [0.1533, 0.1751, -0.2051], [0.1607, 0.1589, -0.2125], [0.1443, 0.1613, -0.2222], [0.1485, 0.1727, -0.2106], [0.1593, 0.1592, -0.2133], [0.1358, 0.1649, -0.2249], [0.1404, 0.1542, -0.2296], [0.1454, 0.1661, -0.218], [0.1459, 0.152, -0.2277], [0.1295, 0.1569, -0.2342], [0.1381, 0.1648, -0.2236], [0.1438, 0.1471, -0.2322], [0.1238, 0.1518, -0.2405], [0.1321, 0.1621, -0.2291], [0.1412, 0.1451, -0.235], [0.1258, 0.1469, -0.2425], [0.132, 0.1619, -0.2293], [-0.1628, -0.166, 0.2053], [-0.1493, -0.1669, 0.2146], [-0.1554, -0.1568, 0.2179], [-0.1616, -0.1646, 0.2074], [-0.1474, -0.1706, 0.213], [-0.1498, -0.1552, 0.2229], [-0.1588, -0.1576, 0.2148], [-0.1445, -0.1678, 0.2173], [-0.1401, -0.1545, 0.2297], [-0.1529, -0.1521, 0.223], [-0.14, -0.1673, 0.2205], [-0.131, -0.1522, 0.2364], [-0.1472, -0.1457, 0.2309], [-0.1398, -0.1622, 0.2244], [-0.1235, -0.1522, 0.2404], [-0.1403, -0.1398, 0.2387], [-0.1399, -0.1556, 0.229], [-0.125, -0.1543, 0.2383], [-0.1385, -0.1358, 0.2421], [0.1487, 0.1684, -0.2139], [0.1648, 0.1622, -0.2068], [0.1577, 0.1537, -0.2184], [0.148, 0.1676, -0.215], [0.1626, 0.164, -0.207], [0.1556, 0.151, -0.2218], [0.1442, 0.1622, -0.2216], [0.1577, 0.1536, -0.2186], [0.1527, 0.1622, -0.2158], [0.1417, 0.1489, -0.2323], [0.1359, 0.1616, -0.2272], [0.1518, 0.1535, -0.2227], [0.1386, 0.1426, -0.238], [0.1301, 0.158, -0.2331], [0.1461, 0.1522, -0.2274], [0.1375, 0.1363, -0.2424], [0.1259, 0.1528, -0.2388], [0.1413, 0.151, -0.2312], [0.1358, 0.1342, -0.2445], [-0.1499, -0.1562, 0.2221], [-0.1687, -0.1543, 0.2096], [-0.1595, -0.1695, 0.205], [-0.1503, -0.1575, 0.221], [-0.1637, -0.1508, 0.2161], [-0.1596, -0.1642, 0.2092], [-0.146, -0.1579, 0.2235], [-0.1555, -0.1475, 0.2242], [-0.1552, -0.1586, 0.2167], [-0.1373, -0.1584, 0.2287], [-0.1473, -0.1432, 0.2325], [-0.1516, -0.1531, 0.2232], [-0.1351, -0.1561, 0.2315], [-0.1398, -0.1403, 0.2388], [-0.1478, -0.1463, 0.2302], [-0.1333, -0.154, 0.234], [-0.1324, -0.1372, 0.2446], [-0.1456, -0.1392, 0.2359], [-0.133, -0.1551, 0.2334], [0.1707, 0.1534, -0.2087], [0.1572, 0.1559, -0.2172], [0.1587, 0.1651, -0.2092], [0.1687, 0.1533, -0.2104], [0.1549, 0.152, -0.2216], [0.1548, 0.1634, -0.2134], [0.1665, 0.1499, -0.2145], [0.1446, 0.1555, -0.2261], [0.1486, 0.1458, -0.23], [0.1524, 0.1569, -0.2199], [0.1542, 0.1429, -0.2281], [0.138, 0.1475, -0.2354], [0.1455, 0.1548, -0.226], [0.1506, 0.1396, -0.2325], [0.1345, 0.1417, -0.2409], [0.14, 0.1513, -0.2318], [0.149, 0.1359, -0.2357], [0.1336, 0.1366, -0.2443], [0.1401, 0.1522, -0.2311], [-0.1732, -0.1592, 0.2022], [-0.1547, -0.159, 0.2168], [-0.1641, -0.1442, 0.2202], [-0.1721, -0.1571, 0.2047], [-0.1514, -0.1636, 0.2158], [-0.1577, -0.1442, 0.2249], [-0.1663, -0.1493, 0.2151], [-0.1521, -0.1591, 0.2185], [-0.1478, -0.1434, 0.2319], [-0.1608, -0.1412, 0.2246], [-0.1498, -0.1578, 0.2211], [-0.139, -0.1438, 0.2371], [-0.155, -0.136, 0.2317], [-0.1483, -0.1524, 0.2258], [-0.1336, -0.1425, 0.2409], [-0.149, -0.1297, 0.2392], [-0.1487, -0.1449, 0.2304], [-0.1338, -0.1446, 0.2396], [-0.1463, -0.1263, 0.2426], [0.1563, 0.1544, -0.2189], [0.169, 0.1572, -0.2072], [0.1696, 0.144, -0.2162], [0.1554, 0.1539, -0.22], [0.1654, 0.1589, -0.2088], [0.1659, 0.1422, -0.2202], [0.1509, 0.1503, -0.2255], [0.1648, 0.1447, -0.2194], [0.1603, 0.1531, -0.2169], [0.1482, 0.1387, -0.2346], [0.1445, 0.1523, -0.2284], [0.161, 0.1433, -0.2231], [0.1467, 0.1321, -0.2393], [0.1387, 0.1496, -0.2336], [0.156, 0.1419, -0.2275], [0.1454, 0.1269, -0.2429], [0.1366, 0.1438, -0.2385], [0.1505, 0.1406, -0.2319], [0.1437, 0.126, -0.2443], [-0.1576, -0.1462, 0.2236], [-0.1748, -0.1474, 0.2096], [-0.1625, -0.1614, 0.2092], [-0.1561, -0.1464, 0.2245], [-0.1725, -0.1406, 0.2161], [-0.1645, -0.1586, 0.2098], [-0.1502, -0.1499, 0.2262], [-0.1626, -0.1361, 0.2264], [-0.1632, -0.1485, 0.218], [-0.1465, -0.1491, 0.2292], [-0.1549, -0.1322, 0.234], [-0.1604, -0.1433, 0.2235], [-0.1431, -0.1468, 0.2328], [-0.1479, -0.1309, 0.2392], [-0.1562, -0.137, 0.2303], [-0.1422, -0.1453, 0.2343], [-0.1408, -0.1286, 0.2447], [-0.1552, -0.1289, 0.2356], [-0.1434, -0.1465, 0.2328], [0.1757, 0.1524, -0.2053], [0.1633, 0.1424, -0.222], [0.1575, 0.1571, -0.2162], [0.1736, 0.1513, -0.2078], [0.1642, 0.1378, -0.2242], [0.1551, 0.1475, -0.2245], [0.1686, 0.1484, -0.2139], [0.1536, 0.1528, -0.222], [0.1534, 0.1366, -0.2325], [0.1622, 0.1474, -0.2195], [0.1606, 0.1311, -0.2307], [0.1436, 0.1398, -0.2368], [0.1528, 0.1486, -0.2254], [0.1581, 0.1285, -0.2339], [0.1394, 0.1341, -0.2425], [0.1486, 0.1441, -0.231], [0.1578, 0.128, -0.2344], [0.1426, 0.1286, -0.2436], [0.1462, 0.1434, -0.233], [-0.1721, -0.1538, 0.2072], [-0.1589, -0.1497, 0.2203], [-0.1674, -0.1407, 0.22], [-0.1725, -0.1511, 0.2088], [-0.1549, -0.1553, 0.2193], [-0.1625, -0.1382, 0.2252], [-0.1673, -0.1435, 0.2183], [-0.1576, -0.1495, 0.2214], [-0.1534, -0.1374, 0.2319], [-0.1667, -0.1367, 0.223], [-0.1525, -0.1498, 0.2247], [-0.15, -0.1357, 0.2352], [-0.1551, -0.1348, 0.2324], [-0.1519, -0.1431, 0.2295], [-0.1392, -0.1351, 0.2421], [-0.1564, -0.1229, 0.238], [-0.1539, -0.1406, 0.2297], [-0.1402, -0.1396, 0.2389], [-0.1516, -0.1186, 0.2432], [0.154, 0.1447, -0.227], [0.1689, 0.152, -0.2112], [0.1651, 0.1468, -0.2177], [0.168, 0.1372, -0.2217], [0.1578, 0.1581, -0.2152], [0.171, 0.1485, -0.212], [0.1504, 0.1431, -0.2305], [0.1719, 0.1309, -0.2225], [0.1543, 0.152, -0.222], [0.1623, 0.1327, -0.2286], [0.1436, 0.1496, -0.2307], [0.165, 0.135, -0.2253], [0.1424, 0.1371, -0.2391], [0.1581, 0.1366, -0.2292], [0.146, 0.1438, -0.2329], [0.1523, 0.1213, -0.2414], [0.1391, 0.1375, -0.2408], [0.1552, 0.1374, -0.2308], [0.1459, 0.13, -0.2409], [-0.1927, -0.1263, 0.2077], [-0.06, -0.2034, 0.2264], [-0.2773, -0.0189, 0.1377], [0.0166, -0.225, 0.2129], [-0.278, -0.0105, 0.1373], [0.0214, -0.2193, 0.2184], [-0.2802, -0.0053, 0.133], [0.0275, -0.2242, 0.2126], [-0.2777, -0.0055, 0.138], [0.0303, -0.2176, 0.219], [-0.2762, 0.0019, 0.1412], [0.0309, -0.2168, 0.2197], [-0.2747, -0.0057, 0.144], [0.0381, -0.2114, 0.2238], [-0.2703, -0.0023, 0.1521], [0.0306, -0.211, 0.2253], [-0.2678, -0.0122, 0.1561], [-0.0428, -0.1881, 0.2429], [-0.1742, -0.1147, 0.2296], [-0.0373, 0.2272, -0.2079], [0.297, -0.0675, -0.0588], [-0.1342, 0.2249, -0.1661], [0.2942, -0.0872, -0.0453], [-0.1422, 0.2202, -0.1659], [0.2961, -0.0856, -0.0351], [-0.1432, 0.2265, -0.1563], [0.2903, -0.0984, -0.0473], [-0.1495, 0.2198, -0.1598], [0.2929, -0.0924, -0.0438], [-0.1517, 0.2245, -0.1509], [0.2899, -0.0963, -0.0539], [-0.1556, 0.2115, -0.1652], [0.2945, -0.0848, -0.0482], [-0.152, 0.217, -0.1613], [0.2916, -0.0878, -0.059], [-0.1467, 0.2112, -0.1734], [0.2924, -0.0708, -0.0756], [-0.0561, 0.2113, -0.2201]], [[-0.0619, 0.2094, -0.1591], [0.2564, -0.0294, -0.0799], [-0.1341, 0.1995, -0.1233], [0.2558, -0.05, -0.0712], [-0.1442, 0.1917, -0.1243], [0.2581, -0.0534, -0.0592], [-0.1448, 0.1989, -0.1116], [0.2543, -0.0514, -0.0754], [-0.1533, 0.1889, -0.1174], [0.2529, -0.0605, -0.0734], [-0.1518, 0.1957, -0.1078], [0.2545, -0.0491, -0.0761], [-0.1603, 0.1797, -0.1224], [0.2524, -0.0521, -0.0811], [-0.1546, 0.1854, -0.1212], [0.2548, -0.0392, -0.0808], [-0.1486, 0.1833, -0.1316], [0.2495, -0.0328, -0.0982], [-0.0783, 0.1881, -0.1774], [-0.1298, -0.1453, 0.1871], [-0.0334, -0.1916, 0.1875], [-0.2215, -0.0547, 0.1446], [0.0351, -0.2052, 0.1721], [-0.2271, -0.0465, 0.1388], [0.0396, -0.1995, 0.1778], [-0.2248, -0.0377, 0.1449], [0.0458, -0.2034, 0.1717], [-0.2259, -0.0392, 0.1429], [0.0473, -0.1976, 0.178], [-0.2196, -0.0304, 0.1544], [0.0551, -0.196, 0.1776], [-0.22, -0.0382, 0.1521], [0.0485, -0.1951, 0.1804], [-0.2148, -0.0369, 0.1597], [0.0503, -0.1883, 0.1871], [-0.2081, -0.0474, 0.1657], [-0.0191, -0.1728, 0.2068], [-0.1166, -0.1276, 0.2076], [0.1144, 0.1569, -0.1878], [0.1116, 0.1511, -0.1942], [0.1102, 0.1679, -0.1807], [0.1244, 0.1475, -0.1891], [0.1054, 0.1479, -0.2], [0.12, 0.1525, -0.188], [0.1127, 0.1548, -0.1906], [0.1144, 0.1374, -0.2025], [0.0992, 0.1479, -0.2031], [0.118, 0.147, -0.1935], [0.103, 0.1442, -0.2039], [0.1058, 0.1346, -0.2089], [0.0998, 0.1528, -0.1992], [0.1072, 0.1288, -0.2119], [0.0907, 0.14, -0.2125], [0.1081, 0.141, -0.2035], [0.1018, 0.1355, -0.2104], [0.0972, 0.1326, -0.2144], [0.0932, 0.1509, -0.2038], [-0.1218, -0.1626, 0.1781], [-0.1047, -0.1572, 0.1932], [-0.1191, -0.1477, 0.1923], [-0.1213, -0.1596, 0.1811], [-0.1039, -0.158, 0.193], [-0.117, -0.1415, 0.1982], [-0.1192, -0.1519, 0.1889], [-0.1064, -0.1528, 0.1957], [-0.1078, -0.1401, 0.2043], [-0.1181, -0.1412, 0.1977], [-0.1027, -0.151, 0.1991], [-0.1008, -0.1372, 0.2097], [-0.1099, -0.1379, 0.2047], [-0.1022, -0.1477, 0.2018], [-0.0913, -0.1352, 0.2153], [-0.1075, -0.1274, 0.2126], [-0.105, -0.1457, 0.2018], [-0.0899, -0.1418, 0.2117], [-0.102, -0.1231, 0.2178], [0.1036, 0.1574, -0.1936], [0.1209, 0.1597, -0.1813], [0.1202, 0.1476, -0.1917], [0.1057, 0.1574, -0.1925], [0.1192, 0.1608, -0.1814], [0.1196, 0.1423, -0.196], [0.1042, 0.1496, -0.1993], [0.1211, 0.1468, -0.1918], [0.1122, 0.1537, -0.1917], [0.1086, 0.1342, -0.2078], [0.0983, 0.1484, -0.2032], [0.1145, 0.1439, -0.1979], [0.1047, 0.1314, -0.2116], [0.094, 0.1446, -0.208], [0.109, 0.142, -0.2023], [0.1034, 0.1275, -0.2146], [0.0897, 0.14, -0.2129], [0.1039, 0.1411, -0.2056], [0.1021, 0.1249, -0.2167], [-0.1129, -0.1474, 0.1962], [-0.1269, -0.1551, 0.1812], [-0.1123, -0.1644, 0.1826], [-0.1127, -0.1489, 0.1952], [-0.1254, -0.1483, 0.1878], [-0.1141, -0.1605, 0.185], [-0.1071, -0.1452, 0.2011], [-0.1213, -0.1406, 0.1962], [-0.1142, -0.1511, 0.1926], [-0.1007, -0.1426, 0.2062], [-0.1138, -0.1319, 0.2065], [-0.1128, -0.1457, 0.1975], [-0.0947, -0.1423, 0.2092], [-0.107, -0.1275, 0.2128], [-0.113, -0.1394, 0.2019], [-0.0917, -0.1441, 0.2093], [-0.0976, -0.1235, 0.2195], [-0.1109, -0.1304, 0.209], [-0.0936, -0.1444, 0.2082], [0.1303, 0.1551, -0.1788], [0.1172, 0.1514, -0.1906], [0.1144, 0.1613, -0.184], [0.1278, 0.1519, -0.1833], [0.1159, 0.1451, -0.1962], [0.1123, 0.1586, -0.1877], [0.1272, 0.1484, -0.1865], [0.106, 0.144, -0.2025], [0.115, 0.1358, -0.2033], [0.1118, 0.1478, -0.1965], [0.119, 0.1356, -0.2011], [0.1021, 0.1327, -0.212], [0.1042, 0.1461, -0.202], [0.1156, 0.1319, -0.2055], [0.0993, 0.1293, -0.2155], [0.0993, 0.1409, -0.208], [0.1123, 0.1296, -0.2087], [0.0997, 0.1237, -0.2185], [0.0972, 0.1404, -0.2093], [-0.1277, -0.1634, 0.1732], [-0.1149, -0.1538, 0.19], [-0.1274, -0.1458, 0.1884], [-0.1258, -0.1564, 0.1809], [-0.1124, -0.1544, 0.1911], [-0.122, -0.1409, 0.1956], [-0.1266, -0.1485, 0.1868], [-0.1105, -0.1511, 0.1948], [-0.1152, -0.1347, 0.2039], [-0.1231, -0.1392, 0.196], [-0.1064, -0.1462, 0.2007], [-0.1058, -0.1292, 0.2123], [-0.1207, -0.1309, 0.2032], [-0.1056, -0.1452, 0.2018], [-0.0984, -0.1269, 0.2172], [-0.1159, -0.1238, 0.2103], [-0.1069, -0.1392, 0.2054], [-0.0946, -0.1297, 0.2173], [-0.1148, -0.1173, 0.2146], [0.115, 0.1521, -0.1914], [0.1289, 0.1598, -0.1756], [0.1321, 0.1432, -0.1872], [0.114, 0.1512, -0.1927], [0.1249, 0.1574, -0.1806], [0.1291, 0.1391, -0.1923], [0.1125, 0.1443, -0.1988], [0.128, 0.1446, -0.1889], [0.1164, 0.1515, -0.1911], [0.1194, 0.1277, -0.2059], [0.1046, 0.1392, -0.2065], [0.1188, 0.1414, -0.1972], [0.1169, 0.1249, -0.2091], [0.1023, 0.1342, -0.211], [0.1145, 0.1372, -0.2026], [0.1145, 0.1191, -0.2137], [0.0986, 0.129, -0.2159], [0.1094, 0.134, -0.2075], [0.1129, 0.1162, -0.2162], [-0.1238, -0.1451, 0.1913], [-0.1352, -0.1515, 0.1782], [-0.1209, -0.1595, 0.1814], [-0.1225, -0.143, 0.1937], [-0.1342, -0.1442, 0.1849], [-0.1228, -0.1547, 0.1843], [-0.1171, -0.1416, 0.198], [-0.1287, -0.1369, 0.1941], [-0.122, -0.1473, 0.1908], [-0.1094, -0.137, 0.2055], [-0.1233, -0.1273, 0.2039], [-0.1202, -0.1399, 0.1973], [-0.1057, -0.1356, 0.2084], [-0.1159, -0.1214, 0.2116], [-0.1201, -0.1317, 0.2031], [-0.1038, -0.1335, 0.2107], [-0.11, -0.1174, 0.217], [-0.1189, -0.1244, 0.2083], [-0.1016, -0.1352, 0.2106], [0.1392, 0.152, -0.1746], [0.1272, 0.1444, -0.1896], [0.121, 0.1562, -0.1842], [0.1375, 0.1488, -0.1787], [0.1271, 0.1373, -0.1949], [0.1182, 0.1525, -0.1891], [0.1337, 0.1468, -0.1832], [0.1172, 0.1375, -0.2009], [0.1257, 0.1312, -0.1999], [0.1186, 0.1434, -0.1959], [0.1278, 0.1335, -0.1971], [0.1147, 0.126, -0.2097], [0.1113, 0.1396, -0.2027], [0.1257, 0.1283, -0.2018], [0.1124, 0.119, -0.2149], [0.1077, 0.1325, -0.2093], [0.1224, 0.1252, -0.2057], [0.1129, 0.1164, -0.2161], [0.1046, 0.1335, -0.2103], [-0.1357, -0.1566, 0.1733], [-0.1244, -0.1471, 0.1894], [-0.1369, -0.1393, 0.1866], [-0.1343, -0.1529, 0.1777], [-0.1193, -0.1488, 0.1913], [-0.1308, -0.1346, 0.1943], [-0.1349, -0.143, 0.1853], [-0.1195, -0.1475, 0.1922], [-0.1236, -0.129, 0.2027], [-0.133, -0.1332, 0.1938], [-0.1178, -0.1416, 0.1977], [-0.1163, -0.1256, 0.209], [-0.1278, -0.1258, 0.2021], [-0.1171, -0.1372, 0.2011], [-0.1093, -0.1218, 0.2149], [-0.1249, -0.1167, 0.2092], [-0.1177, -0.1323, 0.204], [-0.1054, -0.1234, 0.216], [-0.1244, -0.1108, 0.2127], [0.1254, 0.143, -0.1919], [0.1329, 0.1536, -0.1781], [0.1412, 0.1396, -0.1832], [0.1251, 0.1422, -0.1926], [0.1283, 0.1521, -0.1827], [0.1386, 0.1371, -0.1871], [0.123, 0.1359, -0.1984], [0.1348, 0.1404, -0.1874], [0.1253, 0.1462, -0.1895], [0.1307, 0.1216, -0.2028], [0.1159, 0.1327, -0.2048], [0.1267, 0.1382, -0.1945], [0.129, 0.1194, -0.2052], [0.1128, 0.1255, -0.211], [0.1209, 0.1329, -0.2017], [0.1268, 0.1156, -0.2087], [0.1092, 0.1186, -0.2168], [0.1163, 0.1283, -0.2073], [0.1265, 0.1114, -0.2111], [-0.1303, -0.1334, 0.1955], [-0.1429, -0.1464, 0.1764], [-0.1255, -0.1543, 0.1828], [-0.1292, -0.1361, 0.1944], [-0.1411, -0.139, 0.1838], [-0.1284, -0.1508, 0.1837], [-0.1243, -0.1368, 0.1971], [-0.1377, -0.1301, 0.1926], [-0.1321, -0.1414, 0.1885], [-0.1199, -0.1336, 0.2019], [-0.1315, -0.1221, 0.202], [-0.131, -0.1339, 0.1946], [-0.1155, -0.1308, 0.2063], [-0.1264, -0.1145, 0.2095], [-0.1308, -0.127, 0.1994], [-0.1112, -0.1297, 0.2093], [-0.1185, -0.1094, 0.2167], [-0.1285, -0.118, 0.2063], [-0.1127, -0.1282, 0.2094], [0.1391, 0.1502, -0.1763], [0.1362, 0.135, -0.1902], [0.1247, 0.1455, -0.1904], [0.1365, 0.1494, -0.179], [0.1386, 0.1331, -0.1899], [0.1281, 0.1356, -0.1955], [0.1353, 0.1454, -0.1831], [0.1226, 0.14, -0.1958], [0.1323, 0.1244, -0.2], [0.1269, 0.1409, -0.1924], [0.1392, 0.1299, -0.1917], [0.1258, 0.1189, -0.2075], [0.118, 0.1331, -0.2033], [0.1341, 0.1269, -0.1972], [0.124, 0.1117, -0.2125], [0.1137, 0.1268, -0.2097], [0.1296, 0.1244, -0.2018], [0.1258, 0.1078, -0.2134], [0.1106, 0.1244, -0.2127], [-0.1343, -0.1512, 0.1791], [-0.1271, -0.1381, 0.1943], [-0.1414, -0.1339, 0.1872], [-0.1354, -0.1492, 0.1799], [-0.1234, -0.1439, 0.1925], [-0.1358, -0.1317, 0.1929], [-0.1391, -0.1393, 0.185], [-0.1261, -0.1411, 0.1928], [-0.1307, -0.1258, 0.2002], [-0.1394, -0.1308, 0.1909], [-0.1239, -0.1381, 0.1964], [-0.1256, -0.123, 0.2051], [-0.1334, -0.123, 0.2001], [-0.1247, -0.1318, 0.2001], [-0.1178, -0.1178, 0.2127], [-0.1331, -0.1123, 0.2065], [-0.1247, -0.1274, 0.203], [-0.1134, -0.1202, 0.2137], [-0.133, -0.1038, 0.211], [0.1269, 0.1303, -0.1998], [0.133, 0.1455, -0.1847], [0.1367, 0.1394, -0.1867], [0.1403, 0.1324, -0.1891], [0.1234, 0.1472, -0.19], [0.1348, 0.1478, -0.1816], [0.1288, 0.1278, -0.2001], [0.1438, 0.1313, -0.1873], [0.1244, 0.1425, -0.1929], [0.1346, 0.125, -0.1981], [0.1185, 0.1266, -0.2072], [0.1337, 0.1373, -0.1904], [0.1264, 0.1223, -0.205], [0.1318, 0.1183, -0.204], [0.1175, 0.1327, -0.2039], [0.1358, 0.118, -0.2015], [0.1177, 0.108, -0.2179], [0.1231, 0.1236, -0.2063], [0.1248, 0.1161, -0.2096], [-0.1524, -0.1346, 0.1779], [-0.0555, -0.139, 0.2249], [-0.2337, -0.1071, 0.083], [0.0207, -0.1314, 0.2352], [-0.2389, -0.0998, 0.0773], [0.0223, -0.1233, 0.2394], [-0.2415, -0.0977, 0.0716], [0.0318, -0.1265, 0.2366], [-0.2405, -0.0964, 0.0764], [0.03, -0.1182, 0.241], [-0.2431, -0.0879, 0.0784], [0.0369, -0.1156, 0.2414], [-0.2389, -0.0942, 0.0838], [0.0299, -0.1141, 0.243], [-0.238, -0.0882, 0.0924], [0.0292, -0.1098, 0.2451], [-0.2308, -0.0933, 0.1049], [-0.0424, -0.1168, 0.2399], [-0.14, -0.116, 0.1999], [-0.0429, 0.1225, -0.2369], [0.2627, 0.0609, 0.0156], [-0.1255, 0.0922, -0.2207], [0.2646, 0.0468, 0.0282], [-0.133, 0.0848, -0.2193], [0.2624, 0.052, 0.0374], [-0.1386, 0.0925, -0.2126], [0.2663, 0.0339, 0.0301], [-0.1426, 0.0819, -0.2143], [0.2652, 0.0418, 0.03], [-0.1479, 0.0896, -0.2076], [0.267, 0.0355, 0.0209], [-0.1448, 0.0703, -0.217], [0.2647, 0.0486, 0.0235], [-0.1432, 0.0788, -0.2151], [0.2663, 0.0433, 0.0136], [-0.132, 0.0736, -0.2239], [0.2649, 0.0528, -0.0044], [-0.0584, 0.0961, -0.2456]]]};
-  var simAdj = null;
-  (function () {
-    var em = {}; simAdj = SIM.tris.map(function () { return [-1, -1, -1]; });
-    SIM.tris.forEach(function (t, ti) { for (var k = 0; k < 3; k++) { var a = t[k], b = t[(k + 1) % 3], key = Math.min(a, b) + "_" + Math.max(a, b); if (em[key]) { var o = em[key]; simAdj[ti][k] = o[0]; simAdj[o[0]][o[1]] = ti; } else em[key] = [ti, k]; } });
-  })();
-  // [장면, 가로 배율, 세로 배율, 기울기]  — 눌렸다(납작) 튕기는(길쭉) 두 컷으로 만화 같은 탄력
-  var ROTO_SEQ = [[0, 1, 1, 0], [1, 1.02, 0.97, 0.03], [2, 1, 1, -0.04], [3, 1, 1, 0.05], [4, 1, 1, -0.03], [5, 1.1, 0.9, 0.02], [6, 0.92, 1.08, -0.03], [7, 1, 1, 0], [7, 1, 1, 0]];
-  var rotoStep = 0, rotoBoil = 0;
-  var TONE_MID = "rgba(0,0,0,0.07)", TONE_DARK = "rgba(0,0,0,0.15)";
-  function renderRoto() {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
-    if (crState === "idle" || crState === "gone") return;
-    var st = ROTO_SEQ[Math.max(0, Math.min(ROTO_SEQ.length - 1, rotoStep))], F = SIM.frames[st[0]];
-    var cx0 = PX + PW / 2, cy0 = PY + pull + PH / 2, alpha = 1, rot = st[3];
-    if (ball) { cx0 = ball.x; cy0 = ball.y; alpha = ball.a; rot += ball.rot * 0.15; }
-    var sz = (PW + PH) / 2, sx = st[1], sy = st[2];
-    var V = F.map(function (p) { return { x: p[0] * PW * sx, y: p[1] * PH * sy, z: p[2] * sz }; });
-    // 바닥 그림자
-    if (!ball) {
-      var y1 = -1e9, x0 = 1e9, x1 = -1e9; V.forEach(function (v) { y1 = Math.max(y1, v.y); x0 = Math.min(x0, v.x); x1 = Math.max(x1, v.x); });
-      var srx = Math.max(4, (x1 - x0) / 2 * 0.95);
-      ctx.save(); ctx.translate(cx0, cy0 + y1 + 8); ctx.scale(1, 8 / srx);
-      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); g.addColorStop(0, "rgba(0,0,0,0.13)"); g.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    }
-    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx0, cy0); ctx.rotate(rot);
-    var N = SIM.tris.map(function (t) {
-      var A = V[t[0]], B = V[t[1]], C = V[t[2]], e1 = [B.x - A.x, B.y - A.y, B.z - A.z], e2 = [C.x - A.x, C.y - A.y, C.z - A.z];
-      return norm([e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]]);
-    });
-    var order = SIM.tris.map(function (t, ti) { return { ti: ti, z: V[t[0]].z + V[t[1]].z + V[t[2]].z }; }).sort(function (a, b) { return a.z - b.z; });
-    var rank = []; order.forEach(function (o, r) { rank[o.ti] = r; });
-    var UV = SIM.uv, flatness = st[0] === 0;
-    ctx.strokeStyle = PENCIL; ctx.lineCap = "round"; ctx.lineJoin = "round";
-    for (var r = 0; r < order.length; r++) {
-      var ti = order[r].ti, t = SIM.tris[ti], A = V[t[0]], B = V[t[1]], C = V[t[2]], P = [A.x, A.y, B.x, B.y, C.x, C.y], n = N[ti];
-      var Uv = [UV[t[0]][0] * PW, UV[t[0]][1] * PH, UV[t[1]][0] * PW, UV[t[1]][1] * PH, UV[t[2]][0] * PW, UV[t[2]][1] * PH];
-      var front = n[2] >= 0, dl = n[0] * L[0] + n[1] * L[1] + n[2] * L[2], lam = front ? dl : -dl;
-      ctx.globalAlpha = alpha;
-      drawTex(P, Uv, front ? tex : texB);
-      if (!flatness) {
-        var tone = lam > 0.62 ? null : lam > 0.36 ? TONE_MID : TONE_DARK;
-        if (!front && !tone) tone = TONE_MID;
-        if (tone) { ctx.globalCompositeOperation = "multiply"; fillTri(P, tone); ctx.globalCompositeOperation = "source-over"; }
-      }
-      for (var k = 0; k < 3; k++) {
-        var nb = simAdj[ti][k], ia = t[k], ib = t[(k + 1) % 3];
-        if (nb >= 0 && rank[nb] > r) continue;
-        if (nb < 0) { strokeEdge(V[ia], V[ib], ia + rotoBoil, ib, 2, alpha); continue; }
-        var m = N[nb], dot = n[0] * m[0] + n[1] * m[1] + n[2] * m[2];
-        if ((n[2] >= 0) !== (m[2] >= 0)) { strokeEdge(V[ia], V[ib], ia + rotoBoil, ib, 2, alpha); continue; }
-        if (!flatness && dot < 0.5) strokeEdge(V[ia], V[ib], ia + rotoBoil, ib, 1.4, alpha * 0.75);
-      }
-    }
-    ctx.restore();
-  }
-  function playRoto(then) {
-    crState = "anim"; var t0 = performance.now(), step = 1000 / FPS, k = -1, total = ROTO_SEQ.length;
-    if (reduce) { rotoStep = total - 1; renderCanvas(); if (then) then(); return; }
-    function tick(now) {
-      var idx = Math.min(total - 1, Math.floor((now - t0) / step));
-      if (idx !== k) { k = idx; rotoStep = idx; if (idx > 0) grain(0.16 + 0.06 * (idx % 3), 0.06); renderCanvas(); }
-      if (now - t0 < total * step) requestAnimationFrame(tick); else if (then) then();
-    }
-    requestAnimationFrame(tick);
-  }
-  window.__roto = function (k) { if (crState === "idle") beginCrumple(); crState = "drag"; rotoStep = k; renderCanvas(); };
+  function commitCrumple() { playDrawn(throwBall); }
 
   /* ---------- 직접 그린 장면 방식 ----------
      실제로 종이를 구기는 과정을 관찰해서(좌우로 오므라듦 → 위아래가 눌려 넓적 → 동그랗게 뭉침 → 작고 길쭉 → 작은 공)
@@ -2869,7 +2397,7 @@ function drawPose(ctx, P, opt) {
 
 
   var DRAWN_SEQ = [["P0", 0], ["A1", 0], ["A", 0.01], ["AB", 0.02], ["B", -0.03], ["BC", 0.02], ["C", 0.04], ["C", 0.04], ["D", 0.05], ["E1", -0.03], ["E", 0], ["E", 0]];
-  var drawnStep = 0, drawnPose = "P0", drawnRot = 0;
+  var drawnPose = "P0", drawnRot = 0;
   var DRAWN_OPT = { paper: "#F8F9FE", shade: "rgba(0,0,0,0.07)", dark: "rgba(0,0,0,0.15)", pen: "#4B4F86", text: "rgba(0,0,0,0.16)" };
   // 쪽지 색과 연필 색은 화면에 쓰인 값을 그대로 가져온다
   function paperColors() { var cs = getComputedStyle(paper); DRAWN_OPT.paper = (cs.getPropertyValue("--paper") || "").trim() || "#F8F9FE"; DRAWN_OPT.pen = (cs.getPropertyValue("--pencil") || "").trim() || "#4B4F86"; return DRAWN_OPT; }
@@ -2883,7 +2411,7 @@ function drawPose(ctx, P, opt) {
     if (drawnPose === "P0") {
       ctx.translate(cx0, cy0); var sq = Math.min(0.05, pull / 1200); ctx.scale(1 + sq, 1 - sq);
       ctx.drawImage(tex, -PW / 2, -PH / 2, PW, PH);
-      ctx.strokeStyle = PENCIL; ctx.lineWidth = 1.8; ctx.strokeRect(-PW / 2 + 1, -PH / 2 + 1, PW - 2, PH - 2);
+      ctx.strokeStyle = DRAWN_OPT.pen; ctx.lineWidth = 1.8; ctx.strokeRect(-PW / 2 + 1, -PH / 2 + 1, PW - 2, PH - 2);
       ctx.restore(); return;
     }
     var P = POSES[drawnPose], kx = PW / 350, ky = PH / 330, u = Math.min(kx, ky);
@@ -2903,116 +2431,21 @@ function drawPose(ctx, P, opt) {
     if (reduce) { drawnPose = "E"; drawnRot = 0; renderCanvas(); if (then) then(); return; }
     function tick(now) {
       var idx = Math.min(total - 1, Math.floor((now - t0) / stepMs));
-      if (idx !== k) { k = idx; var st = DRAWN_SEQ[idx]; if (st[0] !== drawnPose) grain(0.2 + 0.05 * (idx % 3), 0.07); drawnPose = st[0]; drawnRot = st[1]; renderCanvas(); }
+      if (idx !== k) { k = idx; var st = DRAWN_SEQ[idx]; drawnPose = st[0]; drawnRot = st[1]; renderCanvas(); }
       if (now - t0 < total * stepMs) requestAnimationFrame(tick); else if (then) then();
     }
     requestAnimationFrame(tick);
   }
   window.__drawn = function (k) { if (crState === "idle") beginCrumple(); crState = "drag"; drawnPose = k; drawnRot = 0; renderCanvas(); };
-  function renderCanvas() {
-    if (crumpleMode === "drawn") return renderDrawn();
-    if (crumpleMode === "roto") return renderRoto();
-    if (crumpleMode === "frames") return renderFrames();
-    if (crumpleMode === "flat") return renderFlat();
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
-    if (crState === "idle" || crState === "gone") return;
-    var ox = PX, oy = PY + pull, sc = 1, alpha = 1, spin = 0;
-    if (ball) { ox = ball.x - PW / 2; oy = ball.y - PH / 2; sc = ball.sc; alpha = ball.a; spin = ball.rot; }
-    var ep = ease(p), Rb = Math.min(PW, PH) * 0.25;
-    var shY = ball ? ball.y + Rb * 0.95 * sc + 4 : (oy + PH + 4) * (1 - ep) + (oy + PH / 2 + Rb * 0.95 + 4) * ep;
-    var srx = Math.max(2, PW * (1 - 0.66 * ep) * sc / 2), sry = 8 * sc;
-    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(ox + PW / 2, shY); ctx.scale(1, sry / srx);
-    var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, srx); sg.addColorStop(0, "rgba(0,0,0,0.13)"); sg.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, srx, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    ctx.save();
-    ctx.translate(ox + PW / 2, oy + PH / 2); ctx.rotate(stepRot); ctx.scale(sc * stepSX, sc * stepSY); ctx.translate(-PW / 2, -PH / 2);
-    updateVerts(p, spin);
-    var N = tris.map(function (t) {
-      var A = verts[t[0]], B = verts[t[1]], C = verts[t[2]];
-      var e1 = [B.x - A.x, B.y - A.y, B.z - A.z], e2 = [C.x - A.x, C.y - A.y, C.z - A.z];
-      return norm([e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]]);
-    });
-    var order = tris.map(function (t, ti) { return { ti: ti, z: (verts[t[0]].z + verts[t[1]].z + verts[t[2]].z) / 3 }; }).sort(function (a, b) { return a.z - b.z; });
-    var rank = []; order.forEach(function (o, r) { rank[o.ti] = r; });
-    var lineIn = Math.min(1, p * 3.5), textA = 1 - 0.55 * ep;
-    ctx.strokeStyle = PENCIL; ctx.lineCap = "round"; ctx.lineJoin = "round";
-    for (var r = 0; r < order.length; r++) {
-      var ti = order[r].ti, t = tris[ti], A = verts[t[0]], B = verts[t[1]], C = verts[t[2]], P = [A.x, A.y, B.x, B.y, C.x, C.y], n = N[ti];
-      ctx.globalAlpha = alpha;
-      if (n[2] >= 0) {
-        var lam = n[0] * L[0] + n[1] * L[1] + n[2] * L[2];
-        fillTri(P, PAPER);
-        ctx.globalAlpha = alpha * textA; drawTex(P, [A.u, A.v, B.u, B.v, C.u, C.v]); ctx.globalAlpha = alpha;
-        if (p > 0.2 && lam < B_FLAT - 0.38) { ctx.globalAlpha = alpha * Math.min(1, (p - 0.2) * 3); ctx.globalCompositeOperation = "multiply"; fillTri(P, SHADE); ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = alpha; }
-      } else {
-        var lb = -(n[0] * L[0] + n[1] * L[1] + n[2] * L[2]);
-        drawTex(P, [A.u, A.v, B.u, B.v, C.u, C.v], texB); if (lb < 0.35) fillTri(P, BACK_SH);
-      }
-      for (var k = 0; k < 3; k++) {
-        var nb = nbs[ti][k], ia = t[k], ib = t[(k + 1) % 3];
-        if (nb >= 0 && rank[nb] > r) continue;
-        if (nb < 0) { strokeEdge(verts[ia], verts[ib], ia, ib, 2 - 0.4 * ep, alpha * (1 - 0.6 * ep)); continue; }
-        var m = N[nb];
-        if ((n[2] >= 0) !== (m[2] >= 0)) { strokeEdge(verts[ia], verts[ib], ia, ib, 2, alpha * lineIn); continue; }
-        var dot = n[0] * m[0] + n[1] * m[1] + n[2] * m[2];
-        if (dot < 0.42) strokeEdge(verts[ia], verts[ib], ia, ib, 1.4, alpha * lineIn * Math.min(1, (0.42 - dot) / 0.4) * 0.7 * (1 - 0.4 * ep));
-      }
-    }
-    ctx.restore();
-  }
-
-  /* 소리: 실제 종이 구기는 녹음을 짧게 잘라 끄는 속도에 맞춰 재생 */
-  var actx = null, master = null, paperBuf = null, lastT = 0, grainAcc = 0;
-  function ensureAudio() {
-    if (!soundOn) return;
-    try {
-      if (!actx) {
-        actx = new (window.AudioContext || window.webkitAudioContext)();
-        master = actx.createGain(); master.gain.value = 0.45; master.connect(actx.destination);
-        fetch("./paper.wav").then(function (r) { return r.arrayBuffer(); }).then(function (ab) {
-          var pr = actx.decodeAudioData(ab, function (b) { paperBuf = b; }, function () {}); if (pr && pr.catch) pr.catch(function () {});
-        }).catch(function () {});
-      }
-      if (actx.state === "suspended") actx.resume();
-    } catch (e) { actx = null; }
-  }
-  var SOUND = false; // 소리는 쓰지 않기로 했다
-  function grain(amp, len) {
-    if (!SOUND || !soundOn || !actx || !paperBuf) return;
-    var dur = paperBuf.duration, l = len || (0.05 + Math.random() * 0.07), off = Math.random() * Math.max(0, dur * 0.9 - l);
-    var src = actx.createBufferSource(); src.buffer = paperBuf; src.playbackRate.value = 0.92 + Math.random() * 0.16;
-    var g = actx.createGain(), t = actx.currentTime + Math.random() * 0.02;
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(amp, t + 0.006); g.gain.setValueAtTime(amp, t + l - 0.012); g.gain.linearRampToValueAtTime(0, t + l);
-    src.connect(g); g.connect(master); src.start(t, off, l + 0.01);
-  }
-  function setP(np) {
-    var now = performance.now(), dt = Math.min(60, Math.max(8, now - (lastT || now - 16))); lastT = now;
-    var speed = Math.abs(np - p) / dt * 1000; p = np;
-    if (p <= 0.02 || p >= 0.995) return;
-    grainAcc += speed * dt / 1000 * 18;
-    while (grainAcc >= 1) { grainAcc -= 1; grain(Math.min(0.55, 0.12 + speed * 0.25)); }
-  }
+  function renderCanvas() { renderDrawn(); }
 
   function beginCrumple() {
     if (state !== "result" || crState !== "idle" || !paper.classList.contains("can-crumple")) return false;
-    measure(); buildTexture(); if (crumpleMode === "drawn") { drawnPose = "P0"; drawnRot = 0; } else if (crumpleMode === "roto") { rotoStep = 0; rotoBoil = 0; } else if (crumpleMode === "frames") { buildFrames(); fi = -1; } else if (crumpleMode === "flat") buildFlat(); else buildMesh();
-    (crEl || paper).classList.add("hide"); if (crEl && crEl !== paper) paper.classList.add("fu-fade"); crState = "drag"; p = 0; pull = 0; ball = null; lastT = 0;
+    measure(); buildTexture(); drawnPose = "P0"; drawnRot = 0;
+    (crEl || paper).classList.add("hide"); if (crEl && crEl !== paper) paper.classList.add("fu-fade"); crState = "drag"; p = 0; pull = 0; ball = null;
     renderCanvas(); return true;
   }
-  function animateTo(target, ms, then) {
-    crState = "anim"; var from = p, t0 = performance.now(), pull0 = pull;
-    function step(now) {
-      var k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
-      setP(from + (target - from) * e); pull = pull0 * (1 - e) + (target === 1 ? 40 : 0) * e; renderCanvas();
-      if (k < 1) requestAnimationFrame(step); else if (then) then();
-    }
-    requestAnimationFrame(step);
-  }
-  function springBack() { animateTo(0, 380, function () { crState = "idle"; paper.classList.remove("hide"); renderCanvas(); }); }
   // 답이 나오면 제목 밑 작은 털실이 검정 → 색으로 (근심 → 풀림). 다 구긴 종이는 가운데로 뚝 떨어져 사라진다
-  var TAG_COLOR = { "관찰": "blue", "판단력": "green", "실행": "orange", "회복": "yellow" };
-
-  function resolveMini() {}
   function throwBall() {
     var sx = PX + PW / 2, sy = PY + pull + PH / 2, t0 = performance.now(), last = t0, vy = 0, g = 4400, y = sy;
     ball = { x: sx, y: sy, rot: 0, sc: 1, a: 1 }; crState = "anim";
@@ -3020,10 +2453,7 @@ function drawPose(ctx, P, opt) {
       var dt = Math.min(0.033, (now - last) / 1000); last = now;
       vy += g * dt; y += vy * dt;
       ball.y = y; ball.a = y > SH - 20 ? Math.max(0, 1 - (y - (SH - 20)) / 50) : 1;
-      if (crumpleMode === "frames") fi = Math.floor((now - t0) / (2000 / FPS)) % 2 ? 7 : 6;
-      if (crumpleMode === "drawn") drawnPose = Math.floor((now - t0) / (2000 / 12)) % 2 ? "F" : "E";
-      if (crumpleMode === "mesh") boil = Math.floor((now - t0) / (2000 / 12)) % 2 ? 41 : 42;
-      if (crumpleMode === "roto") { rotoStep = ROTO_SEQ.length - 1; rotoBoil = Math.floor((now - t0) / (2000 / FPS)) % 2 ? 997 : 0; }
+      drawnPose = Math.floor((now - t0) / (2000 / 12)) % 2 ? "F" : "E";
       renderCanvas();
       if (y < SH + 60 && now - t0 < 900) { requestAnimationFrame(step); return; }
       // 공이 화면 밖으로 나가는 순간 바로 홈으로. 기다리는 빈 화면 없이
@@ -3038,28 +2468,6 @@ function drawPose(ctx, P, opt) {
     requestAnimationFrame(step);
   }
 
-  var dragging = false, startY = 0;
-  var DRAG_TO_CRUMPLE = false; // 끌어서 버리기는 뺐다. "구겨 버리기" 버튼으로만
-  paper.addEventListener("pointerdown", function (e) {
-    if (!DRAG_TO_CRUMPLE) return;
-    if (state !== "result" || crState !== "idle" || e.target.closest("button")) return;
-    ensureAudio();
-    if (!beginCrumple()) return;
-    dragging = true; startY = e.clientY;
-    try { stage.setPointerCapture(e.pointerId); } catch (_) {}
-    e.preventDefault();
-  });
-  stage.addEventListener("pointermove", function (e) {
-    if (!dragging) return;
-    var dy = Math.max(0, e.clientY - startY);
-    if (dy < COMMIT) { pull = dy * 0.45; setP(Math.min(0.04, dy / COMMIT * 0.04)); renderCanvas(); return; }
-    // 기준을 넘으면 손을 떼지 않아도 끝까지 구겨지고 바로 떨어진다
-    dragging = false; commitCrumple();
-  });
-  var COMMIT = 72;
-  function up() { if (!dragging) return; dragging = false; springBack(); }
-  stage.addEventListener("pointerup", up);
-  stage.addEventListener("pointercancel", up);
   window.addEventListener("resize", function () { if (crState === "idle") measure(); });
 
   renderChips(); onInput();
@@ -3094,7 +2502,6 @@ function drawPose(ctx, P, opt) {
     { t: "친구 말투가 좀 차가웠던 것 같아", r: 30, e: "bulman" },
     { t: "약속 미룬 거 서운해했으려나", r: 29, e: "buran" }
   ];
-  var COLORS = ["blue", "green", "orange", "yellow"];
   var RELIEF = "별거 아니었네";
 
   // 이야기: 쌓이는 동안 문장이 바뀌고, 다 쌓이면 원래 제목으로
@@ -3105,7 +2512,6 @@ function drawPose(ctx, P, opt) {
   ];
   var FINAL = ["한 발짝 떨어져 보면,", "사실은 별거 아냐."];
   // 처음 열 때만: 무엇을 하는 앱인지 두 마디로 풀고 제목으로 끝낸다
-  var INTRO = [["별일 아닌데", "자꾸 신경 쓰일 때 있죠."], ["그럴 땐", "여기 한 줄 적어 보세요."]];
   var AFTER = ["하나 버렸어요.", "딱 그만큼 가벼워요."];
 
   var app = document.getElementById("app"), pit = document.getElementById("pit"), cv = document.getElementById("pileCv"), ctx = cv.getContext("2d");
@@ -3137,12 +2543,9 @@ function drawPose(ctx, P, opt) {
   }
 
   /* ---------- 표정: 원래 눈을 몸 색으로 덮고 새 눈을 그린다. 조합마다 한 번만 만들어 둔다 ---------- */
-  var SPR = {}, WHITE = "#FFFDF5";
-  var EL = { x: 142, y: 194 }, ER = { x: 199, y: 194 };
+  var SPR = {};
   // 새 털실 그림 7가지. 눈 영역(타원)은 그림에서 미리 재 둔 값
   // 털실 9가지(360px 그림). 눈 타원, 몸통 중심(bx,by), 서로 맞닿는 원의 반지름(hit)을 그림에서 재 둔 값
-  var YARN = {"gomin": {"cx": 176.0, "cy": 172.5, "rx": 72.0, "ry": 44.5, "bx": 178.7, "by": 179.6, "hit": 144.5, "parts": [[141.5, 173.0, 37.8, 45.2], [210.0, 170.0, 38.3, 42.9], [215.5, 142.0, 10.2, 9.6], [154.5, 143.5, 10.2, 10.2], [151.5, 155.5, 10.2, 10.2]]}, "geokjeong": {"cx": 176.5, "cy": 171.0, "rx": 71.5, "ry": 45.0, "bx": 177.7, "by": 179.1, "hit": 144.7, "parts": [[143.0, 171.5, 38.3, 45.8], [210.0, 170.0, 38.3, 45.2]]}, "simran": {"cx": 175.5, "cy": 181.0, "rx": 59.5, "ry": 46.0, "bx": 180.2, "by": 181.0, "hit": 136.1, "parts": [[147.5, 163.0, 30.9, 26.8], [203.0, 160.5, 31.4, 24.0], [149.0, 198.0, 31.4, 28.0], [202.0, 197.0, 31.4, 25.7]]}, "jichim": {"cx": 176.5, "cy": 170.0, "rx": 78.5, "ry": 42.0, "bx": 177.3, "by": 178.9, "hit": 144.6, "parts": [[139.0, 157.0, 41.8, 28.0], [214.5, 156.0, 41.2, 26.8], [140.5, 185.0, 41.2, 25.7], [213.0, 184.5, 40.6, 25.1]]}, "muan": {"cx": 176.0, "cy": 191.5, "rx": 75.0, "ry": 52.5, "bx": 178.5, "by": 179.7, "hit": 144.5, "parts": [[206.5, 176.0, 30.9, 37.2], [139.0, 179.5, 38.3, 36.6], [236.0, 222.0, 11.9, 14.2], [225.0, 225.5, 11.9, 14.8], [125.5, 227.5, 11.3, 13.6]]}, "buran": {"cx": 180.5, "cy": 178.5, "rx": 76.5, "ry": 40.5, "bx": 178.7, "by": 179.9, "hit": 143.8, "parts": [[149.5, 176.0, 30.9, 33.8], [210.0, 175.0, 31.4, 32.6], [244.5, 153.0, 9.0, 11.9], [235.5, 158.0, 12.5, 16.5], [122.5, 161.5, 11.3, 15.9], [233.5, 197.5, 12.5, 14.8], [127.0, 197.5, 11.9, 13.6], [120.0, 203.5, 13.0, 12.5], [241.5, 204.5, 10.2, 10.2]]}, "buran2": {"cx": 176.5, "cy": 168.0, "rx": 88.5, "ry": 53.0, "bx": 179.1, "by": 176.5, "hit": 147.8, "parts": [[134.0, 168.0, 47.5, 55.6], [219.0, 167.0, 47.5, 53.3]]}, "bulman": {"cx": 177.0, "cy": 190.0, "rx": 71.0, "ry": 35.0, "bx": 182.4, "by": 182.5, "hit": 133.7, "parts": [[210.5, 189.5, 37.8, 34.3], [144.0, 193.5, 38.3, 30.9]]}, "uul": {"cx": 179.5, "cy": 204.0, "rx": 74.5, "ry": 61.0, "bx": 178.0, "by": 179.0, "hit": 144.6, "parts": [[215.0, 177.5, 39.5, 34.3], [143.0, 178.5, 38.3, 35.5], [214.0, 207.5, 24.5, 9.0], [142.0, 208.5, 24.5, 9.0], [226.5, 236.5, 13.6, 27.4]]}};
-  var INK = "#000";
   // 털실 몸통(눈을 지운 것)과 얼굴(눈만)을 따로 만든다: 몸통은 굴러가고 얼굴은 늘 똑바로
   // 몸통 그림과 눈 그림을 따로 둔다: 몸통은 굴러가고 눈은 늘 똑바로. 키는 "몸통/눈" (예: "square/tired")
   var CHM = window.CH.META;
@@ -3156,44 +2559,6 @@ function drawPose(ctx, P, opt) {
     var c = document.createElement("canvas"); c.width = CHM.bw; c.height = CHM.bw;
     c.getContext("2d").drawImage(im, Math.round(b.ax - CHM.eax), Math.round(b.ay - CHM.eay));
     return (SPR[key] = c);
-  }
-  function circle(g, x, y, r) { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); }
-  function drawEyes(g, expr, body, colored) {
-    g.lineCap = "round"; g.lineJoin = "round";
-    [EL, ER].forEach(function (e, i) {
-      var side = i ? 1 : -1;
-      if (expr === "happy") {
-        // 눈 감고 웃음: 위로 볼록한 곡선
-        g.strokeStyle = colored ? C.ink : WHITE; g.lineWidth = 6;
-        g.beginPath(); g.arc(e.x, e.y + 8, 14, Math.PI * 1.12, Math.PI * 1.88); g.stroke();
-        return;
-      }
-      var r = expr === "surprised" ? 25 : 21;
-      g.fillStyle = WHITE; circle(g, e.x, e.y, r);
-      g.fillStyle = C.ink;
-      if (expr === "worried") circle(g, e.x, e.y - 6, 8);
-      else if (expr === "surprised") circle(g, e.x, e.y, 6);
-      else if (expr === "side") circle(g, e.x + 9, e.y + 3, 8.5);
-      else if (expr === "teary") { circle(g, e.x, e.y + 3, 11); g.fillStyle = WHITE; circle(g, e.x + 4, e.y - 1, 3.4); }
-      if (expr === "side") {
-        // 반쯤 내려온 눈꺼풀
-        g.save(); g.beginPath(); g.arc(e.x, e.y, r + 1, 0, Math.PI * 2); g.clip();
-        g.fillStyle = body; g.fillRect(e.x - r - 2, e.y - r - 2, r * 2 + 4, r - 5);
-        g.restore();
-        g.strokeStyle = C.ink; g.lineWidth = 3.5; g.beginPath(); g.moveTo(e.x - r + 2, e.y - 7); g.lineTo(e.x + r - 2, e.y - 7); g.stroke();
-      }
-      if (expr === "worried") {
-        // 안쪽 끝이 올라간 눈썹
-        g.strokeStyle = WHITE; g.lineWidth = 6;
-        g.beginPath(); g.moveTo(e.x - side * 15, e.y - 41); g.lineTo(e.x + side * 15, e.y - 31); g.stroke();
-      }
-    });
-    if (expr === "surprised") { g.strokeStyle = WHITE; g.lineWidth = 5; g.beginPath(); g.ellipse(171, 238, 7, 9, 0, 0, Math.PI * 2); g.stroke(); }
-    if (expr === "teary") {
-      g.strokeStyle = WHITE; g.lineWidth = 5; g.beginPath(); g.moveTo(159, 236); g.quadraticCurveTo(165, 230, 171, 236); g.quadraticCurveTo(177, 242, 183, 236); g.stroke();
-      g.fillStyle = "#9CC3E6"; g.beginPath(); g.moveTo(214, 214); g.quadraticCurveTo(222, 228, 214, 232); g.quadraticCurveTo(206, 228, 214, 214); g.fill();
-    }
-    if (expr === "happy") { g.strokeStyle = colored ? C.ink : WHITE; g.lineWidth = 5; g.beginPath(); g.arc(171, 226, 10, Math.PI * .15, Math.PI * .85); g.stroke(); }
   }
 
   /* ---------- 그림 조각 미리 만들기 (매 프레임 다시 그리지 않음) ---------- */
@@ -3479,18 +2844,6 @@ function drawPose(ctx, P, opt) {
   function rotateLater(delay) {
     clearTimeout(subT);
     subT = setTimeout(function () { if (paused || mode !== "stack") return; if (!document.hidden) swapSub(); rotateLater(SUB_HOLD[subIdx]); }, delay);
-  }
-  function ripple(src) {
-    items.forEach(function (b) {
-      var d = b.plugin.draw; if (b === src || d.kind !== "char") return;
-      var dx = b.position.x - src.position.x, dy = b.position.y - src.position.y, dist = Math.hypot(dx, dy), reach = 150;
-      if (dist > reach) return;
-      var f = 1 - dist / reach;
-      M.Sleeping.set(b, false);
-      M.Body.setVelocity(b, { x: b.velocity.x + (dist > 1 ? dx / dist : 0) * f * .6, y: b.velocity.y - f * 1.8 });
-      d.sq = Math.max(d.sq || 0, .05 + f * .08);
-    });
-    run();
   }
   function homeMode() { return SCENE === "b" ? "stack" : (queue.length ? "first" : "settled"); }
   var introTimers = [];
