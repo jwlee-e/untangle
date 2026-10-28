@@ -337,7 +337,7 @@
   .ab-tag { position: relative; margin: 0; display: inline-block; padding: 6px 11px; color: var(--ink-2); font-size: var(--t-caption-fs); font-weight: 500; line-height: var(--t-caption-lh);}
   .ab-bub { isolation: isolate}
   .ab-bub-e { position: absolute; left: 0; top: 0; z-index: -1; overflow: visible; pointer-events: none; filter: drop-shadow(0 4px 5px rgba(25,26,44,0.129))}
-  .ab-thread { display: block; margin: 16px auto; color: var(--ink); opacity: .6}
+  .ab-thread { display: block; margin: 12px auto; color: var(--ink); opacity: .6}
   .ab-big { position: relative; margin-top: 0; width: 280px; max-width: 100%; height: 150px; display: grid; place-items: center}
   .ab-big .ab-y { width: 84px}
   .ab-b { position: absolute; padding: 6px 11px; color: var(--ink-2); white-space: nowrap; font-size: var(--t-caption-fs); font-weight: 500; line-height: var(--t-caption-lh);}
@@ -370,7 +370,10 @@
   .ab-pay2 { margin-top: 2px}
   .ab-sec { margin-top: 56px; padding-top: 28px; border-top: 1px dashed var(--rule-paper)}
   .ab h2 { margin: 0 0 14px; font-size: var(--t-appbar-fs); font-weight: var(--t-appbar-fw); line-height: var(--t-appbar-lh);}
-  .ab-chips { display: flex; flex-wrap: wrap; gap: 8px}
+  .ab-chips { display: flex; flex-direction: column; gap: 8px; margin: 0 -24px; padding: 2px 24px 8px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch}
+  .ab-chips::-webkit-scrollbar { display: none}
+  .ab-row { display: flex; gap: 8px; width: max-content}
+  .ab-row span { flex: none; white-space: nowrap}
   .ab-chips span { position: relative; padding: 8px 12px; color: var(--ink-2); font-size: var(--t-btn-s-fs); font-weight: 500; line-height: var(--t-btn-s-lh);}
   .ab-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px}
   .ab-list li { color: var(--ink-2); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
@@ -655,14 +658,14 @@
         <h1>걱정은 보통<br>아주 작게 시작해요.</h1>
         <p>머릿속에서 자꾸 맴도는 작은 걱정을<br>한 발짝 떨어져서 다시 보게 해 주는 앱이에요.<br>털실 하나를 따라가면서 보여 드릴게요.</p>
       </header>
-      <svg class="ab-thread" width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true"><path d="M12 2 C 20 6, 4 10, 12 15 S 4 24, 12 28 S 17 30, 13 31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="ab-thread" width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true"><path d="M20 2 C 34 6, 6 12, 20 16 S 34 26, 21 30" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 
       <section class="ab-ch">
         <span class="ab-k">01. 있었던 일</span>
         <p class="ab-t">처음엔 있었던 일 하나뿐이에요.</p>
         <div class="ab-fig"><div class="ab-art-tag" aria-hidden="true"><p class="ab-tag ab-bub"><svg class="ab-bub-e"></svg>친구한테 하루 동안 연락이 없네</p><div class="ab-float"><img class="ab-y" src="./ch/p-default.webp" alt="" width="67" height="65"><span class="ab-shadow"></span></div></div></div>
       </section>
-      <svg class="ab-thread" width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true"><path d="M12 2 C 20 6, 4 10, 12 15 S 4 24, 12 28 S 17 30, 13 31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="ab-thread" width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true"><path d="M20 2 C 34 6, 6 12, 20 16 S 34 26, 21 30" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 
       <section class="ab-ch">
         <span class="ab-k">02. 엉겨 붙은 생각</span>
@@ -674,7 +677,7 @@
           <span class="ab-b ab-bub b3"><svg class="ab-bub-e"></svg>이대로 멀어지면 어떡하지</span>
         </div></div>
       </section>
-      <svg class="ab-thread" width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true"><path d="M12 2 C 20 6, 4 10, 12 15 S 4 24, 12 28 S 17 30, 13 31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="ab-thread" width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true"><path d="M20 2 C 34 6, 6 12, 20 16 S 34 26, 21 30" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 
       <section class="ab-ch">
         <span class="ab-k">03. 털실을 뒤집어쓴 걱정</span>
@@ -682,7 +685,7 @@
         <p class="ab-s">무섭거나 슬픈 그림 대신 동글동글하게 그린 건, 걱정을 너무 무겁게 들고 있지 않았으면 해서예요.</p>
         <div class="ab-fig"><div class="ab-art" aria-hidden="true"><img class="ab-y" src="./ch/p-huddle.webp" alt="" width="72" height="71"><span class="ab-shadow"></span></div></div>
       </section>
-      <svg class="ab-thread" width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true"><path d="M12 2 C 20 6, 4 10, 12 15 S 4 24, 12 28 S 17 30, 13 31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="ab-thread" width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true"><path d="M20 2 C 34 6, 6 12, 20 16 S 34 26, 21 30" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 
       <section class="ab-ch">
         <span class="ab-k">04. 한 발짝 떨어져 보면</span>
@@ -697,7 +700,7 @@
           </div>
         </div></div>
       </section>
-      <svg class="ab-thread" width="24" height="32" viewBox="0 0 24 32" fill="none" aria-hidden="true"><path d="M12 2 C 20 6, 4 10, 12 15 S 4 24, 12 28 S 17 30, 13 31" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="ab-thread" width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true"><path d="M20 2 C 34 6, 6 12, 20 16 S 34 26, 21 30" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 
       <section class="ab-ch">
         <span class="ab-k">05. 구겨서 버리기</span>
@@ -710,17 +713,21 @@
       <section class="ab-sec ab-share">
         <h2>적은 고민은 어디로 갈까요?</h2>
         <p class="ab-sh-t">이름 같은 정보를 가린 채 익명으로 고민 나눔터에 놓여요. 둘러보다 보면, 다들 비슷한 걸로 맴돌고 있다는 걸 알게 돼요.</p>
-        <img class="ab-shot" src="./ch/ab-map.webp" alt="" width="322" height="272" aria-hidden="true">
-        <p class="ab-sh-s">혹시 공감 가는 고민이 있나요? 있으면 표시해 보세요. 누가 했는지는 아무도 몰라요.</p>
+        <img class="ab-shot" src="./ch/ab-map.webp" alt="" width="393" height="232" aria-hidden="true">
+        <p class="ab-sh-s">공감 가는 고민엔 하트를 눌러 주세요. 하트 수만큼 같은 생각을 한 사람이 있다는 뜻이에요. 누가 눌렀는지는 아무도 몰라요.</p>
       </section>
 
       <section class="ab-sec">
         <h2>이럴 때 꺼내 보세요</h2>
         <div class="ab-chips">
-          <span class="ab-bub"><svg class="ab-bub-e"></svg>회의 끝나고도 한마디가 맴돌 때</span>
-          <span class="ab-bub"><svg class="ab-bub-e"></svg>답장을 기다리고 있을 때</span>
-          <span class="ab-bub"><svg class="ab-bub-e"></svg>자기 전에 생각이 꼬리를 물 때</span>
-          <span class="ab-bub"><svg class="ab-bub-e"></svg>내일 일이 벌써 걱정될 때</span>
+          <div class="ab-row">
+            <span class="ab-bub"><svg class="ab-bub-e"></svg>회의 끝나고도 한마디가 맴돌 때</span>
+            <span class="ab-bub"><svg class="ab-bub-e"></svg>답장을 기다리고 있을 때</span>
+          </div>
+          <div class="ab-row">
+            <span class="ab-bub"><svg class="ab-bub-e"></svg>자기 전에 생각이 꼬리를 물 때</span>
+            <span class="ab-bub"><svg class="ab-bub-e"></svg>내일 일이 벌써 걱정될 때</span>
+          </div>
         </div>
       </section>
 
