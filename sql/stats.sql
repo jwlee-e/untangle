@@ -76,3 +76,32 @@ where e.shared and e.masked_text is not null
 order by 3 desc, 4 desc limit 50;
 
 revoke all on all tables in schema stats from public, anon, authenticated;
+
+-- 7) 새 설문(v2): 표정 점수 분포
+create or replace view stats."설문 만족도" as
+select (answers->>'score')::int as "점수",
+  case (answers->>'score')::int when 1 then '별로예요' when 2 then '조금 아쉬워요' when 3 then '보통이에요' when 4 then '괜찮아요' when 5 then '좋아요' end as "표정",
+  count(*) as "응답 수"
+from public.surveys where answers->>'v' = '2'
+group by 1, 2 order by 1;
+
+-- 8) 새 설문(v2): 좋았던 점·아쉬웠던 점 칩별 개수
+create or replace view stats."설문 칩" as
+select '좋았던 점' as "구분",
+  case x when 'lighter' then '마음이 가벼워졌어요' when 'sorted' then '생각이 정리됐어요' when 'relate' then '다른 사람 고민이 공감됐어요'
+    when 'relief' then '버리는 게 후련했어요' when 'easy' then '쓰기 편했어요' when 'etc' then '기타' else x end as "칩",
+  count(*) as "고른 수"
+from public.surveys, jsonb_array_elements_text(answers->'good') x where answers->>'v' = '2' group by 2
+union all
+select '아쉬웠던 점',
+  case x when 'mismatch' then '답이 내 상황과 달라요' when 'obvious' then '답이 뻔해요' when 'empathy' then '더 공감해 줬으면 좋겠어요'
+    when 'real' then '더 현실적으로 말해 줬으면 좋겠어요' when 'blank' then '뭘 적어야 할지 모르겠어요' when 'hard' then '쓰기 불편했어요' when 'etc' then '기타' else x end,
+  count(*)
+from public.surveys, jsonb_array_elements_text(answers->'bad') x where answers->>'v' = '2' group by 2
+order by 1, 3 desc;
+
+-- 9) 새 설문(v2): 기타에 적은 말
+create or replace view stats."설문 기타" as
+select created_at as "언제", (answers->>'score')::int as "점수", answers->>'note' as "적은 말"
+from public.surveys where answers->>'v' = '2' and answers ? 'note'
+order by created_at desc;

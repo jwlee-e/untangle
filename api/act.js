@@ -36,6 +36,18 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
     if (b.a === "survey") {
+      // 새 설문(v2): 표정 1~5 + 좋았던 점·아쉬웠던 점(정해 둔 값만) + 기타에 적은 말(200자까지)
+      const s = b.answers || {};
+      if (s.v === 2) {
+        const GOOD = ["lighter", "sorted", "relate", "relief", "easy", "etc"], BAD = ["mismatch", "obvious", "empathy", "real", "blank", "hard", "etc"];
+        const score = Number(s.score);
+        if (!(score >= 1 && score <= 5 && Math.round(score) === score)) return res.status(400).json({ code: "score" });
+        const pick = function (arr, ok) { return Array.isArray(arr) ? arr.filter(function (x, i, all) { return ok.indexOf(x) >= 0 && all.indexOf(x) === i; }) : []; };
+        const row = { v: 2, score: score, good: pick(s.good, GOOD), bad: pick(s.bad, BAD) };
+        if (typeof s.note === "string" && s.note.trim()) row.note = s.note.trim().slice(0, 200);
+        await db.q("POST", "surveys", { anon_id: anon, answers: row }, { Prefer: "return=minimal" });
+        return res.status(200).json({ ok: true });
+      }
       const a = cleanProps(b.answers);
       if (!a) return res.status(400).json({ code: "empty" });
       await db.q("POST", "surveys", { anon_id: anon, answers: a }, { Prefer: "return=minimal" });

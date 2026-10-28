@@ -257,6 +257,27 @@
   .sheet h2 { margin: 0; font-size: var(--t-title-fs); font-weight: var(--t-title-fw); line-height: var(--t-title-lh);}
   .sheet p { color: var(--ink-2); word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
   .sheet > .btn { margin-top: 12px; }
+  .sv-sheet { position: relative; padding-top: 32px; }
+  .sv-sheet h2 { padding-right: 40px; }
+  .sheet .sv-x { position: absolute; right: 8px; top: 20px; color: var(--ink-2); }
+  .sv-sub { margin-top: -6px; color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh); }
+  .sv-faces { display: flex; justify-content: space-between; margin-top: 8px; }
+  .sv-face { width: 64px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; border: 0; background: transparent; font: inherit; white-space: nowrap; cursor: pointer; color: var(--ink-4); font-size: var(--t-caption-fs); line-height: var(--t-caption-lh); }
+  .sv-face i { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--gray-200); transition: box-shadow .15s ease, background .15s ease; }
+  .sv-face img { width: 48px; height: 48px; object-fit: contain; opacity: .38; transition: opacity .15s ease; }
+  .sv-face span { min-height: 18px; }
+  .sv-face.on { color: var(--ink); font-weight: 700; }
+  .sv-face.on i { background: #fff; box-shadow: 0 0 0 2px var(--ink); }
+  .sv-face.on img { opacity: 1; }
+  .sv-g { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .sv-q { display: flex; align-items: baseline; gap: 6px; }
+  .sv-q b { font-size: var(--t-heading-fs); line-height: var(--t-heading-lh); font-weight: 700; }
+  .sv-q small { font-size: var(--t-caption-fs); color: var(--ink-4); }
+  .sv-sheet .chip { background: transparent; border-color: rgba(25,26,44,0.298); }
+  .sv-sheet .chip.on { color: var(--ink); border-color: var(--ink); font-weight: 700; }
+  .sv-sheet .sv-note { display: block; width: 100%; min-height: 64px; border: 0; border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 16px; line-height: 22px; background: var(--gray-200); color: var(--ink); resize: none; outline: none; }
+  .sv-sheet .sv-note[hidden] { display: none; }
+  .sv-sheet > .btn { margin-top: 12px; }
   .sheet ul { margin: 0; padding-left: 18px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .row { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-top: 1px solid var(--rule); font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .sheet { max-height: calc(100% - 48px); overflow-y: auto; overscroll-behavior: contain}
@@ -1460,51 +1481,63 @@
   function mpAsk(text) { track("ask_from_map"); window.__prefill = text; hideMapForWrite(function () { $("#homeField").click(); }); }
   $("#mapBtn").addEventListener("click", openMap);
 
-  /* ---------- 의견 묻기: 서비스와 바로 이어진 질문 네 개만, 가운데 뜨는 작은 창으로 ---------- */
-  var SURVEY = [
-    { id: "lighter", q: "적고 나니 마음이 좀 가벼워졌나요?", a: ["꽤 가벼워졌어요", "조금요", "그대로예요"] },
-    { id: "tone", q: "답의 말투는 어땠어요?", a: ["딱 좋아요", "더 공감해 줬으면", "더 현실적으로 짚어 줬으면"] },
-    { id: "others", q: "비슷한 고민을 한 사람들, 있으면 보고 싶어요?", a: ["보고 싶어요", "있으면 볼래요", "별로요"] },
-    { id: "again", q: "또 쓸 것 같나요?", a: ["또 쓸 것 같아요", "가끔요", "안 쓸 것 같아요"] }
-  ];
+  /* ---------- 의견 묻기: 서비스 전체에 대한 평가 하나 + 좋았던 점·아쉬웠던 점 (바텀시트) ---------- */
+  var SV_FACES = [["sad", "별로예요"], ["tired", "조금 아쉬워요"], ["default", "보통이에요"], ["hi", "괜찮아요"], ["excited", "좋아요"]];
+  var SV_GOOD = [["lighter", "마음이 가벼워졌어요"], ["sorted", "생각이 정리됐어요"], ["relate", "다른 사람 고민이 공감됐어요"], ["relief", "버리는 게 후련했어요"], ["easy", "쓰기 편했어요"], ["etc", "기타"]];
+  var SV_BAD = [["mismatch", "답이 내 상황과 달라요"], ["obvious", "답이 뻔해요"], ["empathy", "더 공감해 줬으면 좋겠어요"], ["real", "더 현실적으로 말해 줬으면 좋겠어요"], ["blank", "뭘 적어야 할지 모르겠어요"], ["hard", "쓰기 불편했어요"], ["etc", "기타"]];
   function surveyDone() { return store("sab:survey") ? true : false; }
   function syncSurveyDot() { var d = $("#surveyDot"); if (d) d.hidden = surveyDone(); }
   syncSurveyDot();
   $("#surveyBtn").addEventListener("click", function () {
     track("survey_open");
-    var pick = {};
-    var scrim = el("div", "scrim pop-scrim"), box = el("div", "sv-box");
-    box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "의견 남기기");
-    var close = function () { scrim.remove(); if (window.__pile && app.dataset.state === "home") window.__pile.resume(); };
     if (window.__pile) window.__pile.pause();
-    box.append(el("h2", "", "잠깐, 의견 하나만요"), el("p", "pop-sub", "눌러 주기만 하면 돼요. 답한 것만 보내져요."));
-    var send = el("button", "btn", "보내기"); send.type = "button"; send.disabled = true;
-    SURVEY.forEach(function (s) {
-      var g = el("div", "pop-q"); g.append(el("b", "", s.q));
-      var row = el("div", "pop-a");
-      s.a.forEach(function (ans) {
-        var c = el("button", "chip", ans); c.type = "button"; c.setAttribute("aria-pressed", "false");
-        c.addEventListener("click", function () {
-          var on = pick[s.id] !== ans; pick[s.id] = on ? ans : undefined; if (!on) delete pick[s.id];
-          row.querySelectorAll(".chip").forEach(function (x) { var sel = x === c && on; x.classList.toggle("on", sel); x.setAttribute("aria-pressed", sel ? "true" : "false"); });
-          send.disabled = !Object.keys(pick).length;
+    var score = 0, good = {}, bad = {};
+    sheet(function (sh, close0) {
+      var close = function () { close0(); if (window.__pile && app.dataset.state === "home") window.__pile.resume(); };
+      sh.classList.add("sv-sheet"); sh.setAttribute("aria-label", "의견 보내기");
+      var x = el("button", "icon sv-x"); x.type = "button"; x.setAttribute("aria-label", "닫기");
+      x.innerHTML = '<svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+      x.addEventListener("click", close);
+      sh.append(x, el("h2", "", "써 보니 어땠어요?"), el("p", "sv-sub", "표정 하나만 골라도 보낼 수 있어요."));
+      var faces = el("div", "sv-faces"); faces.setAttribute("role", "radiogroup"); faces.setAttribute("aria-label", "만족도");
+      var send = el("button", "btn", "의견 보내기"); send.type = "button"; send.disabled = true;
+      var drawFaces = function () {
+        faces.querySelectorAll(".sv-face").forEach(function (f, i) {
+          var on = score === i + 1; f.classList.toggle("on", on); f.setAttribute("aria-checked", on ? "true" : "false");
+          f.querySelector("span").textContent = on || i === 0 || i === 2 || i === 4 ? SV_FACES[i][1] : "";
         });
-        row.append(c);
+      };
+      SV_FACES.forEach(function (fc, i) {
+        var f = el("button", "sv-face"); f.type = "button"; f.setAttribute("role", "radio"); f.setAttribute("aria-label", fc[1]);
+        f.innerHTML = '<i><img src="ch/c-round-' + fc[0] + '.webp" alt=""></i><span></span>';
+        f.addEventListener("click", function () { score = i + 1; drawFaces(); send.disabled = false; });
+        faces.append(f);
       });
-      g.append(row); box.append(g);
+      drawFaces();
+      var note = el("textarea", "fb-note sv-note"); note.rows = 2; note.maxLength = 200; note.placeholder = "더 하고 싶은 말을 적어 주세요 (선택)"; note.hidden = true;
+      var syncNote = function () { note.hidden = !(good.etc || bad.etc); };
+      var group = function (title, list, bag) {
+        var g = el("div", "sv-g"); var h = el("p", "sv-q"); h.append(el("b", "", title), el("small", "", "여러 개 골라도 돼요"));
+        var row = el("div", "pop-a");
+        list.forEach(function (it) {
+          var c = el("button", "chip", it[1]); c.type = "button"; c.setAttribute("aria-pressed", "false");
+          c.addEventListener("click", function () { var on = !bag[it[0]]; if (on) bag[it[0]] = 1; else delete bag[it[0]]; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on ? "true" : "false"); syncNote(); });
+          row.append(c);
+        });
+        g.append(h, row); return g;
+      };
+      send.addEventListener("click", function () {
+        if (!score) return;
+        var ans = { v: 2, score: score, good: Object.keys(good), bad: Object.keys(bad) };
+        var t = note.value.trim(); if (t && !note.hidden) ans.note = t.slice(0, 200);
+        store("sab:survey", JSON.stringify({ at: Date.now(), answers: ans }));
+        track("survey_send", { score: score, good: ans.good.length, bad: ans.bad.length });
+        act("survey", { answers: ans });
+        close(); syncSurveyDot(); toast("고마워요. 더 낫게 만들게요");
+      });
+      var later = el("button", "text-btn", "다음에 할게요"); later.type = "button"; later.addEventListener("click", close);
+      sh.append(faces, group("좋았던 점", SV_GOOD, good), group("아쉬웠던 점", SV_BAD, bad), note, send, later);
     });
-    send.addEventListener("click", function () {
-      // 지금은 이 기기에만 남는다. 저장소(Supabase)를 붙이면 그쪽으로 보낸다
-      store("sab:survey", JSON.stringify({ at: Date.now(), answers: pick }));
-      act("survey", { answers: pick });
-      close(); syncSurveyDot(); toast("고마워요. 더 낫게 만들게요");
-    });
-    var later = el("button", "btn sub", "다음에 할게요"); later.type = "button"; later.addEventListener("click", close);
-    var foot = el("div", "pop-foot"); foot.append(later, send); box.append(foot);
-    scrim.append(box);
-    scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
-    app.append(scrim);
-    box.querySelector("button").focus();
   });
 
   /* ---------- AI 전송 동의 (처음 한 번) ---------- */
