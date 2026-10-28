@@ -1259,6 +1259,15 @@
     rep.addEventListener("click", function () { mpMenu(it, null); });
     row.append(like, rep); bb.append(row);
     $("#mpWorld").append(wrap); mp.bubble = wrap;
+    // 두 줄 이상이면 말풍선 폭을 가장 긴 줄에 맞춘다 (줄바꿈 뒤 오른쪽에 빈 폭이 남지 않게)
+    (function () {
+      var t = bb.querySelector(".mb-t"), tr = t.getBoundingClientRect(), k = tr.width / (t.offsetWidth || 1) || 1, rg = document.createRange(), rows = {}, n = 0;
+      rg.selectNodeContents(t);
+      Array.prototype.forEach.call(rg.getClientRects(), function (r) { var y = Math.round(r.top); if (!(y in rows)) n++; rows[y] = Math.max(rows[y] || 0, r.right - tr.left); });
+      if (n < 2) return;
+      var w = 0; for (var y in rows) w = Math.max(w, rows[y]);
+      bb.style.width = Math.ceil(w / k + 32 + 1) + "px";
+    })();
     var bw = bb.offsetWidth, bh = bb.offsetHeight, NSs = "http://www.w3.org/2000/svg";
     // 화면 가장자리의 털실이면 말풍선을 안쪽으로 밀고, 꼬리는 털실을 가리키게 둔다
     var vw = mpView().clientWidth, sx = mp.x + it.x * mp.s, left = sx - bw / 2, right = sx + bw / 2, dx = 0;
