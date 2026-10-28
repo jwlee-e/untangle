@@ -102,6 +102,7 @@ order by 1, 3 desc;
 
 -- 9) 새 설문(v2): 기타에 적은 말
 create or replace view stats."설문 기타" as
-select created_at as "언제", (answers->>'score')::int as "점수", answers->>'note' as "적은 말"
-from public.surveys where answers->>'v' = '2' and answers ? 'note'
+select created_at as "언제", (answers->>'score')::int as "점수",
+  answers->>'note_good' as "좋았던 점 (기타)", answers->>'note_bad' as "아쉬웠던 점 (기타)"
+from public.surveys where answers->>'v' = '2' and (answers ? 'note_good' or answers ? 'note_bad')
 order by created_at desc;

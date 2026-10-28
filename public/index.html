@@ -257,9 +257,9 @@
   .sheet h2 { margin: 0; font-size: var(--t-title-fs); font-weight: var(--t-title-fw); line-height: var(--t-title-lh);}
   .sheet p { color: var(--ink-2); word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
   .sheet > .btn { margin-top: 12px; }
-  .sv-sheet { position: relative; padding-top: 32px; }
-  .sv-sheet h2 { padding-right: 40px; }
-  .sheet .sv-x { position: absolute; right: 8px; top: 20px; color: var(--ink-2); }
+  .sv-sheet { position: relative; padding-top: 0; }
+  .sv-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 -20px; padding: 24px 12px 8px 20px; background: var(--paper); }
+  .sheet .sv-x { flex: none; color: var(--ink-2); }
   .sv-sub { margin-top: -6px; color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh); }
   .sv-faces { display: flex; justify-content: space-between; margin-top: 8px; }
   .sv-face { width: 64px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; border: 0; background: transparent; font: inherit; white-space: nowrap; cursor: pointer; color: var(--ink-4); font-size: var(--t-caption-fs); line-height: var(--t-caption-lh); }
@@ -1498,7 +1498,7 @@
       var x = el("button", "icon sv-x"); x.type = "button"; x.setAttribute("aria-label", "닫기");
       x.innerHTML = '<svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
       x.addEventListener("click", close);
-      sh.append(x, el("h2", "", "써 보니 어땠어요?"), el("p", "sv-sub", "표정 하나만 골라도 보낼 수 있어요."));
+      var head = el("div", "sv-head"); head.append(el("h2", "", "써 보니 어땠어요?"), x); sh.append(head);
       var faces = el("div", "sv-faces"); faces.setAttribute("role", "radiogroup"); faces.setAttribute("aria-label", "만족도");
       var send = el("button", "btn", "의견 보내기"); send.type = "button"; send.disabled = true;
       var drawFaces = function () {
@@ -1514,9 +1514,10 @@
         faces.append(f);
       });
       drawFaces();
-      var note = el("textarea", "fb-note sv-note"); note.rows = 2; note.maxLength = 200; note.placeholder = "더 하고 싶은 말을 적어 주세요 (선택)"; note.hidden = true;
-      var syncNote = function () { note.hidden = !(good.etc || bad.etc); };
-      var group = function (title, list, bag) {
+      var mkNote = function () { var t = el("textarea", "fb-note sv-note"); t.rows = 2; t.maxLength = 200; t.placeholder = "더 하고 싶은 말을 적어 주세요 (선택)"; t.hidden = true; return t; };
+      var noteGood = mkNote(), noteBad = mkNote();
+      var syncNote = function () { var g0 = noteGood.hidden, b0 = noteBad.hidden; noteGood.hidden = !good.etc; noteBad.hidden = !bad.etc; if (g0 && !noteGood.hidden) noteGood.focus(); else if (b0 && !noteBad.hidden) noteBad.focus(); };
+      var group = function (title, list, bag, note) {
         var g = el("div", "sv-g"); var h = el("p", "sv-q"); h.append(el("b", "", title), el("small", "", "여러 개 골라도 돼요"));
         var row = el("div", "pop-a");
         list.forEach(function (it) {
@@ -1524,19 +1525,21 @@
           c.addEventListener("click", function () { var on = !bag[it[0]]; if (on) bag[it[0]] = 1; else delete bag[it[0]]; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on ? "true" : "false"); syncNote(); });
           row.append(c);
         });
-        g.append(h, row); return g;
+        g.append(h, row, note); return g;
       };
       send.addEventListener("click", function () {
         if (!score) return;
         var ans = { v: 2, score: score, good: Object.keys(good), bad: Object.keys(bad) };
-        var t = note.value.trim(); if (t && !note.hidden) ans.note = t.slice(0, 200);
+        var tg = noteGood.value.trim(), tb = noteBad.value.trim();
+        if (tg && !noteGood.hidden) ans.note_good = tg.slice(0, 200);
+        if (tb && !noteBad.hidden) ans.note_bad = tb.slice(0, 200);
         store("sab:survey", JSON.stringify({ at: Date.now(), answers: ans }));
         track("survey_send", { score: score, good: ans.good.length, bad: ans.bad.length });
         act("survey", { answers: ans });
         close(); syncSurveyDot(); toast("고마워요. 더 낫게 만들게요");
       });
       var later = el("button", "text-btn", "다음에 할게요"); later.type = "button"; later.addEventListener("click", close);
-      sh.append(faces, group("좋았던 점", SV_GOOD, good), group("아쉬웠던 점", SV_BAD, bad), note, send, later);
+      sh.append(faces, group("좋았던 점", SV_GOOD, good, noteGood), group("아쉬웠던 점", SV_BAD, bad, noteBad), send, later);
     });
   });
 

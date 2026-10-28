@@ -44,7 +44,7 @@ module.exports = async function handler(req, res) {
         if (!(score >= 1 && score <= 5 && Math.round(score) === score)) return res.status(400).json({ code: "score" });
         const pick = function (arr, ok) { return Array.isArray(arr) ? arr.filter(function (x, i, all) { return ok.indexOf(x) >= 0 && all.indexOf(x) === i; }) : []; };
         const row = { v: 2, score: score, good: pick(s.good, GOOD), bad: pick(s.bad, BAD) };
-        if (typeof s.note === "string" && s.note.trim()) row.note = s.note.trim().slice(0, 200);
+        ["note", "note_good", "note_bad"].forEach(function (k) { if (typeof s[k] === "string" && s[k].trim()) row[k] = s[k].trim().slice(0, 200); });
         await db.q("POST", "surveys", { anon_id: anon, answers: row }, { Prefer: "return=minimal" });
         return res.status(200).json({ ok: true });
       }
