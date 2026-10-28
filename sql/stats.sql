@@ -94,8 +94,8 @@ select '좋았던 점' as "구분",
 from public.surveys, jsonb_array_elements_text(answers->'good') x where answers->>'v' = '2' group by 2
 union all
 select '아쉬웠던 점',
-  case x when 'mismatch' then '답이 내 상황과 달라요' when 'obvious' then '답이 뻔해요' when 'empathy' then '더 공감해 줬으면 좋겠어요'
-    when 'real' then '더 현실적으로 말해 줬으면 좋겠어요' when 'blank' then '뭘 적어야 할지 모르겠어요' when 'hard' then '쓰기 불편했어요' when 'etc' then '기타' else x end,
+  case x when 'mismatch' then '답이 내 상황과 달라요' when 'obvious' then '답이 뻔해요' when 'empathy' then '더 공감해 줬으면'
+    when 'real' then '더 현실적이었으면' when 'blank' then '뭘 적어야 할지 모르겠어요' when 'hard' then '쓰기 불편했어요' when 'etc' then '기타' else x end,
   count(*)
 from public.surveys, jsonb_array_elements_text(answers->'bad') x where answers->>'v' = '2' group by 2
 order by 1, 3 desc;
