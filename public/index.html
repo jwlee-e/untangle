@@ -487,7 +487,7 @@
   .pick-i svg { flex: none; opacity: 0; color: var(--ink)}
   .pick-i[aria-checked="true"] { font-weight: 700; color: var(--ink)}
   .pick-i[aria-checked="true"] svg { opacity: 1}
-  .mp-rp-n { margin: -4px 2px 0; color: var(--ink-3); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
+  .mp-rp-n { margin: -4px 2px 0; color: var(--ink-4); word-break: keep-all; font-size: var(--t-caption-fs); font-weight: var(--t-caption-fw); line-height: var(--t-caption-lh);}
   @media (prefers-reduced-motion: reduce) { .mp-as { animation: none} }
   .mp-c-q { margin: 0; word-break: keep-all; color: var(--ink); font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .mp-c-f { display: flex; align-items: center; justify-content: flex-start; margin-top: -4px}
@@ -1635,21 +1635,7 @@
       body.append(list);
     });
   }
-  // 털실을 다섯 번 찌르면 한 번만 묻는다
-  window.__askTilt = function () {
-    if (fxOn("tilt") || store("sab:fx:tiltAsked") === "1" || document.querySelector(".pop-scrim")) return;
-    store("sab:fx:tiltAsked", "1"); track("tilt_prompt");
-    var scrim = el("div", "scrim pop-scrim"), box = el("div", "sv-box tilt-box");
-    box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "폰을 기울여 볼래요?");
-    var close = function () { scrim.remove(); };
-    box.append(el("h2", "", "폰을 기울여 볼래요?"), el("p", "pop-sub", "기울이는 쪽으로 털실이 굴러가요. 설정에서 언제든 끌 수 있어요."));
-    var yes = el("button", "btn", "좋아요"); yes.type = "button";
-    yes.addEventListener("click", function () { track("tilt_yes"); close(); enableTilt(); });
-    var no = el("button", "btn sub", "괜찮아요"); no.type = "button"; no.addEventListener("click", function () { track("tilt_no"); close(); });
-    var foot = el("div", "pop-foot"); foot.append(no, yes); box.append(foot); scrim.append(box);
-    scrim.addEventListener("click", function (e) { if (e.target === scrim) { track("tilt_no"); close(); } });
-    app.append(scrim); yes.focus();
-  };
+
   window.__fxOn = fxOn;
   // 기울기를 켜 둔 아이폰: 다시 들어오면 첫 터치 때 조용히 다시 연결한다 (이미 허락했다면 팝업 없이 이어진다)
   if (fxOn("tilt")) {
@@ -3457,8 +3443,6 @@ function drawPose(ctx, P, opt) {
     });
     // 털실 콕 찌르기 기록 (한 번 방문에 30번까지만: 기록이 너무 많아지지 않게)
     if (window.__track && (poke.n = (poke.n || 0) + 1) <= 30) window.__track("yarn_poke", { hit: !!target, expr: target ? target.plugin.draw.expr || null : null, n: poke.n });
-    // 기울기 안내 팝업은 띄우지 않는다. 설정 > 화면 효과에서만 켠다
-    if (false && poke.n === 5 && window.__askTilt) setTimeout(window.__askTilt, 500);
     if (target) {
       M.Body.setVelocity(target, { x: target.velocity.x * .5, y: -6 });
       if (target.plugin.draw.text) say(target, target.plugin.draw.text);
