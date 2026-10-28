@@ -8,3 +8,6 @@ create table if not exists public.blocks (
   primary key (anon_id, blocked_anon)
 );
 alter table public.blocks enable row level security;  -- 서버 비밀 키로만 읽고 쓴다
+
+-- 신고 기타에 적은 말
+alter table public.reports add column if not exists note text;

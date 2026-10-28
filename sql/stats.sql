@@ -81,7 +81,7 @@ revoke all on all tables in schema stats from public, anon, authenticated;
 -- 7) 새 설문(v2): 표정 점수 분포
 create or replace view stats."설문 만족도" as
 select (answers->>'score')::int as "점수",
-  case (answers->>'score')::int when 1 then '별로예요' when 2 then '조금 아쉬워요' when 3 then '보통이에요' when 4 then '괜찮아요' when 5 then '좋아요' end as "표정",
+  case (answers->>'score')::int when 1 then '별로예요' when 2 then '아쉬워요' when 3 then '보통이에요' when 4 then '괜찮아요' when 5 then '좋아요' end as "표정",
   count(*) as "응답 수"
 from public.surveys where answers->>'v' = '2'
 group by 1, 2 order by 1;

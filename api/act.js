@@ -73,8 +73,14 @@ module.exports = async function handler(req, res) {
       // 신고 사유는 정해 둔 것 중 하나만 받는다. reason 칸이 아직 없으면(SQL 실행 전) 사유 없이 저장한다
       const REASONS = ["누군지 알아볼 수 있는 정보가 있어요", "욕설이나 혐오 표현이 있어요", "광고나 도배 같아요", "위험해 보여요, 도움이 필요해 보여요", "기타"];
       const reason = REASONS.indexOf(b.reason) >= 0 ? b.reason : null;
+      // 기타를 고르면 적은 말(200자까지)도 남긴다. note 칸이 없으면(SQL 실행 전) 빼고 저장한다
+      const note = reason === "기타" && typeof b.note === "string" && b.note.trim() ? b.note.trim().slice(0, 200) : null;
       if (!(mine.data && mine.data.length)) {
-        const w = await db.q("POST", "reports", reason ? { entry_id: b.entry, anon_id: anon, reason: reason } : { entry_id: b.entry, anon_id: anon }, { Prefer: "return=minimal" });
+        const row = { entry_id: b.entry, anon_id: anon };
+        if (reason) row.reason = reason;
+        if (note) row.note = note;
+        let w = await db.q("POST", "reports", row, { Prefer: "return=minimal" });
+        if (!w.ok && note) { delete row.note; w = await db.q("POST", "reports", row, { Prefer: "return=minimal" }); }
         if (!w.ok && reason) await db.q("POST", "reports", { entry_id: b.entry, anon_id: anon }, { Prefer: "return=minimal" });
       }
       // 서로 다른 사람 세 명이 신고하면 모두에게서 숨긴다
