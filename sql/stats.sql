@@ -63,6 +63,7 @@ select case q.key when 'lighter' then '1. 마음이 가벼워졌나' when 'tone'
     when 'others' then '3. 비슷한 고민 보고 싶나' when 'again' then '4. 또 쓸 것 같나' else q.key end as "질문",
   q.value as "답", count(*) as "응답 수"
 from public.surveys s, jsonb_each_text(s.answers::jsonb) q
+where s.answers->>'v' is null and s.answers->>'kind' is null  -- 예전 설문만 (새 설문, 답 피드백 제외)
 group by 1, 2 order by 1, 3 desc;
 
 -- 6) 지도 반응: 공감과 신고가 많은 고민 (가린 글만)
