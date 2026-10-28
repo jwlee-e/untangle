@@ -258,8 +258,11 @@
   .sheet h2 { margin: 0; font-size: var(--t-title-fs); font-weight: var(--t-title-fw); line-height: var(--t-title-lh);}
   .sheet p { color: var(--ink-2); word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
   .sheet > .btn { margin-top: 12px; }
-  .sv-sheet { position: relative; padding-top: 0; }
-  .sv-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 -20px; padding: 24px 12px 8px 20px; background: var(--paper); }
+  .sv-sheet { position: relative; padding: 0 !important; gap: 0 !important; overflow: hidden !important; display: flex; flex-direction: column; }
+  .sv-head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 24px 12px 8px 20px; }
+  .sv-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 12px; padding: 4px 20px 16px; }
+  .sv-scrim { bottom: auto !important; height: var(--vh, 100%); }
+  .sv-sheet.typing .sv-foot { display: none; }
   .sheet .sv-x { flex: none; color: var(--ink-2); }
   .sv-sub { margin-top: -6px; color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh); }
   .sv-faces { display: flex; justify-content: space-between; margin-top: 8px; }
@@ -277,8 +280,7 @@
   .sv-sheet .chip.on { color: var(--ink); border-color: var(--ink); font-weight: 700; }
   .sv-sheet .sv-note { display: block; width: 100%; min-height: 64px; border: 0; border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 16px; line-height: 22px; background: var(--gray-200); color: var(--ink); resize: none; outline: none; }
   .sv-sheet .sv-note[hidden] { display: none; }
-  .sv-sheet { padding-bottom: 0 !important; }
-  .sv-foot { position: sticky; bottom: 0; z-index: 2; margin: 4px -20px 0; padding: 12px 20px calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--paper); box-shadow: 0 -1px 0 rgba(25,26,44,.063); }
+  .sv-foot { flex: none; padding: 12px 20px calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--paper); box-shadow: 0 -1px 0 rgba(25,26,44,.063); }
   .sheet ul { margin: 0; padding-left: 18px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .row { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-top: 1px solid var(--rule); font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .sheet { max-height: calc(100% - 48px); overflow-y: auto; overscroll-behavior: contain}
@@ -1541,7 +1543,14 @@
         close(); syncSurveyDot(); toast("고마워요. 더 낫게 만들게요");
       });
       var foot = el("div", "sv-foot"); foot.append(send);
-      sh.append(faces, group("좋았던 점", SV_GOOD, good, noteGood), group("아쉬웠던 점", SV_BAD, bad, noteBad), foot);
+      var body = el("div", "sv-body"); body.append(faces, group("좋았던 점", SV_GOOD, good, noteGood), group("아쉬웠던 점", SV_BAD, bad, noteBad));
+      sh.append(body, foot);
+      var scrim = sh.parentElement; if (scrim) scrim.classList.add("sv-scrim");
+      // 기타 입력 중에는 버튼을 숨기고(키보드 위로 올리지 않음) 입력칸이 보이게 스크롤
+      [noteGood, noteBad].forEach(function (t) {
+        t.addEventListener("focus", function () { sh.classList.add("typing"); setTimeout(function () { t.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); }, 280); });
+        t.addEventListener("blur", function () { setTimeout(function () { if (!sh.contains(document.activeElement) || document.activeElement.tagName !== "TEXTAREA") sh.classList.remove("typing"); }, 0); });
+      });
     });
   });
 
