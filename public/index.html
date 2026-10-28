@@ -217,9 +217,6 @@
   .dock-row .field > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
   .map-btn { width: 56px; height: 56px; flex: none; border-radius: 16px; border: 2px solid rgba(75,79,134,0.5); background: #D9DFC8 url(./ch/map-tile.webp) center / cover no-repeat border-box; color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: transform .12s ease}
   .map-btn:active { transform: scale(.96)}
-  .map-btn.b-white { border-color: #fff}
-  /* 임시: 버튼 테두리 비교용 (확정되면 지운다) */
-  .tmp-tg { margin: 10px 0 0 12px; height: 30px; padding: 0 12px; border: 1px dashed var(--pencil); border-radius: 9999px; background: var(--paper); color: var(--pencil); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer}
 
   /* 상태별 보이기 */
   .app:not([data-state="home"]) .hero { display: none}
@@ -589,7 +586,7 @@
 
 <div class="app" id="app" data-state="home">
   <header class="bar">
-    <span class="sr">사실은 별거 아냐</span><span><button class="tmp-tg" id="tmpBorder" type="button">비교용 · 테두리 A</button></span>
+    <span class="sr">사실은 별거 아냐</span><span aria-hidden="true"></span>
     <span class="bar-r"><button class="icon" id="surveyBtn" type="button" aria-label="의견 남기기"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7M17 12H7"/></svg><i class="dot" id="surveyDot" aria-hidden="true"></i></button>
     <button class="icon" id="settingsBtn" type="button" aria-label="설정"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
   </header>
@@ -1814,8 +1811,6 @@
     return close;
   }
   var settingsOpen = false;
-  // 임시: 나눔터 버튼 테두리 A(연필 50%) / B(흰색) 비교
-  $("#tmpBorder").addEventListener("click", function () { var on = $("#mapBtn").classList.toggle("b-white"); this.textContent = "비교용 · 테두리 " + (on ? "B" : "A"); });
   $("#settingsBtn").addEventListener("click", function () {
     track("settings_open");
     if (settingsOpen) return; settingsOpen = true;
@@ -3076,7 +3071,7 @@ function drawPose(ctx, P, opt) {
 (function () {
   "use strict";
   var M = window.Matter;
-  var C = { paper: "#F8F9FE", bub: "#EDEEF6", pencil: "#4B4F86", ink: "#17182A", shade: "#D7DCF3", dark: "#B7BFE6" };
+  var C = { paper: "#F8F9FE", bub: "#DCDDE9", pencil: "#4B4F86", ink: "#17182A", shade: "#D7DCF3", dark: "#B7BFE6" };
   var FONT = '"Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif';
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
