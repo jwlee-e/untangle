@@ -261,8 +261,9 @@
   .sv-sheet { position: relative; padding: 0 !important; gap: 0 !important; overflow: hidden !important; display: flex; flex-direction: column; }
   .sv-head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 24px 12px 8px 20px; }
   .sv-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 12px; padding: 4px 20px 16px; }
-  .sv-scrim { bottom: auto !important; height: var(--vh, 100%); }
+  .sv-scrim { bottom: auto !important; top: var(--vvt, 0px) !important; height: var(--vh, 100%); }
   .sv-sheet.typing .sv-foot { display: none; }
+  .sv-sheet.typing .sv-body { padding-bottom: max(16px, calc(var(--vh, 100vh) - 200px)); }
   .sheet .sv-x { flex: none; color: var(--ink-2); }
   .sv-sub { margin-top: -6px; color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh); }
   .sv-faces { display: flex; justify-content: space-between; margin-top: 8px; }
@@ -779,6 +780,7 @@
     if (open !== kbOpen) { kbOpen = open; document.getElementById("app").classList.toggle("kb-open", open); }
     syncTyping();
     document.documentElement.style.setProperty("--vh", Math.round(h) + "px");
+    document.documentElement.style.setProperty("--vvt", Math.max(0, Math.round(vv ? vv.offsetTop : 0)) + "px");
     window.scrollTo(0, 0);
   }
   if (window.visualViewport) { visualViewport.addEventListener("resize", fitViewport); visualViewport.addEventListener("scroll", fitViewport); }
@@ -1548,7 +1550,10 @@
       var scrim = sh.parentElement; if (scrim) scrim.classList.add("sv-scrim");
       // 기타 입력 중에는 버튼을 숨기고(키보드 위로 올리지 않음) 입력칸이 보이게 스크롤
       [noteGood, noteBad].forEach(function (t) {
-        t.addEventListener("focus", function () { sh.classList.add("typing"); setTimeout(function () { t.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); }, 280); });
+        // 키보드 높이를 못 읽는 환경(앱 안 웹뷰 등)도 있어서, 입력칸을 시트 위쪽(헤더 바로 아래)으로 끌어올린다
+        function pin() { if (document.activeElement !== t) return; body.scrollTop += t.getBoundingClientRect().top - body.getBoundingClientRect().top - 64; }
+        t.addEventListener("focus", function () { sh.classList.add("typing"); [0, 120, 350, 700].forEach(function (ms) { setTimeout(pin, ms); }); });
+        if (window.visualViewport) visualViewport.addEventListener("resize", function () { setTimeout(pin, 30); });
         t.addEventListener("blur", function () { setTimeout(function () { if (!sh.contains(document.activeElement) || document.activeElement.tagName !== "TEXTAREA") sh.classList.remove("typing"); }, 0); });
       });
     });
