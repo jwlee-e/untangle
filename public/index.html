@@ -481,7 +481,7 @@
   .pick-i { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: var(--ink-2); text-align: left; word-break: keep-all; cursor: pointer; font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .pick-i + .pick-i { border-top: 2px solid var(--pop, var(--gray-200))}
   .pick-i svg { flex: none; opacity: 0; color: var(--ink)}
-  .pick-i[aria-checked="true"] { font-weight: 700; color: var(--ink); background: var(--rule)}
+  .pick-i[aria-checked="true"] { font-weight: 700; color: var(--ink)}
   .pick-i[aria-checked="true"] svg { opacity: 1}
   .mp-rp-n { margin: -4px 2px 0; color: var(--ink-3); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   @media (prefers-reduced-motion: reduce) { .mp-as { animation: none} }
@@ -2085,7 +2085,7 @@
   }
   // 두 장을 위아래로 펼치기 / 다시 겹치기: t=0 겹침, t=1 펼침. 손가락을 따라 t가 바뀌고, 놓으면 가까운 쪽으로 간다
   var fuT = 0, fuAnim = 0;
-  function fuFullH() { var h = paper.style.height; paper.style.height = ""; var f = paper.scrollHeight; paper.style.height = h; return f; }
+  function fuFullH() { var h = paper.style.height; paper.style.height = ""; var f = paper.offsetHeight; paper.style.height = h; return f; }
   function fuApply(t) {
     var pp = $("#paper2"); if (!fu || !pp) return;
     fuT = Math.max(0, Math.min(1, t));
