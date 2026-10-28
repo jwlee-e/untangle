@@ -96,6 +96,7 @@
   .app.fu:has(#paper2.sent) .stage { overflow-y: auto; touch-action: pan-y; }
   .app.fu.opening .stage { overflow: hidden !important; touch-action: none !important; }
   .app.fu:not(.opening):has(#paper2.sent) .stage.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent); mask-image: linear-gradient(#000 calc(100% - 40px), transparent); }
+  .app.fu #written.can-open { cursor: default; }
   .written.can-open { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   /* 그래도 넘치면 쪽지를 스크롤하고, 아래를 살짝 흐리게 */
   .app[data-state="result"]:not(.fu) .stage { overflow-y: auto; overscroll-behavior: contain; margin: -8px -20px 0; padding: 12px 20px 16px; }
@@ -166,7 +167,8 @@
   .dock { flex: none; padding-top: 12px; display: flex; flex-direction: column; gap: 8px}
   .btn { width: 100%; min-height: 52px; border: 0; border-radius: 12px; background: var(--ink); color: var(--bg); cursor: pointer; transition: transform .12s ease; font-size: var(--t-btn-l-fs); font-weight: var(--t-btn-l-fw); line-height: var(--t-btn-l-lh);}
   .btn:active { transform: scale(.985)}
-  .btn:disabled { opacity: .28; cursor: default; transform: none}
+  .btn:disabled { opacity: 1; background: rgba(25,26,44,.173); color: rgba(255,255,255,.7); cursor: default; transform: none}
+  .mp .btn:disabled { background: rgba(31,28,22,.173); }
   .btn.ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink)}
   .text-btn { min-height: 44px; border: 0; background: transparent; color: var(--ink-2); text-decoration: underline; cursor: pointer; font-size: var(--t-btn-m-fs); font-weight: var(--t-btn-m-fw); line-height: var(--t-btn-m-lh);}
   .share { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; cursor: pointer}
@@ -400,7 +402,7 @@
   .pop-a .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink)}
   /* 팝업 아래 버튼: 왼쪽은 닫는 쪽(연하게), 오른쪽은 하는 쪽(진하게) */
   .pop-foot { display: flex; flex-direction: row; align-items: stretch; gap: 8px; margin-top: 4px}
-  .pop-foot > button { flex: 1; min-width: 0; min-height: 52px; margin: 0}
+  .pop-foot > button { flex: 1; min-width: 0; min-height: 48px; margin: 0; font-size: var(--t-btn-m-fs); line-height: var(--t-btn-m-lh)}
   .btn.sub { background: var(--gray-400); color: var(--ink)}
   .sv-box .chip { background: transparent; border-color: rgba(25,26,44,0.298)}
   .sv-box .chip.on, .pop-a .chip.on { background: transparent; color: var(--ink); border: 1px solid var(--ink); padding: 0 14px; font-weight: 700}
@@ -832,6 +834,7 @@
   }
   function toggleWritten(e) {
     var node = e.currentTarget; if (!node.classList.contains("can-open")) return;
+    if (fu && node === written) return;
     e.stopPropagation();
     var open = node.classList.toggle("clamp") === false; node.setAttribute("aria-expanded", open ? "true" : "false");
     track("written_toggle", { open: open });
@@ -2005,6 +2008,7 @@
     if (!current || fu) return;
     track("follow_open", { type: current.type });
     fu = { stage: "write", q: null, asks: current.asks || DEFAULT_ASKS };
+    if (written.classList.contains("can-open")) { written.classList.add("clamp"); written.setAttribute("aria-expanded", "false"); }
     var pp = el("article", "paper paper2"); pp.id = "paper2";
     pp.innerHTML = '<svg class="edge" aria-hidden="true"></svg><div class="q-row"><span class="q" id="fuQ">아직 고민이 남았나요?</span><button class="fu-back" id="fuBack" type="button">취소</button>' +
       '</div>' +
