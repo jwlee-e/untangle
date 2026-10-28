@@ -96,7 +96,6 @@
   .app.fu:has(#paper2.sent) .stage { overflow-y: auto; touch-action: pan-y; }
   .app.fu.opening .stage { overflow: hidden !important; touch-action: none !important; }
   .app.fu:not(.opening):has(#paper2.sent) .stage.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent); mask-image: linear-gradient(#000 calc(100% - 40px), transparent); }
-  .app.fu #written.can-open { cursor: default; }
   .written.can-open { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   /* 그래도 넘치면 쪽지를 스크롤하고, 아래를 살짝 흐리게 */
   .app[data-state="result"]:not(.fu) .stage { overflow-y: auto; overscroll-behavior: contain; margin: -8px -20px 0; padding: 12px 20px 16px; }
@@ -834,7 +833,7 @@
   }
   function toggleWritten(e) {
     var node = e.currentTarget; if (!node.classList.contains("can-open")) return;
-    if (fu && node === written) return;
+    if (fu && node === written && fuT < 1) return; // 겹친 상태에서 누르면 펼치기만
     e.stopPropagation();
     var open = node.classList.toggle("clamp") === false; node.setAttribute("aria-expanded", open ? "true" : "false");
     track("written_toggle", { open: open });
@@ -2090,7 +2089,9 @@
   }
   // 두 장을 위아래로 펼치기 / 다시 겹치기: t=0 겹침, t=1 펼침. 손가락을 따라 t가 바뀌고, 놓으면 가까운 쪽으로 간다
   var fuT = 0, fuAnim = 0;
-  function fuFullH() { var h = paper.style.height; paper.style.height = ""; var f = paper.offsetHeight; paper.style.height = h; return f; }
+  function fuFullH() { var h = paper.style.height; paper.style.height = ""; var f = paper.offsetHeight; paper.style.height = h;
+    if (fu) { if (fu.baseH == null) fu.baseH = f; f = Math.min(f, fu.baseH + 78); }
+    return f; }
   function fuApply(t) {
     var pp = $("#paper2"); if (!fu || !pp) return;
     fuT = Math.max(0, Math.min(1, t));
