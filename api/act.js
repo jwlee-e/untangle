@@ -83,10 +83,10 @@ module.exports = async function handler(req, res) {
         if (!w.ok && note) { delete row.note; w = await db.q("POST", "reports", row, { Prefer: "return=minimal" }); }
         if (!w.ok && reason) await db.q("POST", "reports", { entry_id: b.entry, anon_id: anon }, { Prefer: "return=minimal" });
       }
-      // 서로 다른 사람 세 명이 신고하면 모두에게서 숨긴다
+      // 서로 다른 사람 다섯 명이 신고하면 모두에게서 숨긴다
       const all = await db.q("GET", "reports?select=anon_id&entry_id=eq." + b.entry);
       const who = new Set((all.data || []).map(function (r) { return r.anon_id; }));
-      if (who.size >= 3) await db.q("PATCH", "entries?id=eq." + b.entry, { hidden: true }, { Prefer: "return=minimal" });
+      if (who.size >= 5) await db.q("PATCH", "entries?id=eq." + b.entry, { hidden: true }, { Prefer: "return=minimal" });
       return res.status(200).json({ ok: true });
     }
     if (b.a === "block") {
