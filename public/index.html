@@ -363,17 +363,15 @@
   .ab-ball { width: 54px; height: auto}
   .ab-pay { margin: 20px 0 0; font-size: var(--t-title-fs); font-weight: var(--t-title-fw); line-height: var(--t-title-lh);}
   .ab-share p { margin: 0; word-break: keep-all}
-  .ab-share h2 { margin: 0 0 8px; color: var(--pencil); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
-  .ab-sh-pay { font-size: var(--t-appbar-fs); font-weight: var(--t-appbar-fw); line-height: var(--t-appbar-lh);}
-  .ab-sh-t { margin-top: 8px !important; color: var(--ink); font-size: var(--t-body-fs); line-height: var(--t-body-lh);}
-  .ab-shot { display: block; width: 100%; max-width: 360px; height: auto; margin: 20px 0 0; border-radius: 16px; box-shadow: 0 0 0 1px rgba(25,26,44,0.063)}
+  .ab-sh-t { color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh);}
+  .ab-shot { display: block; width: 100%; max-width: 360px; height: auto; margin: 16px 0 0; border-radius: 16px; box-shadow: 0 0 0 1px rgba(25,26,44,0.063)}
   .ab-sh-s { margin-top: 12px !important; color: var(--ink-2); font-size: var(--t-desc-fs); line-height: var(--t-desc-lh);}
   .ab-pre { margin: 24px 0 0; color: var(--ink-2); font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .ab-pay2 { margin-top: 2px}
   .ab-sec { margin-top: 56px; padding-top: 28px; border-top: 1px dashed var(--rule-paper)}
   .ab h2 { margin: 0 0 14px; font-size: var(--t-appbar-fs); font-weight: var(--t-appbar-fw); line-height: var(--t-appbar-lh);}
   .ab-chips { display: flex; flex-wrap: wrap; gap: 8px}
-  .ab-chips span { padding: 8px 12px; border-radius: 9999px; background: var(--paper); color: var(--ink-2); font-size: var(--t-btn-s-fs); font-weight: var(--t-btn-s-fw); line-height: var(--t-btn-s-lh);}
+  .ab-chips span { position: relative; padding: 8px 12px; color: var(--ink-2); font-size: var(--t-btn-s-fs); font-weight: 500; line-height: var(--t-btn-s-lh);}
   .ab-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px}
   .ab-list li { color: var(--ink-2); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .ab-list b { color: var(--ink)}
@@ -710,9 +708,8 @@
       </section>
 
       <section class="ab-sec ab-share">
-        <h2>고민 나눔터</h2>
-        <p class="ab-sh-pay">적은 고민은 어디로 갈까요?</p>
-        <p class="ab-sh-t">이름 같은 정보를 가린 채 익명으로 고민 나눔터에 놓여요.</p>
+        <h2>적은 고민은 어디로 갈까요?</h2>
+        <p class="ab-sh-t">이름 같은 정보를 가린 채 익명으로 고민 나눔터에 놓여요. 둘러보다 보면, 다들 비슷한 걸로 맴돌고 있다는 걸 알게 돼요.</p>
         <img class="ab-shot" src="./ch/ab-map.webp" alt="" width="322" height="272" aria-hidden="true">
         <p class="ab-sh-s">혹시 공감 가는 고민이 있나요? 있으면 표시해 보세요. 누가 했는지는 아무도 몰라요.</p>
       </section>
@@ -720,10 +717,10 @@
       <section class="ab-sec">
         <h2>이럴 때 꺼내 보세요</h2>
         <div class="ab-chips">
-          <span>회의 끝나고도 한마디가 맴돌 때</span>
-          <span>답장을 기다리고 있을 때</span>
-          <span>자기 전에 생각이 꼬리를 물 때</span>
-          <span>내일 일이 벌써 걱정될 때</span>
+          <span class="ab-bub"><svg class="ab-bub-e"></svg>회의 끝나고도 한마디가 맴돌 때</span>
+          <span class="ab-bub"><svg class="ab-bub-e"></svg>답장을 기다리고 있을 때</span>
+          <span class="ab-bub"><svg class="ab-bub-e"></svg>자기 전에 생각이 꼬리를 물 때</span>
+          <span class="ab-bub"><svg class="ab-bub-e"></svg>내일 일이 벌써 걱정될 때</span>
         </div>
       </section>
 
