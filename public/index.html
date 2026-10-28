@@ -84,22 +84,22 @@
   .q-row { display: flex; align-items: center; gap: 4px; margin: 0}
   .q-row .mini-char { width: 34px; height: 36px}
   .q { font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
-  textarea { width: 100%; border: 0; background: transparent; line-height: 28px; padding: 0; resize: none; outline: none; min-height: 112px;
-    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, var(--rule-paper) 27px, var(--rule-paper) 28px); background-attachment: local; font-size: var(--t-body-fs); font-weight: var(--t-body-fw);}
+  textarea { width: 100%; border: 0; background: transparent; line-height: 26px; padding: 0; resize: none; outline: none; min-height: 104px;
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 25px, var(--rule-paper) 25px, var(--rule-paper) 26px); background-attachment: local; font-size: var(--t-body-fs); font-weight: var(--t-body-fw);}
   textarea::placeholder { color: var(--ink-4); opacity: 1}
   .count { align-self: flex-end; color: var(--ink-4); font-variant-numeric: tabular-nums; font-size: var(--t-tiny-fs); font-weight: var(--t-tiny-fw); line-height: var(--t-tiny-lh);}
   .fine { color: var(--ink-3); word-break: keep-all; font-size: var(--t-caption-fs); font-weight: var(--t-caption-fw); line-height: var(--t-caption-lh);}
   .link { border: 0; background: transparent; padding: 0; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; color: inherit}
   /* 답 화면에서 내가 쓴 글은 두 줄까지만. 글을 누르면 펼친다 (답이 항상 첫 화면에 보이게) */
-  .written.clamp { position: relative; max-height: 84px; overflow: hidden; }
-  .written.clamp::after { content: "…"; position: absolute; left: 0; right: 0; top: 56px; height: 28px; background: var(--paper); color: var(--ink-4); }
+  .written.clamp { position: relative; max-height: 78px; overflow: hidden; }
+  .written.clamp::after { content: "…"; position: absolute; left: 0; right: 0; top: 52px; height: 26px; background: var(--paper); color: var(--ink-4); }
   .app.fu:has(#paper2.sent) .stage { overflow-y: auto; touch-action: pan-y; }
   .app.fu:not(.opening):has(#paper2.sent) .stage.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent); mask-image: linear-gradient(#000 calc(100% - 40px), transparent); }
   .written.can-open { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   /* 그래도 넘치면 쪽지를 스크롤하고, 아래를 살짝 흐리게 */
   .app[data-state="result"]:not(.fu) .stage { overflow-y: auto; overscroll-behavior: contain; margin: -8px -20px 0; padding: 12px 20px 16px; }
   .app[data-state="result"]:not(.fu) .stage.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent); mask-image: linear-gradient(#000 calc(100% - 40px), transparent); }
-  .written { line-height: 28px; white-space: pre-wrap; overflow-wrap: anywhere; word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw);}
+  .written { line-height: 26px; white-space: pre-wrap; overflow-wrap: anywhere; word-break: keep-all; font-size: var(--t-body-fs); font-weight: var(--t-body-fw);}
   .ans { border-top: 1px dashed rgba(25,26,44,0.455); margin-top: 6px; padding-top: 14px; display: flex; flex-direction: column; gap: 6px}
   .k { color: var(--ink-3); font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
   .reply { word-break: keep-all; overflow-wrap: anywhere; font-size: var(--t-body-fs); font-weight: var(--t-body-fw); line-height: var(--t-body-lh);}
@@ -124,7 +124,7 @@
   /* 펼쳤을 때 화면 밖으로 나가는 앞 쪽지는 아래로 갈수록 흐려진다 */
   .app.fu.opening .stage { -webkit-mask-image: linear-gradient(#000 calc(100% - 96px), transparent); mask-image: linear-gradient(#000 calc(100% - 96px), transparent)}
   .paper2 { position: relative; z-index: 1; flex: none; margin-top: 14px}
-  .app[data-state="result"] .paper2 textarea { display: block; height: 84px; min-height: 0}
+  .app[data-state="result"] .paper2 textarea { display: block; height: 78px; min-height: 0}
   .app[data-state="result"] .paper2 .count-row { display: flex}
   .paper2.sent textarea, .paper2.sent .count-row, .paper2.sent .fu-back { display: none !important}
   .fu-back { flex: none; margin: -8px -8px -8px 0; min-height: 36px; padding: 0 8px; border: 0; background: transparent; font: inherit; color: var(--ink-3); cursor: pointer; border-radius: 8px; font-size: var(--t-btn-s-fs); font-weight: var(--t-btn-s-fw); line-height: var(--t-btn-s-lh);}
@@ -227,17 +227,17 @@
      글칸에 커서가 있으면(= 폰에선 키보드가 올라와 있음) 버튼을 예시 바로 밑으로 올리고 화면을 줄여서, 키보드에 가리지 않게.
      Claude 앱처럼 페이지가 키보드 높이를 알 수 없는 곳에서도 동작하도록 키보드 크기 대신 커서 여부로 판단한다 */
   .app[data-state="write"] .stage { flex: none}
-  .app[data-state="write"] textarea { height: 112px; min-height: 0}
+  .app[data-state="write"] textarea { height: 104px; min-height: 0}
   .app[data-state="write"] .dock { margin-top: auto; padding-top: 10px}
   .app[data-state="write"].typing .dock { margin-top: 0; padding-top: 12px}
-  .app[data-state="write"].typing textarea { height: 84px}
+  .app[data-state="write"].typing textarea { height: 78px}
   .app[data-state="write"].typing .fine { display: none}
 
   .app:not([data-state="home"]) .foot { display: none}
   /* 구겨 버리는 동안엔 다른 선택지를 치운다 */
   .app.discarding :is(.dock, #backBtn) { visibility: hidden}
   /* 키보드가 감지되면: 종이를 넓히고 버튼은 키보드 바로 위 */
-  .app.kb-open[data-state="write"] textarea { height: 84px}
+  .app.kb-open[data-state="write"] textarea { height: 78px}
   .app.kb-open[data-state="write"] .dock { margin-top: auto; margin-bottom: 0; padding-top: 10px; animation: kbup .18s ease-out}
   .app.kb-open[data-state="write"] .fine { display: none}
   @keyframes kbup { from { transform: translateY(12px); opacity: .6} }
@@ -478,10 +478,10 @@
   .mp-as-i:active, .mp-as-x:active { background: rgba(31,28,22,0.047)}
   .mp-as-x { min-height: 56px; border: 0; border-radius: 16px; background: var(--pop); font: inherit; color: var(--ink); cursor: pointer; font-size: var(--t-btn-m-fs); font-weight: var(--t-btn-m-fw); line-height: var(--t-btn-m-lh);}
   .pick-l { display: flex; flex-direction: column; background: var(--paper, var(--gray-100)); border-radius: 12px; overflow: hidden}
-  .pick-i { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: var(--ink); text-align: left; word-break: keep-all; cursor: pointer; font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
+  .pick-i { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: var(--ink-2); text-align: left; word-break: keep-all; cursor: pointer; font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
   .pick-i + .pick-i { border-top: 2px solid var(--pop, var(--gray-200))}
   .pick-i svg { flex: none; opacity: 0; color: var(--ink)}
-  .pick-i[aria-checked="true"] { font-weight: 700}
+  .pick-i[aria-checked="true"] { font-weight: 700; color: var(--ink); background: var(--rule)}
   .pick-i[aria-checked="true"] svg { opacity: 1}
   .mp-rp-n { margin: -4px 2px 0; color: var(--ink-3); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   @media (prefers-reduced-motion: reduce) { .mp-as { animation: none} }
@@ -833,7 +833,9 @@
     var node = e.currentTarget; if (!node.classList.contains("can-open")) return;
     e.stopPropagation();
     var open = node.classList.toggle("clamp") === false; node.setAttribute("aria-expanded", open ? "true" : "false");
-    track("written_toggle", { open: open }); requestAnimationFrame(stageMore);
+    track("written_toggle", { open: open });
+    if (fu && node === written) { fu.fullH = null; fuApply(fuT); }
+    requestAnimationFrame(stageMore);
   }
   function stageMore() { var st = $("#stage"); if (!st) return; st.classList.toggle("more", st.scrollHeight - st.scrollTop - st.clientHeight > 4); }
   written.addEventListener("click", toggleWritten);
