@@ -1,4 +1,5 @@
 // 지도에 띄울 다른 사람들의 고민. 공유를 켠 글 중 가린 글(masked_text)만 내보낸다.
+// 익명 번호는 내보내지 않고, 요청한 사람 본인의 글인지(mine)만 그 사람에게 알려 준다.
 // 부풀려진 생각(small, pressure)만 내보낸다. 무거운 글(heavy), 위험 신호(risk), 해를 끼친 글(skip), 좋은 일·장난·애매한 글, 신고로 숨긴 글은 내보내지 않는다. (daily, regret은 예전 말투 때 저장된 글) 익명 번호도 내보내지 않는다.
 const db = require("./_db");
 
@@ -28,7 +29,7 @@ module.exports = async function handler(req, res) {
       const ids = (Array.isArray(bl.data) ? bl.data : []).map(function (x) { return x.blocked_anon; }).filter(db.isAnon);
       if (ids.length) notIn = "&anon_id=not.in.(" + ids.map(function (x) { return '"' + x + '"'; }).join(",") + ")";
     }
-    const r = await db.q("GET", "entries?select=id,masked_text,created_at,likes(count)" +
+    const r = await db.q("GET", "entries?select=id,anon_id,masked_text,created_at,likes(count)" +
       "&shared=eq.true&hidden=eq.false&masked_text=not.is.null&reply_type=in.(small,pressure,daily,regret)" + notIn +
       (okBefore ? "&created_at=lt." + encodeURIComponent(before) : "") + "&order=created_at.desc&limit=" + limit, null, okBefore ? null : { Prefer: "count=exact" });
     const rows = Array.isArray(r.data) ? r.data : [];
@@ -38,7 +39,7 @@ module.exports = async function handler(req, res) {
       liked = new Set((l.data || []).map(function (x) { return x.entry_id; }));
     }
     const items = rows.map(function (x) {
-      return { id: x.id, text: x.masked_text, nick: nickOf(x.id), likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.id), at: x.created_at };
+      return { id: x.id, text: x.masked_text, nick: nickOf(x.id), likes: (x.likes && x.likes[0] && x.likes[0].count) || 0, liked: liked.has(x.id), face: faceOf(x.id), at: x.created_at, mine: db.isAnon(anon) && x.anon_id === anon };
     });
     const m = String(r.range || "").match(/\/(\d+)$/), total = m ? Number(m[1]) : null;
     const more = okBefore ? rows.length === limit : (total != null ? total > rows.length : rows.length === limit);

@@ -97,6 +97,12 @@ module.exports = async function handler(req, res) {
       if (who && who !== anon) await db.q("POST", "blocks", { anon_id: anon, blocked_anon: who }, { Prefer: "resolution=ignore-duplicates,return=minimal" });
       return res.status(200).json({ ok: true });
     }
+    if (b.a === "unshare") {
+      // 내 고민 하나만 지도에서 내린다. 내 익명 번호로 쓴 글만 바뀐다
+      if (!db.isUuid(b.entry)) return res.status(400).json({ code: "entry" });
+      await db.q("PATCH", "entries?id=eq." + b.entry + "&anon_id=eq." + encodeURIComponent(anon), { shared: false }, { Prefer: "return=minimal" });
+      return res.status(200).json({ ok: true });
+    }
     if (b.a === "share") {
       // 공유를 끄면 지금까지 적은 고민도 지도에서 모두 내린다
       await db.q("PATCH", "entries?anon_id=eq." + encodeURIComponent(anon), { shared: !!b.on }, { Prefer: "return=minimal" });
