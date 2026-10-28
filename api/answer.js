@@ -5,9 +5,26 @@ const TONE = require("./tone.json");
 const db = require("./_db");
 
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-5-5";
-const DAILY_LIMIT = Number(process.env.DAILY_LIMIT || 10); // 한 사람(IP)이 하루에 받을 수 있는 답 수
+const crypto = require("crypto");
+const DAILY_LIMIT = Number(process.env.DAILY_LIMIT || 10);       // 한 기기(익명 번호)가 하루에 받을 수 있는 답 수 (이어서 묻기 포함)
+const DAILY_LIMIT_IP = Number(process.env.DAILY_LIMIT_IP || 40); // 한 IP가 하루에 받을 수 있는 답 수. 통신사·회사 망은 여러 사람이 IP를 나눠 써서 넉넉히 둔다
 
-// 아주 단순한 하루 사용 제한. 서버가 여러 대로 나뉘면 정확하지 않으므로, 사람을 많이 받기 전에 저장소 기반으로 바꿔야 한다.
+// 하루 횟수는 Supabase(daily_hits 표, hit_daily 함수)에 센다: 서버가 여러 대로 나뉘거나 다시 켜져도 숫자가 이어진다.
+// IP는 그대로 두지 않고 한 방향으로 바꾼 값(해시)만 쓴다. 표가 아직 없으면 아래 메모리 방식으로 센다
+function ipKey(ip) { return "i:" + crypto.createHash("sha256").update("untangle:" + ip).digest("hex").slice(0, 32); }
+async function hitDaily(key) {
+  const r = await db.q("POST", "rpc/hit_daily", { p_key: key }).catch(function () { return null; });
+  return r && r.ok && typeof r.data === "number" ? r.data : null;
+}
+async function overDaily(anon, ip) {
+  if (db.ready()) {
+    const counts = await Promise.all([db.isAnon(anon) ? hitDaily("a:" + anon) : null, hitDaily(ipKey(ip))]);
+    if (counts[0] != null || counts[1] != null) return (counts[0] || 0) > DAILY_LIMIT || (counts[1] || 0) > DAILY_LIMIT_IP;
+  }
+  return overLimit(ip);
+}
+
+// 저장소를 못 쓸 때만 쓰는 메모리 방식 (서버 한 대 기준이라 정확하지 않다)
 const hits = new Map();
 function overLimit(ip) {
   const day = new Date().toISOString().slice(0, 10);
@@ -62,7 +79,9 @@ function pickJson(s) {
 // Claude 요청. 이 앱의 답은 짧아서 '생각 단계'가 필요 없다. 켜져 있으면 한도를 생각에 다 써서 답이 비어 버린다
 function claudeBody(prompt, strict, noThinkingParam) {
   const b = {
-    model: MODEL, max_tokens: 1500, system: TONE.guide.join("\n"),
+    model: MODEL, max_tokens: 1500,
+    // 말투 지시문은 매번 같으니 캐시해 둔다: 5분 안에 다음 요청이 오면 지시문 값이 1/20로 줄어든다
+    system: [{ type: "text", text: TONE.guide.join("\n"), cache_control: { type: "ephemeral" } }],
     messages: [{ role: "user", content: prompt + (strict ? "\n\n다른 말 없이 JSON 객체 하나만 출력한다. 줄바꿈 없이 한 줄로 쓴다." : "") }]
   };
   if (!noThinkingParam) b.thinking = { type: "disabled" };
@@ -137,7 +156,7 @@ module.exports = async function handler(req, res) {
   } else prompt = buildPrompt(text, avoid);
 
   const ip = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
-  if (overLimit(ip)) return res.status(429).json({ code: "rate_limited" });
+  if (await overDaily(body && body.anon, ip)) return res.status(429).json({ code: "rate_limited" });
 
   try {
     const r = await postClaude(key, prompt, false);

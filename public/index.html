@@ -365,7 +365,6 @@
   .pg-body .help b { white-space: nowrap; font-variant-numeric: tabular-nums}
 
   .pg-h { margin: 24px 0 8px; font-size: var(--t-heading-fs); font-weight: var(--t-heading-fw); line-height: var(--t-heading-lh);}
-  .pg-draft { margin: 4px 0 8px; padding: 10px 12px; border-radius: 8px; background: var(--paper); color: var(--ink-3); word-break: keep-all; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .pg-body .pg-list { gap: 6px; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   .pg-mail { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 14px; border-radius: 12px; background: var(--paper); margin: 6px 0 10px; font-size: var(--t-body-ui-fs); font-weight: var(--t-body-ui-fw); line-height: var(--t-body-ui-lh);}
 
@@ -1822,26 +1821,25 @@
     }, function () { settingsOpen = false; if (window.__pile && app.dataset.state === "home") window.__pile.resume(); });
   });
   var APP_VERSION = "0.1 (프로토타입)";
-  var DRAFT = "초안이에요. [ ] 안의 내용은 정해지면 채우고, 출시 전에 검토를 받아 주세요.";
   var PRIVACY = [
     ["", "‘사실은 별거 아냐’(이하 ‘서비스’)는 이용자의 개인정보를 소중히 다루며, 개인정보 보호법에 따라 아래와 같이 처리합니다."],
     ["1. 처리하는 정보", ["이용자가 직접 적은 글(최대 100자)과, 그 글로 만들어진 답", "기기마다 무작위로 만든 익명 번호와 무작위 이름", "화면 이용 기록: 어떤 화면에 들어가고 어떤 버튼을 눌렀는지 (적은 글 내용은 포함하지 않습니다)", "공감, 신고(사유 포함), 차단, 의견(설문) 응답", "하루 이용 횟수를 세기 위한 접속 정보(IP 주소)", "서비스 오류를 확인하기 위해 서버에 자동으로 남는 접속 기록", "이름, 전화번호, 이메일, 계정 정보는 받지 않습니다."]],
     ["2. 처리 목적", ["적은 글에 대한 답을 만들어 보여 주기 위해", "한 사람이 하루에 쓸 수 있는 횟수를 지키고, 서비스를 안정적으로 운영하기 위해", "공유를 켠 경우, 적은 고민을 다른 이용자에게 익명으로 보여 주기 위해", "어디가 불편한지 살펴 서비스를 고치고, 익명 통계를 내기 위해"]],
     ["3. 보관 기간", ["적은 글과 답: 지워 달라고 요청할 때까지 보관합니다. 공유를 끄면 다른 이용자에게는 더 이상 보이지 않습니다.", "익명 번호와 화면 이용 기록: 2년이 지나면 지웁니다.", "이용 횟수 정보: 그날이 지나면 지웁니다.", "서버 접속 기록: 호스팅 업체(Vercel)의 기준에 따라 짧게 보관된 뒤 지워집니다."]],
     ["4. 처리를 맡기는 곳", ["Anthropic, PBC — 적은 글을 받아 답을 만듭니다(AI 모델 Claude). 국외(미국)로 전송됩니다.", "Vercel Inc. — 서비스가 돌아가는 서버를 제공합니다. 국외(미국)로 전송됩니다.", "Supabase Inc. — 적은 글과 이용 기록을 저장합니다. 저장 위치는 대한민국 서울입니다."]],
-    ["5. 이용자의 권리", ["저장된 글과 이용 기록을 언제든 지워 달라고 요청할 수 있습니다. [앱 안 ‘내 기록 지우기’ 또는 문의 이메일]", "적은 글을 AI에 보내는 데 동의하지 않으면 서비스를 쓰지 않으면 됩니다."]],
+    ["5. 이용자의 권리", ["저장된 글과 이용 기록을 언제든 지워 달라고 요청할 수 있습니다. 아래 문의 이메일로 알려 주세요.", "적은 글을 AI에 보내는 데 동의하지 않으면 서비스를 쓰지 않으면 됩니다."]],
     ["6. 만 14세 미만", ["만 14세 미만은 이용할 수 없습니다."]],
-    ["7. 개인정보 보호 책임자", ["이름: [운영자 이름]", "연락처: [문의 이메일]"]],
-    ["8. 바뀔 때", ["이 방침이 바뀌면 서비스 안에서 알립니다.", "시행일: [20○○년 ○월 ○일]"]]
+    ["7. 개인정보 보호 책임자", ["이름: 이준우", "연락처: de.jwleee@gmail.com"]],
+    ["8. 바뀔 때", ["이 방침이 바뀌면 서비스 안에서 알립니다.", "시행일: 2026년 10월 28일"]]
   ];
   var TERMS = [
     ["1. 목적", ["이 약관은 ‘사실은 별거 아냐’(이하 ‘서비스’)를 이용하는 데 필요한 조건과 절차를 정합니다."]],
-    ["2. 서비스 내용", ["이용자가 일상의 걱정을 적으면, AI(Claude)가 있었던 일과 커진 생각을 나눈 답을 보여 줍니다.", "하루에 이용할 수 있는 횟수는 정해져 있습니다. [현재 10회]"]],
+    ["2. 서비스 내용", ["이용자가 일상의 걱정을 적으면, AI(Claude)가 있었던 일과 커진 생각을 나눈 답을 보여 줍니다.", "하루에 이용할 수 있는 횟수는 정해져 있습니다(현재 하루 10회)."]],
     ["3. AI 답의 성격", ["답은 AI가 자동으로 만든 것이며, 사실과 다르거나 상황에 맞지 않을 수 있습니다.", "서비스는 의료, 심리 상담, 치료를 대신하지 않으며 진단을 하지 않습니다.", "혼자 감당하기 어려운 일이라면 전문 기관(자살예방상담전화 109 등)의 도움을 받아 주세요."]],
     ["4. 이용 조건", ["만 14세 이상만 이용할 수 있습니다.", "다른 사람의 개인정보를 적거나, 남을 해치거나 법을 어기는 내용을 적어서는 안 됩니다.", "서비스를 자동으로 반복 호출하는 등 정상적인 운영을 방해해서는 안 됩니다."]],
     ["5. 서비스의 변경과 중단", ["서비스는 내용이 바뀌거나, 점검이나 운영 사정으로 잠시 또는 완전히 중단될 수 있습니다."]],
     ["6. 책임의 한계", ["서비스는 AI 답을 바탕으로 한 이용자의 판단과 행동에 대해 책임지지 않습니다. 다만 서비스의 고의나 중대한 과실로 생긴 손해는 예외입니다."]],
-    ["7. 문의", ["[문의 이메일]", "시행일: [20○○년 ○월 ○일]"]]
+    ["7. 문의", ["de.jwleee@gmail.com", "시행일: 2026년 10월 28일"]]
   ];
   var LICENSES = [
     ["Lucide", ["설정·의견 아이콘 모양에 사용", "ISC License · Copyright (c) Lucide Contributors (일부 Feather, MIT · Cole Bemis)"]],
@@ -1850,7 +1848,6 @@
   ];
   function docPage(title, sections) {
     openPage(title, function (body) {
-      if (sections !== LICENSES) body.append(el("p", "pg-draft", DRAFT));
       sections.forEach(function (s) {
         if (s[0]) body.append(el("h3", "pg-h", s[0]));
         if (typeof s[1] === "string") body.append(el("p", "pg-p", s[1]));
@@ -1861,11 +1858,10 @@
   function feedbackPage() {
     openPage("의견 보내기", function (body) {
       body.append(el("p", "pg-p", "답이 이상했거나, 불편했거나, 이런 게 있으면 좋겠다 싶은 게 있으면 편하게 알려 주세요."));
-      var box = el("div", "pg-mail"); box.append(el("span", "", "[문의 이메일]"));
+      var box = el("div", "pg-mail"); box.append(el("span", "", "de.jwleee@gmail.com"));
       var cp = el("button", "link", "복사"); cp.type = "button";
       cp.addEventListener("click", function () { var v = box.firstChild.textContent; try { navigator.clipboard.writeText(v).then(function () { cp.textContent = "복사했어요"; }, function () {}); } catch (e) {} });
       box.append(cp); body.append(box);
-      body.append(el("p", "pg-draft", "받을 이메일 주소가 정해지면 넣을게요."));
     });
   }
   function privacyPage() {
