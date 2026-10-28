@@ -22,7 +22,9 @@
     --gray-00: #FFFFFF; --gray-100: #F8F9FE; --gray-200: #F3F3F9; --gray-300: #EDEEF6; --gray-400: #DCDDE9; --gray-500: #D0D2DF; --gray-600: #AFB2C4; --gray-700: #8689A3; --gray-800: #575A79; --gray-900: #2B2D44; --gray-1000: #191A2C;
     --warm-00: #FFFFFF; --warm-100: #FBFAF6; --warm-200: #F6F4EF; --warm-300: #F1EFE9; --warm-400: #E2DED5; --warm-500: #D7D3CA; --warm-600: #B8B3A8; --warm-700: #908A7D; --warm-800: #635C4F; --warm-900: #332F26; --warm-1000: #1F1C16;
     --t-display-fs: 28px; --t-display-lh: 38px; --t-display-fw: 800; --t-title-fs: 20px; --t-title-lh: 27px; --t-title-fw: 700; --t-appbar-fs: 18px; --t-appbar-lh: 24px; --t-appbar-fw: 700; --t-heading-fs: 16px; --t-heading-lh: 22px; --t-heading-fw: 700; --t-body-fs: 16px; --t-body-lh: 26px; --t-body-fw: 400; --t-body-ui-fs: 16px; --t-body-ui-lh: 22px; --t-body-ui-fw: 500; --t-desc-fs: 14px; --t-desc-lh: 22px; --t-desc-fw: 400; --t-caption-fs: 13px; --t-caption-lh: 18px; --t-caption-fw: 400; --t-tiny-fs: 12px; --t-tiny-lh: 16px; --t-tiny-fw: 400; --t-label-fs: 12px; --t-label-lh: 16px; --t-label-fw: 700; --t-btn-l-fs: 18px; --t-btn-l-lh: 24px; --t-btn-l-fw: 700; --t-btn-m-fs: 16px; --t-btn-m-lh: 22px; --t-btn-m-fw: 700; --t-btn-s-fs: 14px; --t-btn-s-lh: 19px; --t-btn-s-fw: 700; --t-chip-fs: 14px; --t-chip-lh: 19px; --t-chip-fw: 500;
-    --fw-regular: 400; --fw-medium: 500; --fw-bold: 700; --fw-extrabold: 800; --r1: 4px; --r2: 8px; --r3: 12px; --r4: 16px; --r5: 20px; --r6: 24px; --r-full: 9999px; --white-alpha-500: rgba(255,255,255,.376); --line-hand: 2px; --line-thin: 1px;
+    /* 상태 규칙: 누를 수 있으면 배경 대비 진하게, 선택불가는 '읽히지만 잘 안 보이는' 정도로 흐리게.
+       글자 선택불가는 원래 글자색에 --op-disabled를 준다 (아직 쓰는 곳 없음). 버튼 선택불가는 면을 반투명으로 바꾸고 글자는 밝은색을 흐리게 */
+    --op-disabled: .4; --fw-regular: 400; --fw-medium: 500; --fw-bold: 700; --fw-extrabold: 800; --r1: 4px; --r2: 8px; --r3: 12px; --r4: 16px; --r5: 20px; --r6: 24px; --r-full: 9999px; --white-alpha-500: rgba(255,255,255,.376); --line-hand: 2px; --line-thin: 1px;
     --shadow-s1: 0 1px 4px 0 rgba(25,26,44,0.063); --shadow-s2: 0 2px 10px 0 rgba(25,26,44,0.129); --shadow-s3: 0 4px 16px 0 rgba(25,26,44,0.129);
   }
   :root {
@@ -1526,7 +1528,7 @@
         var no = el("button", "text-btn", "안 보낼래요"); no.type = "button"; no.addEventListener("click", close);
         sh.append(ok, no);
       } else {
-        var c = el("button", "btn ghost", "닫기"); c.type = "button"; c.addEventListener("click", close); sh.append(c);
+        var c = el("button", "btn", "닫기"); c.type = "button"; c.addEventListener("click", close); sh.append(c);
       }
     });
   }
