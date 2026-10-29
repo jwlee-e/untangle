@@ -1325,6 +1325,7 @@
     mp.cur = it; mp.bubble = null;
     if (!it) return;
     it.el.classList.add("on");
+    mpStay.n++; track("marker_open", { sample: !!it.sample });
     var liked = readSet("sab:likes");
     var wrap = el("div", "mb-w"); wrap.style.left = it.x + "px"; wrap.style.top = it.y + "px";
     var bb = el("div", "mb"); wrap.append(bb);
@@ -1528,7 +1529,7 @@
   function openMap() {
     var pg = $("#mapPage"); if (!pg.hidden) return;
     app.append(pg); pg.hidden = false; pg.classList.remove("out"); mapBg(true);
-    track("map_open"); mpMovedOnce = false;
+    track("map_open"); mpMovedOnce = false; stayStart();
     mpLoad(); mp.started = false; mp.s = 1; mpSheet(false);
     var v = mpView(); mp.x = v.clientWidth / 2 - MAP_C[0]; mp.y = v.clientHeight / 2 - MAP_C[1]; mpClamp(); mpApply(); mpCount();
     if (window.__pile) window.__pile.pause();
@@ -1541,9 +1542,22 @@
     var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = on ? "#D9DFC8" : "#C5CEEF";
   }
   // 지도는 그대로 둔 채(위치·확대·열린 말풍선) 잠깐 가린다. 쓰기가 끝나 홈으로 오면 다시 보여 준다
+  // 지도에 머문 시간(초)과 그동안 누른 털실 수: 지도가 보이기 시작할 때부터, 가려질 때까지
+  var mpStay = { t: 0, n: 0 };
+  function stayStart() { mpStay.t = Date.now(); mpStay.n = 0; }
+  function stayEnd(how) {
+    if (!mpStay.t) return;
+    var sec = Math.round((Date.now() - mpStay.t) / 1000); mpStay.t = 0;
+    track("map_leave", { sec: Math.min(sec, 3600), markers: mpStay.n, how: how });
+    if (how === "away") flushEvents(true); // 앱을 떠날 때는 바로 보낸다
+  }
+  document.addEventListener("visibilitychange", function () {
+    if ($("#mapPage").hidden) return;
+    if (document.visibilityState === "hidden") stayEnd("away"); else stayStart();
+  });
   function hideMapForWrite(then) {
     var pg = $("#mapPage"); if (pg.hidden) return;
-    cancelAnimationFrame(mp.raf); mpReturn = true;
+    cancelAnimationFrame(mp.raf); mpReturn = true; stayEnd("write");
     pg.hidden = true; mapBg(false); if (then) then();
   }
   function backToMap() {
@@ -1551,12 +1565,12 @@
     var pg = $("#mapPage"); app.append(pg); pg.hidden = false; pg.classList.remove("out"); mapBg(true);
     if (window.__pile) window.__pile.pause();
     if (!$("#mpSheet").classList.contains("open")) mpCount();
-    track("map_return");
+    track("map_return"); stayStart();
   }
   window.__backToMap = backToMap;
   function closeMap(then) {
     var pg = $("#mapPage"); if (pg.hidden) return;
-    cancelAnimationFrame(mp.raf);
+    cancelAnimationFrame(mp.raf); stayEnd("back");
     mapBg(false);
     var done = function () { pg.hidden = true; pg.classList.remove("out"); mpOpen(null); if (window.__pile && app.dataset.state === "home") window.__pile.resume(); if (then) then(); };
     if (reduce) return done();
