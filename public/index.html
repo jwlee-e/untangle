@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>사실은 별거 아냐</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#C5CEEF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -473,7 +473,7 @@
   .mb-w { position: absolute; z-index: 3; width: 0; height: 0; transform-origin: 0 0; transform: scale(var(--k, 1))}
   .mp-zoom { position: absolute; right: 16px; top: calc(50% - 32px - env(safe-area-inset-bottom, 0px) / 2); transform: translateY(-50%); display: flex; flex-direction: column; background: rgba(251,250,246,0.5); border: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px -12px rgba(31,28,22,0.635)}
   .mp-zoom button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer}
-  .mp-zoom button:disabled { color: var(--ink-4); cursor: default}
+  .mp-zoom button.off { color: var(--ink-4); cursor: default}
   .mp-zoom i { height: 1px; margin: 0 8px; background: var(--rule-paper)}
   .mp-sheet { --peek: 64px; position: absolute; left: -2px; right: -2px; bottom: 0; z-index: 5; height: calc(100% - 60px); display: flex; flex-direction: column; background: var(--bg); border: 2px solid var(--pencil); border-bottom: 0; border-radius: 24px 24px 0 0; box-shadow: 0 -10px 24px -18px rgba(31,28,22,0.635); padding-bottom: env(safe-area-inset-bottom, 0px);
     transform: translateY(calc(100% - var(--peek) - env(safe-area-inset-bottom, 0px))); transition: transform .42s cubic-bezier(.2,.9,.28,1.02); will-change: transform}
@@ -810,6 +810,14 @@
     var tr = t.getBoundingClientRect(), br = box.getBoundingClientRect(), d = tr.bottom + 16 - br.bottom;
     if (d > 0) box.scrollTo({ top: box.scrollTop + d, behavior: reduce ? "auto" : "smooth" });
   }
+  (function () {
+    var last = 0;
+    document.addEventListener("touchend", function (e) {
+      var now = Date.now();
+      if (now - last < 320 && !(e.target.closest && e.target.closest("input, textarea, select, [contenteditable]"))) e.preventDefault();
+      last = now;
+    }, { passive: false });
+  })();
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
@@ -1126,7 +1134,8 @@
     var w = $("#mpWorld");
     w.style.transform = "translate3d(" + mp.x + "px," + mp.y + "px,0) scale(" + mp.s + ")";
     w.style.setProperty("--k", (1 / mp.s).toFixed(4)); w.classList.toggle("far", mp.s < 0.8);
-    $("#mpIn").disabled = mp.s >= MP_MAX - .001; $("#mpOut").disabled = mp.s <= mpMin() + .001;
+    // 끝까지 확대·축소했을 때도 버튼을 막지(disabled) 않고 흐리게만: 막힌 버튼을 두 번 누르면 iOS가 화면을 확대해 버린다
+    mpZoomOff($("#mpIn"), mp.s >= MP_MAX - .001); mpZoomOff($("#mpOut"), mp.s <= mpMin() + .001);
   }
   function mpClamp() {
     var v = mpView(); mp.s = Math.max(mpMin(), Math.min(MP_MAX, mp.s));
@@ -1159,8 +1168,13 @@
     var tx = mp.x, ty = mp.y; mp.x = save.x; mp.y = save.y; mp.s = save.s;
     mp.started = true; mpTween(tx, ty, s2);
   }
-  $("#mpIn").addEventListener("click", function () { mpZoomBtn(1.45); });
-  $("#mpOut").addEventListener("click", function () { mpZoomBtn(1 / 1.45); });
+  function mpZoomOff(b, off) { b.classList.toggle("off", off); b.setAttribute("aria-disabled", off ? "true" : "false"); }
+  // 손가락으로 누르면 touchend에서 바로 처리하고 기본 동작(두 번 탭 확대)은 막는다. 마우스는 click으로
+  [["#mpIn", 1.45], ["#mpOut", 1 / 1.45]].forEach(function (z) {
+    var b = $(z[0]), go1 = function () { if (!b.classList.contains("off")) mpZoomBtn(z[1]); };
+    b.addEventListener("touchend", function (e) { e.preventDefault(); go1(); }, { passive: false });
+    b.addEventListener("click", go1);
+  });
   // 가운데(처음 보는 자리)에서 가까운 자리부터 채운다: 최신 고민이 먼저 눈에 띄게
   var MAP_C = [600, 720]; // 지도를 열 때 화면 가운데에 오는 곳 (가운데 풀밭)
   var MAP_ORDER = MAP_SPOTS.slice().sort(function (a, b) { return Math.hypot(a[0] - MAP_C[0], a[1] - MAP_C[1]) - Math.hypot(b[0] - MAP_C[0], b[1] - MAP_C[1]); });
@@ -2308,6 +2322,7 @@
     clearFollow();
     app.classList.remove("discarding");
     crState = "idle"; p = 0; pull = 0; ball = null; renderCanvas();
+    stage.scrollTop = 0; cv.style.top = "0px";
     current = null;
     go("home", function () {
       entry.value = ""; onInput(); written.hidden = true; ans.hidden = true; grip.hidden = true;
