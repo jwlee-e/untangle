@@ -801,10 +801,13 @@
       catcher = $("#catcher"), dock = $("#dock"), miniT = $("#miniT"), foot = $("#foot"), qLabel = $("#qLabel");
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 기타를 고르면 입력칸을 먼저 펼쳐 보여 주고, 펼쳐진 뒤에 커서를 넣는다(키보드가 그다음에 올라온다)
+  // 기타를 고르면 입력칸만 펼쳐 보여 주고, 보이는 곳까지 스크롤한다. 키보드는 입력칸을 눌렀을 때만 올라온다
   function revealNote(t) {
     t.hidden = false; t.classList.remove("note-in"); void t.offsetWidth; t.classList.add("note-in");
-    setTimeout(function () { if (!t.hidden && t.isConnected) t.focus({ preventScroll: true }); }, reduce ? 0 : 260);
+    var box = t.parentElement; while (box && box !== document.body && !(box.scrollHeight > box.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(box).overflowY))) box = box.parentElement;
+    if (!box || box === document.body) return;
+    var tr = t.getBoundingClientRect(), br = box.getBoundingClientRect(), d = tr.bottom + 16 - br.bottom;
+    if (d > 0) box.scrollTo({ top: box.scrollTop + d, behavior: reduce ? "auto" : "smooth" });
   }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -2196,7 +2199,12 @@
   // 두 장을 위아래로 펼치기 / 다시 겹치기: t=0 겹침, t=1 펼침. 손가락을 따라 t가 바뀌고, 놓으면 가까운 쪽으로 간다
   var fuT = 0, fuAnim = 0;
   function fuFullH() { var h = paper.style.height; paper.style.height = ""; var f = paper.offsetHeight; paper.style.height = h;
-    if (fu) { if (fu.baseH == null) fu.baseH = f; fu.cut = f > fu.baseH + 78; f = Math.min(f, fu.baseH + 78); }
+    if (fu) {
+      if (fu.baseH == null) fu.baseH = f;
+      // 펼쳐도 아래쪽 흐려지는 구간(96px)에 닿지 않을 만큼만 늘린다: 잘린 끝이 배경색으로 비치지 않게
+      var room = stage.clientHeight - 12 - 96 - 8, cap = Math.max(fu.baseH, Math.min(fu.baseH + 78, room));
+      fu.cut = f > cap; f = Math.min(f, cap);
+    }
     return f; }
   function fuApply(t) {
     var pp = $("#paper2"); if (!fu || !pp) return;
