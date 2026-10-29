@@ -108,6 +108,15 @@ async function callClaude(key, prompt, strict) {
 }
 
 // 적은 글과 답 저장. 저장이 안 돼도 답은 그대로 보여 준다
+// 두 번째 쪽지: 물어본 것, 덧붙인 글, 그 답. follows 표가 아직 없으면(SQL 실행 전) 그냥 넘어간다
+async function saveFollow(body, entryId, q, text, data) {
+  if (!db.ready() || !db.isAnon(body.anon) || !text) return;
+  await db.q("POST", "follows", {
+    entry_id: entryId, anon_id: body.anon, question: q || null, text: text,
+    reply: String(data.reply || "").slice(0, 600), reply_type: String(data.type || "").slice(0, 16)
+  }, { Prefer: "return=minimal" });
+}
+
 async function save(body, text, data) {
   if (!db.ready() || !db.isAnon(body.anon)) return null;
   // 지도에 올리기 어렵다고 본 글(share=false)은 가린 글을 남기지 않는다 → 지도에 안 보인다. 글과 답은 그대로 저장
@@ -145,7 +154,7 @@ module.exports = async function handler(req, res) {
   if (!text) return res.status(400).json({ code: "empty" });
   if (text.length > 100) return res.status(400).json({ code: "too_long" });
 
-  // 이어서 답하기: 처음 글, 첫 답, 물어본 것, 덧붙인 글 (덧붙인 글은 저장하지 않는다)
+  // 이어서 답하기: 처음 글, 첫 답, 물어본 것, 덧붙인 글 (덧붙인 글과 그 답은 follows 표에 따로 저장한다. 지도에는 올리지 않는다)
   const f = body && body.follow && typeof body.follow === "object" ? body.follow : null;
   let prompt;
   if (f) {
@@ -172,6 +181,7 @@ module.exports = async function handler(req, res) {
     }
     if (!data || !data.reply) { console.log("answer: no reply", JSON.stringify({ stop: j.stop_reason, len: out.length, types: (j.content || []).map(function (c) { return c.type; }) })); return res.status(502).json({ code: "invalid_json" }); }
     const id = f ? (db.isUuid(body.entry) ? body.entry : null) : await save(body, text, data).catch(function () { return null; });
+    if (f) await saveFollow(body, id, String(f.q || "").slice(0, 60), String(f.text || "").trim().slice(0, 100), data).catch(function () {});
     delete data.masked; delete data.share;
     return res.status(200).json({ data: data, id: id, version: TONE.version });
   } catch (e) {
