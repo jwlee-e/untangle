@@ -27,11 +27,11 @@ HEAD = '''<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="robots" content="noindex">
-<meta name="description" content="한 발짝 떨어져 보면, 사실은 별거 아냐. 계속 신경 쓰이는 생각을 꺼내 놓아 보세요.">
+<meta name="description" content="자꾸 신경 쓰이는 걱정, 여기 적고 털어 버려요">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="사실은 별거 아냐">
 <meta property="og:title" content="사실은 별거 아냐">
-<meta property="og:description" content="한 발짝 떨어져 보면, 사실은 별거 아냐. 계속 신경 쓰이는 생각을 꺼내 놓아 보세요.">
+<meta property="og:description" content="자꾸 신경 쓰이는 걱정, 여기 적고 털어 버려요">
 <meta property="og:url" content="https://untangle-wine.vercel.app/">
 <meta property="og:image" content="https://untangle-wine.vercel.app/og.jpg">
 <meta property="og:image:width" content="1200">
