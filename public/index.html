@@ -429,6 +429,8 @@
   .ai-note { margin: 10px 0 0; color: var(--ink-4); font-size: var(--t-tiny-fs); font-weight: var(--t-tiny-fw); line-height: var(--t-tiny-lh);}
 
   .bar-r { display: flex; align-items: center; margin-left: auto}
+  .test-tag { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border: 1.5px solid rgba(75,79,134,0.5); border-radius: 9999px; background: rgba(248,249,254,0.5); color: var(--pencil); white-space: nowrap; font-size: var(--t-label-fs); font-weight: var(--t-label-fw); line-height: var(--t-label-lh);}
+  .app:not([data-state="home"]) .test-tag { visibility: hidden}
   .icon { position: relative}
   .icon .dot { position: absolute; top: 8px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: #D9603B}
   .pop-scrim { align-items: center; justify-content: center; padding: 20px}
@@ -566,7 +568,7 @@
 
 <div class="app" id="app" data-state="home">
   <header class="bar">
-    <span class="sr">사실은 별거 아냐</span><span aria-hidden="true"></span>
+    <span class="sr">사실은 별거 아냐</span><span class="test-tag">테스트 버전</span>
     <span class="bar-r"><button class="icon" id="surveyBtn" type="button" aria-label="의견 남기기"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7M17 12H7"/></svg><i class="dot" id="surveyDot" aria-hidden="true"></i></button>
     <button class="icon" id="settingsBtn" type="button" aria-label="설정"><svg width="24" height="24" viewBox="2 2 20 20" overflow="visible" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
   </header>
