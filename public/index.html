@@ -116,7 +116,7 @@
 
 
   /* ---------- 아직 신경 쓰여요: 새 쪽지를 앞에 겹쳐 놓는다 ---------- */
-  .app.fu .stage { overflow: hidden; touch-action: none; overscroll-behavior: contain; padding: 12px 20px 0; margin: -8px -20px 0}
+  .app.fu .stage { overflow: hidden; touch-action: none; overscroll-behavior: contain; padding: 12px 20px 24px; margin: -8px -20px 0}
   .fu-chips .chips-row { margin: 0 -20px; padding: 0 20px 2px; touch-action: pan-x}
   .app.fu .stage::-webkit-scrollbar { display: none}
   .app.fu #paper { position: absolute; left: 20px; right: 20px; top: 12px; z-index: 0; transform-origin: 50% 0; cursor: pointer}
@@ -139,8 +139,13 @@
   .fu-chips .chip.on { color: var(--ink); border-color: var(--ink); font-weight: 700}
   .app.fu.merging .paper2 { transition: transform .32s ease, opacity .32s ease; transform: translateY(28px) scale(.96); opacity: 0}
   .app.fu.merging #paper { transition: transform .32s ease, height .32s ease}
+  .app.fu #paper.cut::after { content: ""; position: absolute; left: 3px; right: 3px; bottom: 3px; height: 44px; z-index: 1; pointer-events: none; background: linear-gradient(rgba(248,249,254,0), var(--paper))}
   .app.fu #paper.fu-fade { opacity: 0; transition: opacity .25s ease}
   .sv-box .fb-note[hidden] { display: none !important; }
+  .fb-note.note-in { animation: noteIn .24s cubic-bezier(.22,1,.36,1)}
+  @keyframes noteIn { from { opacity: 0; transform: translateY(-6px)} to { opacity: 1; transform: none} }
+  /* 가운데 팝업도 키보드 위(보이는 화면) 가운데에 놓는다 */
+  .pop-scrim { bottom: auto !important; top: var(--vvt, 0px) !important; height: var(--vh, 100%)}
   .sv-box .fb-note { font-size: 16px !important; display: block !important; width: 100%; min-height: 44px; border: 0; border-radius: 12px; padding: 10px 12px; font: inherit; background: var(--paper); color: var(--ink); resize: none; font-size: var(--t-desc-fs); font-weight: var(--t-desc-fw); line-height: var(--t-desc-lh);}
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none}
   .catcher { position: absolute; left: 50%; bottom: 0; width: 72px; height: 76px; transform: translateX(-50%); transform-origin: 50% 100%; pointer-events: none; display: none}
@@ -205,6 +210,7 @@
   .dock-row .field { flex: 1; min-width: 0; padding-right: 18px}
   .dock-row .field > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis}
   .map-btn { width: 56px; height: 56px; flex: none; border-radius: 16px; border: 2px solid rgba(75,79,134,0.5); background: #D9DFC8 url(./ch/map-tile.webp) center / cover no-repeat border-box; color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: transform .12s ease}
+  html, body, button { touch-action: manipulation}
   .map-btn:active { transform: scale(.96)}
 
   /* 상태별 보이기 */
@@ -795,6 +801,11 @@
       catcher = $("#catcher"), dock = $("#dock"), miniT = $("#miniT"), foot = $("#foot"), qLabel = $("#qLabel");
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // 기타를 고르면 입력칸을 먼저 펼쳐 보여 주고, 펼쳐진 뒤에 커서를 넣는다(키보드가 그다음에 올라온다)
+  function revealNote(t) {
+    t.hidden = false; t.classList.remove("note-in"); void t.offsetWidth; t.classList.add("note-in");
+    setTimeout(function () { if (!t.hidden && t.isConnected) t.focus({ preventScroll: true }); }, reduce ? 0 : 260);
+  }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
@@ -855,7 +866,7 @@
     if (next === "home" && window.__backToMap) setTimeout(window.__backToMap, 0);
     if (window.__pile && next !== "home") window.__pile.pause();
     var apply = function () { app.dataset.state = next; if (fn) fn(); renderDock(); if (next === "home" && window.__pile) { window.__pile.resume(); if (afterDiscard) { afterDiscard = false; window.__pile.after(); } } };
-    if (!instant && document.startViewTransition && !reduce) { try { document.startViewTransition(apply); return; } catch (e) {} }
+    if (!instant && document.startViewTransition && !reduce) { try { var vt = document.startViewTransition(apply); [vt.ready, vt.finished, vt.updateCallbackDone].forEach(function (pr) { if (pr && pr.catch) pr.catch(function () {}); }); return; } catch (e) {} }
     apply();
   }
   function setMini(t) { miniT.textContent = t; }
@@ -1263,7 +1274,7 @@
     var send = el("button", "btn", "신고하기"); send.type = "button"; send.disabled = true;
     REPORT_REASONS.forEach(function (t) {
       var r = el("button", "pick-i"); r.type = "button"; r.setAttribute("role", "radio"); r.setAttribute("aria-checked", "false"); r.innerHTML = "<span>" + t + "</span>" + CHECK;
-      r.addEventListener("click", function () { pick = t; list.querySelectorAll(".pick-i").forEach(function (x) { x.setAttribute("aria-checked", x === r ? "true" : "false"); }); send.disabled = false; var was = rnote.hidden; rnote.hidden = t !== "기타"; if (was && !rnote.hidden) rnote.focus(); });
+      r.addEventListener("click", function () { pick = t; list.querySelectorAll(".pick-i").forEach(function (x) { x.setAttribute("aria-checked", x === r ? "true" : "false"); }); send.disabled = false; var was = rnote.hidden; rnote.hidden = t !== "기타"; if (was && !rnote.hidden) revealNote(rnote); });
       list.append(r);
     });
     var rnote = el("textarea", "fb-note"); rnote.rows = 2; rnote.maxLength = 200; rnote.placeholder = "남기고 싶은 말 (선택)"; rnote.hidden = true;
@@ -1571,7 +1582,7 @@
       drawFaces();
       var mkNote = function () { var t = el("textarea", "fb-note sv-note"); t.rows = 2; t.maxLength = 200; t.placeholder = "더 하고 싶은 말을 적어 주세요 (선택)"; t.hidden = true; return t; };
       var noteGood = mkNote(), noteBad = mkNote();
-      var syncNote = function () { var g0 = noteGood.hidden, b0 = noteBad.hidden; noteGood.hidden = !good.etc; noteBad.hidden = !bad.etc; if (g0 && !noteGood.hidden) noteGood.focus(); else if (b0 && !noteBad.hidden) noteBad.focus(); };
+      var syncNote = function () { var g0 = noteGood.hidden, b0 = noteBad.hidden; noteGood.hidden = !good.etc; noteBad.hidden = !bad.etc; if (g0 && !noteGood.hidden) revealNote(noteGood); else if (b0 && !noteBad.hidden) revealNote(noteBad); };
       var group = function (title, list, bag, note) {
         var g = el("div", "sv-g"); var h = el("p", "sv-q"); h.append(el("b", "", title), el("small", "", "여러 개 골라도 돼요"));
         var row = el("div", "pop-a");
@@ -2185,7 +2196,7 @@
   // 두 장을 위아래로 펼치기 / 다시 겹치기: t=0 겹침, t=1 펼침. 손가락을 따라 t가 바뀌고, 놓으면 가까운 쪽으로 간다
   var fuT = 0, fuAnim = 0;
   function fuFullH() { var h = paper.style.height; paper.style.height = ""; var f = paper.offsetHeight; paper.style.height = h;
-    if (fu) { if (fu.baseH == null) fu.baseH = f; f = Math.min(f, fu.baseH + 78); }
+    if (fu) { if (fu.baseH == null) fu.baseH = f; fu.cut = f > fu.baseH + 78; f = Math.min(f, fu.baseH + 78); }
     return f; }
   function fuApply(t) {
     var pp = $("#paper2"); if (!fu || !pp) return;
@@ -2197,6 +2208,7 @@
     paper.style.filter = "brightness(" + (0.97 + 0.03 * e) + ")";
     pp.style.marginTop = (14 + (full + 2) * e) + "px";
     app.classList.toggle("spread", fuT >= 1);
+    paper.classList.toggle("cut", !!fu.cut && fuT > 0);
     app.classList.toggle("opening", fuT > 0.02);
   }
   function fuTween(to) {
@@ -2266,7 +2278,7 @@
     var send = el("button", "btn", "보내기"); send.type = "button"; send.disabled = true;
     ["내 상황이랑 달라요", "너무 뻔해요", "더 공감해 줬으면", "말투가 별로예요", "기타"].forEach(function (t) {
       var c = el("button", "pick-i"); c.type = "button"; c.setAttribute("role", "radio"); c.setAttribute("aria-checked", "false"); c.innerHTML = "<span>" + t + "</span>" + CHECK;
-      c.addEventListener("click", function () { pick = t; opts.querySelectorAll(".pick-i").forEach(function (x) { x.setAttribute("aria-checked", x === c ? "true" : "false"); }); send.disabled = false; var was = note.hidden; note.hidden = t !== "기타"; if (was && !note.hidden) note.focus(); });
+      c.addEventListener("click", function () { pick = t; opts.querySelectorAll(".pick-i").forEach(function (x) { x.setAttribute("aria-checked", x === c ? "true" : "false"); }); send.disabled = false; var was = note.hidden; note.hidden = t !== "기타"; if (was && !note.hidden) revealNote(note); });
       opts.append(c);
     });
     var note = el("textarea", "fb-note"); note.rows = 2; note.maxLength = 200; note.placeholder = "남기고 싶은 말 (선택)"; note.hidden = true;
@@ -2404,7 +2416,7 @@ function drawPose(ctx, P, opt) {
 }
 
 
-  var DRAWN_SEQ = [["P0", 0], ["A1", 0], ["A", 0.01], ["AB", 0.02], ["B", -0.03], ["BC", 0.02], ["C", 0.04], ["C", 0.04], ["D", 0.05], ["E1", -0.03], ["E", 0], ["E", 0]];
+  var DRAWN_SEQ = [["A1", 0], ["A", 0.01], ["AB", 0.02], ["B", -0.03], ["BC", 0.02], ["C", 0.04], ["C", 0.04], ["D", 0.05], ["E1", -0.03], ["E", 0], ["E", 0]];
   var drawnPose = "P0", drawnRot = 0;
   var DRAWN_OPT = { paper: "#F8F9FE", shade: "rgba(0,0,0,0.07)", dark: "rgba(0,0,0,0.15)", pen: "#4B4F86", text: "rgba(0,0,0,0.16)" };
   // 쪽지 색과 연필 색은 화면에 쓰인 값을 그대로 가져온다
