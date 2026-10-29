@@ -192,8 +192,8 @@
   .line.out { opacity: 0; transform: translateY(-10px)}
   .line.in-start { opacity: 0; transform: translateY(12px)}
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap}
-  .pit { position: relative; flex: 1; min-height: 0; margin: 0 -20px; touch-action: manipulation; -webkit-user-select: none; user-select: none; cursor: pointer}
-  .pit canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: auto}
+  .pit { position: relative; flex: 1; min-height: 0; margin: 0 -20px; overflow: hidden; touch-action: manipulation; -webkit-user-select: none; user-select: none; cursor: pointer}
+  .pit canvas { position: absolute; left: 0; right: auto; top: auto; bottom: 0; width: 100%; height: 100%; display: block; pointer-events: auto}
   .home-dock { flex: none; position: relative; padding-top: 18px}
   /* 바닥선: 붓펜으로 한 번에 그은 듯한 선 (굵기와 높이가 아주 살짝 흔들림). 모양은 스크립트가 그린다 */
   .floor { position: absolute; left: -20px; top: -3px; width: calc(100% + 40px); height: 6px; overflow: visible; pointer-events: none; color: var(--pencil); opacity: .6}
@@ -2645,6 +2645,8 @@ function drawPose(ctx, P, opt) {
     world = engine.world; items = []; queue = []; ball = null;
     var r = pit.getBoundingClientRect(); W = r.width; H = r.height;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    // 그림판 크기를 픽셀로 고정해 둔다: 키보드가 닫히는 사이 영역 높이가 잠깐 바뀌어도 털실이 늘어나 보이지 않게 (바닥에 붙여 둔다)
+    cv.style.width = W + "px"; cv.style.height = H + "px";
     var t = 200;
     walls = [
       M.Bodies.rectangle(W / 2, H - FLOOR_GAP + t / 2, W * 3, t, { isStatic: true }),
@@ -3024,7 +3026,7 @@ function drawPose(ctx, P, opt) {
   // 키보드가 열려 화면 크기가 바뀌어도, 홈이 안 보일 땐 다시 만들지 않는다
   // 크기가 바뀌면 캔버스를 다시 맞춘다. 창 크기 변화뿐 아니라 영역 자체가 늦게 자리 잡는 경우(카카오톡 인앱 브라우저 등)도 잡는다
   var rT;
-  function onPitResize() { if (paused) { dirty = true; return; } clearTimeout(rT); rT = setTimeout(function () { var r = pit.getBoundingClientRect(); if (r.width > 0 && r.height > 0 && (Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1)) start(homeMode()); }, 200); }
+  function onPitResize() { if (paused) return; clearTimeout(rT); rT = setTimeout(function () { var r = pit.getBoundingClientRect(); if (r.width > 0 && r.height > 0 && (Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1)) start(homeMode()); }, 200); }
   window.addEventListener("resize", onPitResize);
   if (window.visualViewport) window.visualViewport.addEventListener("resize", onPitResize);
   if (window.ResizeObserver) new ResizeObserver(onPitResize).observe(pit);
@@ -3034,7 +3036,9 @@ function drawPose(ctx, P, opt) {
     paused = false;
     var r = pit.getBoundingClientRect();
     if (!engine) { start(SCENE === "b" ? "stack" : "first"); return; }
-    if (dirty || Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1) { dirty = false; start(homeMode()); return; }
+    // 키보드가 막 닫힐 때는 영역이 잠깐 작게 잡힌다: 그때는 쌓인 그대로 두고, 화면이 다 돌아온 뒤 크기가 정말 바뀌었으면 다시 쌓는다
+    if (dirty || Math.abs(r.width - W) > 1 || r.height - H > 1) { dirty = false; start(homeMode()); return; }
+    if (H - r.height > 1) setTimeout(onPitResize, 450);
     draw(); run(); if (!queue.length && !onEmpty) mumbleLater(2500);
     if (mode === "stack") { if (stackLeft.length) dropLater(1800); else rotateLater(SUB_HOLD[subIdx]); }
   }
