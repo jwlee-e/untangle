@@ -236,6 +236,7 @@
   .app:not([data-state="home"]) .foot { display: none}
   /* 구겨 버리는 동안엔 다른 선택지를 치운다 */
   .app.discarding :is(.dock, #backBtn) { visibility: hidden}
+  .app.discarding .stage { -webkit-mask-image: none !important; mask-image: none !important; overflow: hidden !important}
   /* 키보드가 감지되면: 종이를 넓히고 버튼은 키보드 바로 위 */
   .app.kb-open[data-state="write"] textarea { height: 78px}
   .app.kb-open[data-state="write"] .dock { margin-top: auto; margin-bottom: 0; padding-top: 10px; animation: kbup .18s ease-out}
@@ -2325,7 +2326,12 @@
   var crEl = null; // 구길 쪽지 (보통은 첫 쪽지, 두 장이면 앞의 두 번째 쪽지)
   function measure() {
     var r = stage.getBoundingClientRect(), pr = (crEl || paper).getBoundingClientRect();
-    SW = r.width; SH = r.height; PW = pr.width; PH = pr.height; PX = pr.left - r.left; PY = pr.top - r.top;
+    // 쪽지가 길어서 화면(스크롤 영역)을 넘으면: 그림판은 지금 보이는 자리에 두고, 보이는 부분만 종이로 보고 구긴다
+    cv.style.top = (stage.scrollTop || 0) + "px";
+    SW = r.width; SH = r.height; PW = pr.width; PX = pr.left - r.left;
+    var top = pr.top - r.top, vt = Math.max(top, 0), vb = Math.min(top + pr.height, SH);
+    if (vb - vt < 60) { vt = top; vb = top + pr.height; }
+    PY = vt; PH = vb - vt;
     cv.width = Math.round(SW * dpr); cv.height = Math.round(SH * dpr);
   }
   function wrapWords(c, text, maxW) {
@@ -2469,7 +2475,7 @@ function drawPose(ctx, P, opt) {
 
   function beginCrumple() {
     if (state !== "result" || crState !== "idle" || !paper.classList.contains("can-crumple")) return false;
-    measure(); buildTexture(); drawnPose = "P0"; drawnRot = 0;
+    measure(); buildTexture(); drawnPose = DRAWN_SEQ[0][0]; drawnRot = 0;
     (crEl || paper).classList.add("hide"); if (crEl && crEl !== paper) paper.classList.add("fu-fade"); crState = "drag"; p = 0; pull = 0; ball = null;
     renderCanvas(); return true;
   }
